@@ -69,23 +69,23 @@ export const GlobalStyle = createGlobalStyle`
   /* Font Faces */
   @font-face {
     font-family: 'Bonzer';
-    src: url('/fonts/Bonzer - San Francisco.ttf') format('truetype');
+    src: url('/fonts/bonzer-san-francisco.ttf') format('truetype');
   }
   @font-face {
     font-family: 'Kirsty';
-    src: url('/fonts/Kirsty Rg.otf') format('opentype');
+    src: url('/fonts/kirsty-rg.otf') format('opentype');
   }
   @font-face {
     font-family: 'NASHVILL';
-    src: url('/fonts/NASHVILL.TTF') format('truetype');
+    src: url('/fonts/nashvill.ttf') format('truetype');
   }
   @font-face {
     font-family: 'Rio Oro';
-    src: url('/fonts/Rio Oro.otf') format('opentype');
+    src: url('/fonts/rio-oro.otf') format('opentype');
   }
   @font-face {
     font-family: 'Saddlebag';
-    src: url('/fonts/Saddlebag.ttf') format('truetype');
+    src: url('/fonts/saddlebag.ttf') format('truetype');
   }
 
   /* Estilos para o React-Toastify */
