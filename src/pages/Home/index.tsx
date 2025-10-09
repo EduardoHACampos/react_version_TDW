@@ -3,12 +3,9 @@ import * as S from "./styles";
 
 import Modal, { FormField } from "../../components/common/Modal";
 import ScrollToast from "../../components/common/ScrollToast";
-
-// Hook e API
-import useIntersectionObserver from "../../hooks/useIntersectionObserver"; // 1. Importar o novo hook
+import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 import { submitJoinTheHuntForm } from "../../services/api";
 
-// Assets
 import mainLogo from "../../assets/TDWLOGO_Main.png";
 import steamLogo from "../../assets/steam_logo.png";
 import discordIcon from "../../assets/Discord.png";
@@ -18,14 +15,11 @@ const Home = () => {
 
   const trailerRef = useRef<HTMLDivElement>(null);
   const [isToastPermanentlyClosed, setIsToastPermanentlyClosed] =
-    useState(false); 
+    useState(false);
 
-  // Usa o hook para detectar se o trailer está visível
   const isTrailerVisible = useIntersectionObserver(trailerRef, {
     threshold: 0.5,
   });
-
-  // A nova lógica de visibilidade do toast
   const showToast = !isToastPermanentlyClosed && !isTrailerVisible;
 
   const handleScrollToTrailer = () => {
@@ -60,7 +54,6 @@ const Home = () => {
     <S.HomeContainer>
       <S.HeroSection>
         <S.MainTitle src={mainLogo} alt="The Dark West Logo" />
-
         <S.HuntButtonWrapper>
           <a
             href="#"
@@ -73,7 +66,6 @@ const Home = () => {
             JOIN THE HUNT
           </a>
         </S.HuntButtonWrapper>
-
         <S.PlatformContainer>
           <a
             target="_blank"
@@ -98,6 +90,7 @@ const Home = () => {
           src="https://www.youtube.com/embed/3ATksauvGMw"
           title="The Dark West Trailer"
           frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
         ></iframe>
       </S.TrailerSection>
@@ -116,8 +109,8 @@ const Home = () => {
 
       <ScrollToast
         isVisible={showToast}
-        onClose={() => setIsToastPermanentlyClosed(true)} 
-        onScroll={handleScrollToTrailer} 
+        onClose={() => setIsToastPermanentlyClosed(true)}
+        onScroll={handleScrollToTrailer}
         text="Watch the official trailer!"
       />
     </S.HomeContainer>

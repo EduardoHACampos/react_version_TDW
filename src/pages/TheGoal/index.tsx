@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import * as S from "./styles";
 import Button from "../../components/common/Button";
 import SectionTextBlock from "../../components/common/SectionTextBlock";
