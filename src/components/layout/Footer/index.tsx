@@ -12,28 +12,28 @@ const Footer = () => {
           <h2>OUR CHANNELS</h2>
           <S.SocialIcons>
             <a
-              href="https://discord.gg/invite/thedarkwest"
+              href="https://discord.com/invite/47YskyYJcy"
               target="_blank"
               rel="noopener noreferrer"
             >
               <img src={discordIcon} alt="Discord" />
             </a>
             <a
-              href="https://www.instagram.com/thedarkwest/"
+              href="https://www.instagram.com/playdarkwest/"
               target="_blank"
               rel="noopener noreferrer"
             >
               <img src={instagramIcon} alt="Instagram" />
             </a>
             <a
-              href="https://www.twitch.tv/thedarkwest"
+              href="https://www.twitch.tv/playdarkwest"
               target="_blank"
               rel="noopener noreferrer"
             >
               <img src={twitchIcon} alt="Twitch" />
             </a>
             <a
-              href="https://twitter.com/thedarkwestgame"
+              href="https://x.com/PlayDarkWest"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -41,7 +41,6 @@ const Footer = () => {
             </a>
           </S.SocialIcons>
         </S.Section>
-
       </S.FooterContent>
       <S.Copyright>
         <p>© 2023 The Dark West. All rights reserved.</p>
