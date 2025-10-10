@@ -17,7 +17,8 @@ export const Wrapper = styled.div<{ desktopWidth?: string; mobileWidth?: string 
     width: ${({ desktopWidth }) => desktopWidth || "auto"};
   }
   @media (min-width: 2540px) {
-    width: 515px;
+    width: 665px;
+    
   }
 `;
 
@@ -38,6 +39,9 @@ export const Text = styled.p`
   text-align: left;
   & + & {
     margin-top: var(--spacing-md);
+  }
+  @media (min-width: 2540px) {
+    max-width: 75%;
   }
 `;
 

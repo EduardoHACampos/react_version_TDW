@@ -24,6 +24,8 @@ import { useFontLoader } from "./hooks/useFontLoader"; // Importar o novo hook
 import homeBg from "./assets/KeyartTheDarkWestFinalFasepaintover.png";
 import goalBg from "./assets/Group322.png";
 import contactBg from "./assets/image491.png";
+import { AnimatePresence } from "framer-motion";
+import Loader from "./components/common/Loader";
 
 const PageLayout = () => {
   const location = useLocation();
@@ -53,7 +55,17 @@ const PageLayout = () => {
 };
 
 function App() {
-  useFontLoader(); 
+  // Lógica do loader de 1 segundo
+  const [isLoading, setIsLoading] = useState(true);
+  useFontLoader();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); // 1000ms = 1 s
+
+    return () => clearTimeout(timer);
+  }, []); // O array vazio garante que rode apenas uma vez
+
   return (
     <Router>
       <GlobalResetStyle />
@@ -70,11 +82,25 @@ function App() {
         pauseOnHover
         theme="dark"
       />
-      <S.AppWrapper>
-        <Header />
-        <PageLayout />
-        <Footer />
-      </S.AppWrapper>
+
+      {/* Lógica para exibir o loader ou o conteúdo do site */}
+      <AnimatePresence mode="wait">
+        {isLoading ? (
+          <Loader key="loader" />
+        ) : (
+          <S.AppWrapper
+            key="app-wrapper"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Header />
+            <PageLayout />
+            <Footer />
+          </S.AppWrapper>
+        )}
+      </AnimatePresence>
     </Router>
   );
 }
