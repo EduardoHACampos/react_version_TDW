@@ -9,13 +9,11 @@ export const AppWrapper = styled(motion.div)`
 `;
 
 export const MainContent = styled.main<{ bgImage: string }>`
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
 
   background-image: url(${({ bgImage }) => bgImage});
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
   background-repeat: no-repeat;
 `;

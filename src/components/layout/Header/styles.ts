@@ -4,11 +4,17 @@ import { NavLink } from "react-router-dom";
 export const HeaderContainer = styled.header`
   background-color: var(--color-background-dark);
   border-bottom: none;
-  padding: 1rem 0;
+  padding: 1rem 5%;
   position: fixed;
   top: 0;
+
+  /* --- ALTERAÇÃO APLICADA AQUI --- */
+  /* Estica o header de ponta a ponta, ignorando a barra de rolagem */
   left: 0;
-  width: 100%;
+  right: 0;
+
+  /* A propriedade 'width: 100%' foi removida, pois não é mais necessária */
+
   z-index: 1000;
 `;
 
@@ -17,7 +23,6 @@ export const HeaderContent = styled.div`
   justify-content: space-between;
   align-items: center;
   max-width: 1400px;
-  padding: 0 1rem;
   margin: 0 auto;
 
   @media (min-width: 2560px) {
@@ -27,10 +32,6 @@ export const HeaderContent = styled.div`
 
 export const Logo = styled.img`
   height: 60px;
-
-  @media (min-width: 2560px) {
-    height: 80px; 
-  }
 `;
 
 export const Nav = styled.nav<{ isOpen: boolean }>`
@@ -83,11 +84,6 @@ export const StyledNavLink = styled(NavLink)`
 
   &.active {
     font-weight: bold;
-  }
-
-  /* --- AJUSTE PARA 4K --- */
-  @media (min-width: 2560px) {
-    font-size: 1.75rem; /* Fonte um pouco maior */
   }
 `;
 

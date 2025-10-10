@@ -2,14 +2,13 @@ import styled from "styled-components";
 
 // Container principal da página, com layout flex e responsivo
 export const PageContainer = styled.div`
-  flex-grow: 1; /* Garante que a seção ocupe a altura total da tela */
   display: flex;
   align-items: center;
   box-sizing: border-box;
   margin-top:30px;
+  height:100vh;
   /* No mobile, o conteúdo é centralizado */
   justify-content: center;
-
   /* No desktop, o conteúdo é alinhado à direita */
   @media (min-width: 1024px) {
     justify-content: flex-end;

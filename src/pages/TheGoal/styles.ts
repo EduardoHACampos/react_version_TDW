@@ -6,9 +6,8 @@ export const PageContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  flex-grow: 1;
   box-sizing: border-box;
-
+  height:100vh;
 
   background-size: cover;
   background-position: center;
