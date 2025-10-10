@@ -70,7 +70,7 @@ const Home = () => {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href="https://store.steampowered.com/app/2574750/The_Dark_West/"
+            href="https://store.steampowered.com/app/3574750/The_Dark_West/"
           >
             <img src={steamLogo} alt="Steam" />
           </a>
