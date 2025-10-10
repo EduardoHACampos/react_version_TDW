@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const API_URL = "https://tdwbackend1-production.up.railway.app";
+import httpClient from "./httpClient";
 
 export interface Job {
   id: number;
@@ -11,7 +9,7 @@ export interface Job {
 
 export const getJobs = async (): Promise<Job[]> => {
   try {
-    const response = await axios.get<Job[]>(`${API_URL}/jobs/`);
+    const response = await httpClient.get<Job[]>("/jobs/");
     return response.data;
   } catch (error) {
     console.error("Error fetching jobs:", error);
@@ -19,6 +17,26 @@ export const getJobs = async (): Promise<Job[]> => {
   }
 };
 
+export interface ApplyFormData {
+  name: string;
+  email: string;
+  portfolioLink: string;
+  message: string;
+  jobName: string;
+}
+
+// --- Nova função para se aplicar a uma vaga ---
+export const applyToJob = async (jobId: number, data: ApplyFormData) => {
+  try {
+    const response = await httpClient.post(`/jobs/${jobId}/apply`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error applying to job:", error);
+    throw error;
+  }
+};
+
+// --- Dados para o formulário de contato ---
 export interface ContactFormData {
   name: string;
   email: string;
@@ -27,20 +45,26 @@ export interface ContactFormData {
 
 export const submitContactForm = async (data: ContactFormData) => {
   try {
-    const response = await axios.post(`${API_URL}/contact/`, data);
+    const response = await httpClient.post("/jobs/contact/", data);
     return response.data;
   } catch (error) {
     console.error("Error submitting contact form:", error);
     throw error;
   }
 };
+
+// --- Dados para o formulário "Join The Hunt" ---
 export interface HuntFormData {
   name: string;
   email: string;
 }
 
 export const submitJoinTheHuntForm = async (data: HuntFormData) => {
-  console.log("Submitting Join The Hunt form:", data);
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-  return { success: true, message: "Successfully subscribed!" };
+  try {
+    const response = await httpClient.post("/jobs/user-info/", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error submitting join the hunt form:", error);
+    throw error;
+  }
 };

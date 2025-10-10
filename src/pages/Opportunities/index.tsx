@@ -4,8 +4,8 @@ import * as S from "./styles";
 import Modal, { FormField } from "../../components/common/Modal";
 import Button from "../../components/common/Button";
 import SectionTextBlock from "../../components/common/SectionTextBlock";
-import JobList from "../../components/common/JobList"; // Importa o componente unificado
-import { Job } from "../../services/api"; // Importa a interface Job
+import JobList from "../../components/common/JobList";
+import { Job, applyToJob } from "../../services/api";
 
 const Opportunities = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
@@ -29,6 +29,26 @@ const Opportunities = () => {
     { name: "portfolio", label: "Portfolio", type: "text" },
     { name: "message", label: "Message", type: "textarea", required: true },
   ];
+
+  // Função de envio do formulário atualizada
+  const handleApplySubmit = async (formData: Record<string, string>) => {
+    if (!selectedJob) return;
+
+    try {
+      await applyToJob(selectedJob.id, {
+        name: formData.name,
+        email: formData.email,
+        portfolioLink: formData.portfolio,
+        message: formData.message,
+        jobName: selectedJob.title,
+      });
+      toast.success(`Application for ${selectedJob.title} sent successfully!`);
+      handleCloseModal();
+    } catch (error) {
+      toast.error("Failed to submit application. Please try again.");
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -56,17 +76,7 @@ const Opportunities = () => {
         subtitle={selectedJob?.description || ""}
         fields={modalFields}
         buttonText="Send"
-        onSubmit={async (formData) => {
-          console.log(
-            `Submitting application for ${selectedJob?.title}:`,
-            formData
-          );
-          toast.success(
-            `Application for ${selectedJob?.title} sent successfully!`
-          );
-          handleCloseModal();
-        }}
-        successMessage="Application sent successfully!"
+        onSubmit={handleApplySubmit}
       />
     </>
   );
