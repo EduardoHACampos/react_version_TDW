@@ -67,26 +67,32 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   /* Font Faces */
-  @font-face {
+@font-face {
     font-family: 'Bonzer';
     src: url('/fonts/bonzer-san-francisco.ttf') format('truetype');
+    font-display: block;
   }
   @font-face {
     font-family: 'Kirsty';
     src: url('/fonts/kirsty-rg.otf') format('opentype');
+    font-display: block;
   }
   @font-face {
     font-family: 'NASHVILL';
     src: url('/fonts/nashvill.ttf') format('truetype');
+    font-display: block;
   }
   @font-face {
     font-family: 'Rio Oro';
     src: url('/fonts/rio-oro.otf') format('opentype');
+    font-display: block;
   }
   @font-face {
     font-family: 'Saddlebag';
     src: url('/fonts/saddlebag.ttf') format('truetype');
+    font-display: block;
   }
+
 
   /* Estilos para o React-Toastify */
   .Toastify__toast-theme--dark {

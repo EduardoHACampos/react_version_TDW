@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { getJobs, Job } from "../../../services/api";
-import * as S from "./styles.ts";
-import arrowIcon from "../../../assets/Vector2.svg"; 
+import * as S from "./styles";
+import arrowIcon from "../../../assets/Vector2.svg";
+import JobCardSkeleton from "./JobCardSkeleton"; // Importar o skeleton
 
 interface JobListProps {
   onJobClick: (job: Job) => void;
@@ -17,10 +18,14 @@ const JobList = ({ onJobClick }: JobListProps) => {
       try {
         setLoading(true);
         const allJobs = await getJobs();
-        setJobs(allJobs.filter((job) => job.isActive));
+
+        // Simula um tempo de carregamento de 1.5 segundos para que possamos ver o skeleton
+        setTimeout(() => {
+          setJobs(allJobs.filter((job) => job.isActive));
+          setLoading(false);
+        }, 1500); // 1.5 segundos de delay para simulação
       } catch (err) {
         setError("Failed to load opportunities. Please try again later.");
-      } finally {
         setLoading(false);
       }
     };
@@ -28,8 +33,19 @@ const JobList = ({ onJobClick }: JobListProps) => {
     fetchJobs();
   }, []);
 
+  // Enquanto estiver carregando, renderiza uma lista de skeletons
   if (loading) {
-    return <S.StatusMessage>Loading jobs...</S.StatusMessage>;
+    return (
+      <S.JobListContainer>
+        <S.JobListTitle>AVAILABLE JOBS</S.JobListTitle>
+        <S.JobListUl>
+          {/* Cria um array com 3 itens e renderiza um skeleton para cada */}
+          {[...Array(3)].map((_, index) => (
+            <JobCardSkeleton key={index} />
+          ))}
+        </S.JobListUl>
+      </S.JobListContainer>
+    );
   }
 
   if (error) {

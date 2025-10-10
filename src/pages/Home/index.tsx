@@ -3,12 +3,12 @@ import * as S from "./styles";
 
 import Modal, { FormField } from "../../components/common/Modal";
 import ScrollToast from "../../components/common/ScrollToast";
-import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 import { submitJoinTheHuntForm } from "../../services/api";
 
 import mainLogo from "../../assets/TDWLOGO_Main.png";
 import steamLogo from "../../assets/steam_logo.png";
 import discordIcon from "../../assets/Discord.png";
+import useIntersectionObserver from './../../hooks/useIntersectionObserver';
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

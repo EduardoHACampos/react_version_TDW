@@ -5,7 +5,7 @@ import Modal from "../../components/common/Modal";
 import Button from "../../components/common/Button";
 import SectionTextBlock from "../../components/common/SectionTextBlock";
 // import JobList from '../../components/common/JobList'; // Componente real comentado
-import JobListMock from "../../components/common/JobListMockup"; // 1. Importar o mockup
+import JobListMock from "../../components/common/JobListMockup"; //  Importar o mockup
 
 // Interface para os dados da vaga, usada no estado do modal
 interface JobData {
@@ -50,10 +50,10 @@ const Opportunities = () => {
       <S.JobsSection ref={jobsSectionRef}>
         {/* <JobList onJobClick={handleOpenModal} /> */}{" "}
         {/* Componente real comentado */}
-        <JobListMock onJobClick={handleOpenModal} /> {/* 4. Usando o mockup */}
+        <JobListMock onJobClick={handleOpenModal} /> {/* Usando o mockup */}
       </S.JobsSection>
 
-      {/* 5. O Modal é configurado com os campos de formulário corretos */}
+      {/*  O Modal é configurado com os campos de formulário corretos */}
       <Modal
         isOpen={!!selectedJob}
         onClose={handleCloseModal}
