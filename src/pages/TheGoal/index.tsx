@@ -3,11 +3,15 @@ import Button from "../../components/common/Button";
 import SectionTextBlock from "../../components/common/SectionTextBlock";
 
 const TheGoal = () => {
+  const discordInviteLink = "https://discord.com/invite/8EuWZjDE2t";
+
+  const handleRedirect = () => {
+    window.open(discordInviteLink, "_blank", "noopener,noreferrer");
+  };
 
   return (
     <S.PageContainer>
       <S.ContentWrapper>
-        {/* 1. O SectionTextBlock é usado apenas para o conteúdo de texto */}
         <SectionTextBlock
           title="THE RECKONING – WHAT WAS STOLEN, RESTORED"
           mobileWidth="320px"
@@ -16,16 +20,9 @@ const TheGoal = () => {
           p2="Every battle, every moment of exploration, and every step forward is shaped by a world that is seamless, inviting, yet deeply compelling."
         />
 
-        {/* 2. O ButtonContainer é um elemento separado, irmão do SectionTextBlock */}
         <S.ButtonContainer>
-          <Button
-            text="Support Us"
-            onClick={() => alert("Support Us clicked!")}
-          />
-          <Button
-            text="Help Us Grow"
-            onClick={() => alert("Help Us Grow clicked!")}
-          />
+          <Button text="Support Us" onClick={handleRedirect} />
+          <Button text="Help Us Grow" onClick={handleRedirect} />
         </S.ButtonContainer>
       </S.ContentWrapper>
     </S.PageContainer>

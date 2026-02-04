@@ -9,6 +9,7 @@ import mainLogo from "../../assets/TDWLOGO_Main.png";
 import steamLogo from "../../assets/steam_logo.png";
 import discordIcon from "../../assets/Discord.png";
 import useIntersectionObserver from './../../hooks/useIntersectionObserver';
+import { joinHuntSchema } from "../../utils/schemas";
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -105,6 +106,7 @@ const Home = () => {
         onSubmit={handleHuntSubmit}
         successMessage="Subscription successful! Welcome, hunter."
         errorMessage="An error occurred. Please try again later."
+        validationSchema={joinHuntSchema}
       />
 
       <ScrollToast

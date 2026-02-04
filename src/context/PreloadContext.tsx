@@ -1,4 +1,4 @@
-import React, {
+import {
   createContext,
   useState,
   useCallback,
@@ -73,9 +73,7 @@ export const PreloaderProvider = ({ children }: PreloaderProviderProps) => {
     [loadedRoutes]
   );
 
-  // Efeito para o carregamento inicial da aplicação
   useEffect(() => {
-    // Usamos um caminho genérico como "/" para o primeiro load
     startLoading("/", []);
   }, []);
 

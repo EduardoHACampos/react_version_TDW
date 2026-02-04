@@ -6,6 +6,7 @@ import * as S from "./styles";
 // Importando os componentes reutilizáveis necessários
 import Modal, { FormField } from "../../components/common/Modal";
 import SectionTextBlock from "../../components/common/SectionTextBlock";
+import { contactSchema } from "../../utils/schemas";
 
 const Contact = () => {
   // Estado para controlar a visibilidade do modal
@@ -29,15 +30,13 @@ const Contact = () => {
       toast.success("Message sent successfully!");
       setIsModalOpen(false); 
     } catch (error) {
-      toast.error("Failed to send message. Please try again.");
+      throw error;
     }
   };
 
   return (
-    // Usamos um fragmento para renderizar a página e o modal no mesmo nível
     <>
       <S.PageContainer>
-        {/* Usando o SectionTextBlock com os textos atualizados */}
         <SectionTextBlock
           mobileWidth="320px"
           desktopWidth="460px"
@@ -53,7 +52,6 @@ const Contact = () => {
         />
       </S.PageContainer>
 
-      {/* O Modal é renderizado aqui, mas controlado pelo estado 'isModalOpen' */}
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -62,6 +60,7 @@ const Contact = () => {
         fields={contactModalFields}
         buttonText="SEND"
         onSubmit={handleFormSubmit}
+        validationSchema={contactSchema}
       />
     </>
   );

@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const httpClient = axios.create({
-  // Aponta para o proxy local que configuramos no vite.config.ts
-  baseURL: "/api",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
 });
 
 export default httpClient;

@@ -6,6 +6,7 @@ import Button from "../../components/common/Button";
 import SectionTextBlock from "../../components/common/SectionTextBlock";
 import JobList from "../../components/common/JobList";
 import { Job, applyToJob } from "../../services/api";
+import { applicationSchema } from "../../utils/schemas";
 
 const Opportunities = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
@@ -30,25 +31,24 @@ const Opportunities = () => {
     { name: "message", label: "Message", type: "textarea", required: true },
   ];
 
-  // Função de envio do formulário atualizada
-  const handleApplySubmit = async (formData: Record<string, string>) => {
-    if (!selectedJob) return;
+const handleApplySubmit = async (formData: Record<string, string>) => {
+  if (!selectedJob) return;
 
-    try {
-      await applyToJob(selectedJob.id, {
-        name: formData.name,
-        email: formData.email,
-        portfolioLink: formData.portfolio,
-        message: formData.message,
-        jobName: selectedJob.title,
-      });
-      toast.success(`Application for ${selectedJob.title} sent successfully!`);
-      handleCloseModal();
-    } catch (error) {
-      toast.error("Failed to submit application. Please try again.");
-      console.error(error);
-    }
-  };
+  try {
+    await applyToJob(selectedJob.id, {
+      name: formData.name,
+      email: formData.email,
+      portfolioLink: formData.portfolio,
+      message: formData.message,
+      jobName: selectedJob.title,
+    });
+    toast.success(`Application for ${selectedJob.title} sent successfully!`);
+    handleCloseModal();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 
   return (
     <>
@@ -77,6 +77,7 @@ const Opportunities = () => {
         fields={modalFields}
         buttonText="Send"
         onSubmit={handleApplySubmit}
+        validationSchema={applicationSchema}
       />
     </>
   );

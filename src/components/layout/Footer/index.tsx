@@ -43,7 +43,7 @@ const Footer = () => {
         </S.Section>
       </S.FooterContent>
       <S.Copyright>
-        <p>© 2023 The Dark West. All rights reserved.</p>
+        <p>© 2025 The Dark West. All rights reserved.</p>
       </S.Copyright>
     </S.FooterContainer>
   );

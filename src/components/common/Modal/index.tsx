@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
+import { ZodSchema } from "zod"; // Importe o tipo do Zod
 import * as S from "./styles";
 
 import closeIcon from "../../../assets/xmark.svg";
 import Button from "../Button";
 
-// --- Tipagem para a configuração dinâmica do Modal ---
-
-// Define o tipo de cada campo do formulário
 export interface FormField {
   name: string;
   label: string;
@@ -16,7 +14,6 @@ export interface FormField {
   required?: boolean;
 }
 
-// Define todas as props que o Modal pode receber
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -27,6 +24,7 @@ interface ModalProps {
   onSubmit: (formData: Record<string, string>) => Promise<void>;
   successMessage?: string;
   errorMessage?: string;
+  validationSchema?: ZodSchema; // NOVO PROP OPCIONAL
 }
 
 const Modal = ({
@@ -37,36 +35,75 @@ const Modal = ({
   fields,
   buttonText,
   onSubmit,
-  successMessage = "Enviado com sucesso!",
-  errorMessage = "Ocorreu um erro. Tente novamente.",
+  successMessage = "Sent successfully!",
+  errorMessage = "An error occurred. Please try again.",
+  validationSchema, // Recebendo o schema
 }: ModalProps) => {
   const [formData, setFormData] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({}); // Estado de erros
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionStatus, setSubmissionStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
 
-  // Reseta o formulário quando o modal é fechado ou reaberto
   useEffect(() => {
     if (isOpen) {
-      const initialFormState = fields.reduce((acc, field) => {
-        acc[field.name] = "";
-        return acc;
-      }, {} as Record<string, string>);
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
+  // Reseta o formulário e erros ao abrir
+  useEffect(() => {
+    if (isOpen) {
+      const initialFormState = fields.reduce(
+        (acc, field) => {
+          acc[field.name] = "";
+          return acc;
+        },
+        {} as Record<string, string>,
+      );
       setFormData(initialFormState);
+      setErrors({}); // Limpa erros
       setSubmissionStatus("idle");
     }
   }, [isOpen, fields]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Opcional: Limpar o erro do campo assim que o usuário digita algo novo
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // --- VALIDAÇÃO ZOD ---
+    if (validationSchema) {
+      const result = validationSchema.safeParse(formData);
+
+      if (!result.success) {
+        const fieldErrors: Record<string, string> = {};
+        result.error.issues.forEach((issue) => {
+          const fieldName = issue.path[0] as string; // Pega o nome do campo (ex: 'email')
+          fieldErrors[fieldName] = issue.message;
+        });
+        setErrors(fieldErrors);
+        return;
+      }
+    }
+    // ---------------------
+
     setIsSubmitting(true);
     setSubmissionStatus("idle");
     try {
@@ -96,8 +133,8 @@ const Modal = ({
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <S.CloseButton onClick={onClose} aria-label="Fechar modal">
-              <img src={closeIcon} alt="Fechar" />
+            <S.CloseButton onClick={onClose} aria-label="Close modal">
+              <img src={closeIcon} alt="Close" />
             </S.CloseButton>
 
             <S.ModalHeader>
@@ -115,7 +152,7 @@ const Modal = ({
                         id={field.name}
                         name={field.name}
                         placeholder={field.placeholder}
-                        required={field.required}
+                        // required={field.required} -> Podemos remover o HTML5 required para deixar o Zod controlar, ou manter os dois
                         value={formData[field.name] || ""}
                         onChange={handleChange}
                         rows={5}
@@ -126,15 +163,19 @@ const Modal = ({
                         name={field.name}
                         type={field.type}
                         placeholder={field.placeholder}
-                        required={field.required}
+                        // required={field.required}
                         value={formData[field.name] || ""}
                         onChange={handleChange}
                       />
                     )}
+                    {/* Exibe o erro se existir */}
+                    {errors[field.name] && (
+                      <S.ErrorMessage>{errors[field.name]}</S.ErrorMessage>
+                    )}
                   </S.FormGroup>
                 ))}
                 <Button
-                  text={isSubmitting ? "Enviando..." : buttonText}
+                  text={isSubmitting ? "Sending..." : buttonText}
                   type="submit"
                   disabled={isSubmitting}
                 />
