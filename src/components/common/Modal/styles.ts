@@ -8,18 +8,9 @@ export const Backdrop = styled(motion.div)`
   width: 100%;
   height: 100%;
   z-index: 9999;
-
-  background-color: rgba(
-    0,
-    0,
-    0,
-    0.7
-  ); /* Escureci um pouco para mais contraste */
-  backdrop-filter: blur(
-    5px
-  ); /* Reduzi levemente o blur para performance no mobile */
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,19 +22,12 @@ export const ModalContainer = styled(motion.div)`
   border: 1px solid var(--color-border);
   position: relative;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  width: 95%;
+  max-width: 500px;
+  padding: var(--spacing-lg);
+  max-height: 90dvh;
+  overflow-y: auto;
 
-  /* --- MOBILE FIRST (Padrão) --- */
-  width: 95%; /* Ocupa quase toda a largura no celular */
-  max-width: 500px; /* Limite máximo para não esticar demais em tablets */
-  padding: var(
-    --spacing-lg
-  ); /* Padding menor para economizar espaço no mobile */
-
-  /* --- A CORREÇÃO DO "SEQUESTRO" --- */
-  max-height: 90dvh; /* Altura máx de 90% da viewport dinâmica (conta barra do navegador) */
-  overflow-y: auto; /* Scroll interno automático se o conteúdo for maior */
-
-  /* Estilização da Scrollbar (para combinar com o tema Dark) */
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -55,10 +39,9 @@ export const ModalContainer = styled(motion.div)`
     border-radius: 3px;
   }
 
-  /* --- DESKTOP (Ajustes para telas maiores) --- */
   @media (min-width: 768px) {
-    width: 90%; /* Ajuste fino para desktop */
-    padding: var(--spacing-xl); /* Mais respiro interno */
+    width: 90%;
+    padding: var(--spacing-xl);
   }
 
   @media (min-width: 2560px) {
@@ -68,16 +51,15 @@ export const ModalContainer = styled(motion.div)`
 
 export const CloseButton = styled.button`
   position: absolute;
-  top: var(--spacing-md); /* Mantive espaçamento relativo */
+  top: var(--spacing-md);
   right: var(--spacing-md);
   background: transparent;
   border: none;
   cursor: pointer;
   padding: 5px;
-  z-index: 10; /* Garante que fique acima do conteúdo se houver sobreposição */
-
+  z-index: 10;
   img {
-    width: 24px; /* Aumentei levemente a área de clique para toque (touch) */
+    width: 24px;
     height: 24px;
   }
 `;
@@ -87,11 +69,14 @@ export const ModalHeader = styled.div`
   margin-bottom: var(--spacing-lg);
 
   h2 {
-    font-family: var(--font-heading);
-    font-size: var(
-      --font-size-xl
-    ); /* Levemente menor no mobile se necessário, ou mantenha xxl */
-    color: var(--color-text-light);
+    /* 👇 MUDANÇA: Agora usa Baskervville para leitura clara */
+    font-family: var(--font-primary);
+    font-weight: bold; /* Bold para manter hierarquia de título */
+
+    font-size: var(--font-size-xl);
+    color: var(
+      --color-text-light
+    ); /* Cor Creme para leitura, ou use primary-text para Dourado */
     margin-bottom: var(--spacing-sm);
 
     @media (min-width: 768px) {
@@ -101,9 +86,8 @@ export const ModalHeader = styled.div`
 
   p {
     font-family: var(--font-primary);
-    font-size: var(--font-size-sm); /* Texto de apoio menor no mobile */
+    font-size: var(--font-size-sm);
     color: var(--color-primary-text);
-
     @media (min-width: 768px) {
       font-size: var(--font-size-md);
     }
@@ -121,9 +105,11 @@ export const FormGroup = styled.div`
   flex-direction: column;
 
   label {
-    font-family: var(--font-heading);
+    font-family: var(--font-primary);
+    font-weight: bold;
     margin-bottom: var(--spacing-sm);
     font-size: var(--font-size-md);
+    color: var(--color-primary-text);
   }
 
   input,
@@ -134,7 +120,7 @@ export const FormGroup = styled.div`
     color: var(--color-text-light);
     border: 1px solid var(--color-border);
     font-family: var(--font-primary);
-    font-size: 16px; /* Evita zoom automático no iOS ao focar (importante para mobile) */
+    font-size: 16px;
     transition: border-color 0.3s;
 
     &:focus {
@@ -145,7 +131,7 @@ export const FormGroup = styled.div`
 
   textarea {
     resize: vertical;
-    min-height: 100px; /* Garante altura mínima digitável no celular */
+    min-height: 100px;
   }
 `;
 
@@ -154,9 +140,11 @@ export const FeedbackMessage = styled.p<{ type: "success" | "error" }>`
   font-size: var(--font-size-md);
   color: ${({ type }) => (type === "success" ? "#4caf50" : "#f44336")};
   padding: var(--spacing-md) 0;
+  font-family: var(--font-primary);
 `;
+
 export const ErrorMessage = styled.span`
-  color: #ff4d4d; /* Vermelho claro para destaque no fundo escuro */
+  color: #ff4d4d;
   font-family: var(--font-primary);
   font-size: 12px;
   margin-top: 4px;

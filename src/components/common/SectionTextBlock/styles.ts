@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
-// A interface do Wrapper agora espera a prop maxWidth
-export const Wrapper = styled.div<{ desktopWidth?: string; mobileWidth?: string }>`
+export const Wrapper = styled.div<{
+  desktopWidth?: string;
+  mobileWidth?: string;
+}>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,23 +12,27 @@ export const Wrapper = styled.div<{ desktopWidth?: string; mobileWidth?: string 
   padding: var(--spacing-lg) 0;
 
   width: ${({ mobileWidth }) => mobileWidth || "auto"};
-  max-width: 100%; /* Impede que o componente quebre o layout em telas muito estreitas */
+  max-width: 100%;
 
-  /* Em telas maiores, aplica a largura de desktop */
   @media (min-width: 768px) {
     width: ${({ desktopWidth }) => desktopWidth || "auto"};
   }
   @media (min-width: 2540px) {
     width: 665px;
-    
   }
 `;
 
 export const Title = styled.h1`
-  font-family: var(--font-special);
-  color: var(--color-text-light);
-  font-size: var(--font-size-xxl);
+  /* 👇 MUDANÇA: Títulos agora em Baskervville (Legível e Clássico) */
+  font-family: var(--font-primary);
+  font-weight: bold; /* Peso bold para destacar como título */
 
+  /* 👇 MUDANÇA: Dourado para diferenciar do texto comum (que é Creme) */
+  color: var(--color-primary-text);
+
+  font-size: var(--font-size-xxl);
+  text-align: center;
+  letter-spacing: 1px;
 `;
 
 export const Text = styled.p`
@@ -37,9 +43,11 @@ export const Text = styled.p`
   max-width: 90%;
   font-weight: 400;
   text-align: left;
+
   & + & {
     margin-top: var(--spacing-md);
   }
+
   @media (min-width: 2540px) {
     max-width: 75%;
   }
@@ -48,8 +56,10 @@ export const Text = styled.p`
 export const DividerImage = styled.img<{ rotated?: boolean }>`
   width: 100%;
   max-width: 300px;
-  
-  /* Aplica a rotação se a prop 'rotated' for verdadeira */
-  ${({ rotated }) => rotated && `
+
+  ${({ rotated }) =>
+    rotated &&
+    `
     transform: rotate(180deg);
-  `}`
+  `}
+`;

@@ -2,9 +2,8 @@ import styled from "styled-components";
 
 export const FooterContainer = styled.footer`
   background-color: #000000;
-  color: var(--color-text-light); /* Creme */
+  color: var(--color-text-light);
   padding: 40px 20px;
-  /* Removemos a fonte fixa, agora herda do body (Baskervville) */
 `;
 
 export const FooterContent = styled.div`
@@ -26,8 +25,8 @@ export const Section = styled.div`
   margin: 20px;
   flex-direction: column;
 
+  /* TÍTULO DA SEÇÃO (Mantém Rye/Dourado por ser título) */
   h2 {
-    /* Usa a fonte Rye e a cor Dourada */
     font-family: var(--font-heading);
     color: var(--color-primary-text);
     letter-spacing: 2px;
@@ -50,11 +49,12 @@ export const SocialIcons = styled.div`
     text-decoration: none;
     transition: opacity 0.3s;
 
-    /* Links do footer (ex: Press Kit) usam estilo de Título */
-    font-family: var(--font-heading);
-    color: var(--color-primary-text); /* Dourado */
-    letter-spacing: 2px;
-    font-size: 1.2rem;
+    /* 👇 MUDANÇA: Agora usa Baskervville para melhor leitura */
+    font-family: var(--font-primary);
+    color: var(--color-primary-text);
+    letter-spacing: 1px; /* Espaçamento levemente menor para fonte serifada */
+    font-size: 1.1rem;
+    font-weight: bold; /* Bold ajuda na leitura da Baskervville sobre fundo escuro */
 
     &:hover {
       opacity: 0.7;
@@ -71,22 +71,24 @@ export const SocialIcons = styled.div`
     }
   }
 `;
-export const PressKitLink = styled.a`
-  margin-top: var(--spacing-lg); /* Empurra para baixo dos ícones */
-  text-decoration: none;
-  margin:0;
 
-  /* Mesma tipografia dos ícones antigos */
+export const PressKitLink = styled.a`
+  margin-top: var(--spacing-lg);
+  text-decoration: none;
+  margin: 0;
+
   color: var(--color-text-light);
-  font-family: var(--font-heading);
-  font-size: 1.2rem;
+
+  /* 👇 MUDANÇA: Agora usa Baskervville */
+  font-family: var(--font-primary);
+  font-size: 1.1rem;
+  font-weight: bold;
 
   transition:
     transform 0.2s,
     color 0.2s,
     filter 0.2s;
 
-  /* Borda ou sublinhado opcional para parecer mais um botão/link */
   border-bottom: 1px solid transparent;
 
   &:hover {
@@ -96,13 +98,19 @@ export const PressKitLink = styled.a`
     border-bottom-color: var(--color-hover-purple);
   }
 
-  /* No Mobile, garantimos que ele tenha espaço suficiente */
   @media (max-width: 768px) {
     margin-top: 1.5rem;
-    font-size: 1.1rem; /* Um pouco maior para facilitar o toque */
+    font-size: 1.1rem;
   }
 `;
+
 export const Copyright = styled.div`
   text-align: center;
   padding-top: 15px;
+
+  /* Garante que o copyright também seja legível */
+  p {
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+  }
 `;

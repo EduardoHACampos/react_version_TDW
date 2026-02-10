@@ -6,10 +6,10 @@ const introSpin = keyframes`
   to { transform: rotateX(0deg); opacity: 1; }
 `;
 
-/* Animação de Giro e Volta */
+/* Animação: Gira 180 (Runas) e termina em 360 (Inglês) */
 const flipAndBack = keyframes`
   0% { transform: rotateX(0deg); }
-  50% { transform: rotateX(180deg); } /* Ponto onde as Runas aparecem */
+  50% { transform: rotateX(180deg); } 
   100% { transform: rotateX(360deg); }
 `;
 
@@ -125,13 +125,13 @@ export const StyledNavLink = styled(NavLink)<{ $ready?: boolean }>`
 
   /* --- HOVER --- */
   &:hover .flip-container {
-    /* 👇 AUMENTADO: 0.9s permite ver a runa antes de voltar */
+    /* 0.9s dá tempo de ver a runa antes de voltar */
     animation: ${flipAndBack} 0.9s ease-in-out forwards;
   }
 
   &:hover .front {
     color: var(--color-hover-purple);
-    /* 👇 AJUSTADO: 0.45s (Metade de 0.9s) */
+    /* Só fica roxo na volta (metade do tempo) */
     transition-delay: 0.45s;
   }
 
