@@ -1,8 +1,11 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import heroBackground from "../../assets/KeyartTheDarkWestFinalFasepaintover.png";
 
-/* NÃO PRECISAMOS MAIS DE KEYFRAMES AQUI.
-   A mágica será feita 100% com Transitions para permitir o "ir e voltar" */
+const flipAndBack = keyframes`
+  0% { transform: rotateX(0deg); }
+  50% { transform: rotateX(180deg); }
+  100% { transform: rotateX(360deg); }
+`;
 
 export const HomeContainer = styled.div`
   width: 100%;
@@ -47,7 +50,6 @@ export const HuntButtonWrapper = styled.div`
   align-items: center;
   margin-top: var(--spacing-sm);
 
-  /* O LINK (Área clicável) */
   a {
     position: relative;
     display: flex;
@@ -56,32 +58,21 @@ export const HuntButtonWrapper = styled.div`
     text-decoration: none;
     cursor: pointer;
     background: transparent;
-
     perspective: 1000px;
-
     transition:
       transform 0.3s,
       filter 0.3s;
     filter: drop-shadow(0 0 8px var(--color-gold-shadow));
-
-    /* CORREÇÃO DE BLUR 1: Força o navegador a preparar a renderização 3D */
     transform: translateZ(0);
   }
 
-  /* CONTAINER QUE VAI GIRAR */
   a .flip-container {
     position: relative;
     display: inline-block;
-
-    /* 👇 MUDANÇA AQUI: 350px no Mobile, 400px no Desktop */
     width: 350px;
-
     height: 50px;
-
     transform-style: preserve-3d;
     transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
-    /* CORREÇÃO DE BLUR 2: Avisa o navegador que isso vai mexer */
     will-change: transform;
 
     @media (min-width: 768px) {
@@ -89,7 +80,6 @@ export const HuntButtonWrapper = styled.div`
     }
   }
 
-  /* ESTILO COMUM PARA FRENTE E VERSO */
   a .front,
   a .back {
     position: absolute;
@@ -97,26 +87,28 @@ export const HuntButtonWrapper = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     backface-visibility: hidden;
-    -webkit-backface-visibility: hidden; /* Importante para Safari/Chrome */
-
+    -webkit-backface-visibility: hidden;
     font-weight: normal;
     text-transform: uppercase;
     letter-spacing: 3px;
     white-space: nowrap;
-
-    /* CORREÇÃO DE BLUR 3: Melhora a renderização de fontes */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Um leve hack para evitar serrilhado no 3D */
     transform: translateZ(0.1px);
 
-    /* Gradiente Dourado */
+    transition: background-image 0.3s;
+  }
+
+  /* FRENTE */
+  a .front {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-xxl);
+    transform: rotateX(0deg);
+
     background: linear-gradient(
       to right,
       var(--color-gradient-start),
@@ -128,29 +120,37 @@ export const HuntButtonWrapper = styled.div`
     background-clip: text;
   }
 
-  /* --- A FRENTE (INGLÊS) --- */
-  a .front {
-    font-family: var(--font-heading);
-    font-size: var(--font-size-xxl);
-    transform: rotateX(0deg);
-  }
-
-  /* --- O VERSO (RUNAS) --- */
+  /* VERSO */
   a .back {
     font-family: var(--font-witchcraft);
     font-size: 2rem;
     padding-top: 5px;
     transform: rotateX(180deg);
+
+    background: var(--color-hover-purple);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
-  /* --- HOVER --- */
   a:hover {
     transform: scale(1.05);
     filter: drop-shadow(0 0 15px var(--color-gold-shadow));
   }
 
+  /* 👇 AUMENTADO: 1.2s para um efeito mais dramático no botão principal */
   a:hover .flip-container {
-    transform: rotateX(180deg);
+    animation: ${flipAndBack} 1.2s ease-in-out forwards;
+  }
+
+  /* 👇 AJUSTADO: 0.6s (Metade de 1.2s) */
+  a:hover .front {
+    background-image: linear-gradient(
+      to right,
+      var(--color-hover-purple),
+      #c4b5fd
+    );
+    transition-delay: 0.6s;
   }
 `;
 
