@@ -3,6 +3,7 @@ import discordIcon from "../../../assets/Discord.png";
 import instagramIcon from "../../../assets/Instagram.svg";
 import twitchIcon from "../../../assets/Twitch.svg";
 import twitterIcon from "../../../assets/Twitter.svg";
+import { PressKitLink } from "./styles";
 
 const Footer = () => {
   return (
@@ -40,10 +41,20 @@ const Footer = () => {
               <img src={twitterIcon} alt="Twitter" />
             </a>
           </S.SocialIcons>
+
+          {/* Link do Press Kit estilizado via CSS no pai (Section) */}
+          <PressKitLink
+            href="https://drive.google.com/drive/folders/1ZRpxJv9hIdQCQbjJ9i-3P8SYo7VLajOu"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Download Press Kit (Zip)"
+          >
+            Press Kit
+          </PressKitLink>
         </S.Section>
       </S.FooterContent>
       <S.Copyright>
-        <p>© 2025 The Dark West. All rights reserved.</p>
+        <p>© 2026 The Dark West. All rights reserved.</p>
       </S.Copyright>
     </S.FooterContainer>
   );

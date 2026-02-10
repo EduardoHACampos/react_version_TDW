@@ -9,17 +9,14 @@ import SectionTextBlock from "../../components/common/SectionTextBlock";
 import { contactSchema } from "../../utils/schemas";
 
 const Contact = () => {
-  // Estado para controlar a visibilidade do modal
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Definição dos campos que o modal de contato irá renderizar
   const contactModalFields: FormField[] = [
     { name: "name", label: "Name", type: "text", required: true },
     { name: "email", label: "Email", type: "email", required: true },
     { name: "message", label: "Message", type: "textarea", required: true },
   ];
 
-  // Função para lidar com o envio do formulário, passada para o modal
   const handleFormSubmit = async (formData: Record<string, string>) => {
     try {
       await submitContactForm({
@@ -28,7 +25,7 @@ const Contact = () => {
         message: formData.message,
       });
       toast.success("Message sent successfully!");
-      setIsModalOpen(false); 
+      setIsModalOpen(false);
     } catch (error) {
       throw error;
     }
@@ -44,8 +41,12 @@ const Contact = () => {
           p1="The frontier isn’t built alone. Whether you’re looking to invest, collaborate, or ride alongside us, there’s a seat for you by the campfire."
           p2={
             <>
+              {/* 👇 ESTRUTURA NOVA: FLIP CONTAINER NO MEIO DO TEXTO */}
               <S.ModalTrigger onClick={() => setIsModalOpen(true)}>
-                CONTACT
+                <span className="flip-container">
+                  <span className="front">CONTACT</span>
+                  <span className="back">CONTACT</span>
+                </span>
               </S.ModalTrigger>{" "}
             </>
           }

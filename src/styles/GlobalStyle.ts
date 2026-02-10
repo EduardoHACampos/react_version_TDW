@@ -1,27 +1,60 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
+  /* 1. IMPORTANDO AS FONTES DO GOOGLE (Rye e Baskervville) */
+  @import url('https://fonts.googleapis.com/css2?family=Baskervville:ital@0;1&family=Rye&display=swap');
+
+  /* 2. CONFIGURANDO A FONTE ESPECIAL (Witchcraft) */
+  @font-face {
+    font-family: 'Witchcraft';
+    src: url('/fonts/Witchcraft-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
   :root {
-    /* Cores */
+    /* --- CORES (Já atualizadas) --- */
     --color-background-dark: #000000;
     --color-background-medium: #121212;
     --color-background-card: #1a1a1a;
-    --color-primary-text: #8C8A87;
-    --color-text-light: #FFFFFF;
+    
+    /* Dourado Títulos */
+    --color-primary-text: #ffdd96; 
+    
+    /* Creme Textos */
+    --color-text-light: #fff4df; 
+    
+    /* Roxo Hover */
+    --color-hover-purple: #a796ff;
+
     --color-border: #333333;
     
-    /* Cores do Gradiente */
-    --color-gradient-start: #830101;
-    --color-gradient-middle: #B22222;
-    --color-gradient-end: #830101;
+    /* 👇 MUDANÇA AQUI: GRADIENTE DOURADO BRILHANTE 👇 */
+    /* Começa num dourado mais escuro/bronze */
+    --color-gradient-start: #c7a04c; 
+    
+    /* O meio é o dourado brilhante da paleta */
+    --color-gradient-middle: #ffdd96; 
+    
+    /* Termina no dourado mais escuro */
+    --color-gradient-end: #c7a04c;
 
-    /* Fontes */
-    --font-primary: 'Kirsty', sans-serif;
-    --font-heading: 'Saddlebag', sans-serif;
-    --font-special: 'Bonzer', sans-serif;
-    --font-accent: 'Rio Oro', sans-serif;
+    /* Nova variável para a sombra/brilho dourado */
+    --color-gold-shadow: rgba(255, 221, 150, 0.5); 
+    /* 👆 FIM DA MUDANÇA 👆 */
 
-    /* Tamanhos de Fonte */
+
+    /* --- FONTES (Continuam iguais) --- */
+    --font-primary: 'Baskervville', serif; 
+    --font-heading: 'Rye', serif;
+    --font-special: 'Rye', serif;
+    /* Certifique-se que a fonte Witchcraft está configurada aqui */
+    --font-witchcraft: 'Witchcraft', serif;
+    /* O botão agora usará a Witchcraft */
+    --font-accent: 'Witchcraft', serif;
+
+    /* --- TAMANHOS --- */
     --font-size-sm: 0.875rem;
     --font-size-md: 1rem;
     --font-size-lg: 1.25rem;
@@ -29,78 +62,42 @@ export const GlobalStyle = createGlobalStyle`
     --font-size-xxl: 2.25rem;
     --font-size-display: 3rem;
 
-    /* Espaçamentos */
     --spacing-sm: 8px;
     --spacing-md: 16px;
     --spacing-lg: 32px;
     --spacing-xl: 48px;
 
-    /* Border Radius */
     --border-radius-md: 8px;
   }
 
-  
   html {
     font-size: 16px; 
   }
 
   body {
     background-color: var(--color-background-dark);
-    color: var(--color-text-light);
+    color: var(--color-text-light); /* Agora usa o Creme (#fff4df) */
     font-family: var(--font-primary);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--color-primary-text); /* Agora usa o Dourado (#ffdd96) */
+  }
+
   @media (min-width: 2560px) {
     html {
       font-size: 20px;
     }
-
-    :root {
-      --spacing-sm: 12px;
-      --spacing-md: 24px;
-      --spacing-lg: 48px;
-      --spacing-xl: 72px;
-    }
   }
 
-  /* Font Faces */
-@font-face {
-    font-family: 'Bonzer';
-    src: url('/fonts/bonzer-san-francisco.ttf') format('truetype');
-    font-display: block;
-  }
-  @font-face {
-    font-family: 'Kirsty';
-    src: url('/fonts/kirsty-rg.otf') format('opentype');
-    font-display: block;
-  }
-  @font-face {
-    font-family: 'NASHVILL';
-    src: url('/fonts/nashvill.ttf') format('truetype');
-    font-display: block;
-  }
-  @font-face {
-    font-family: 'Rio Oro';
-    src: url('/fonts/rio-oro.otf') format('opentype');
-    font-display: block;
-  }
-  @font-face {
-    font-family: 'Saddlebag';
-    src: url('/fonts/saddlebag.ttf') format('truetype');
-    font-display: block;
-  }
-
-
-  /* Estilos para o React-Toastify */
+  /* React Toastify styles... */
   .Toastify__toast-theme--dark {
     background-color: var(--color-background-medium);
     color: var(--color-text-light);
     font-family: var(--font-primary);
-  }
-  .Toastify__close-button {
-    color: var(--color-text-light);
   }
 `;

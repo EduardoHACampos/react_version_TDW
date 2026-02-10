@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import heroBackground from "../../assets/KeyartTheDarkWestFinalFasepaintover.png";
 
+/* NÃO PRECISAMOS MAIS DE KEYFRAMES AQUI.
+   A mágica será feita 100% com Transitions para permitir o "ir e voltar" */
+
 export const HomeContainer = styled.div`
   width: 100%;
   padding-top: 80px;
@@ -12,13 +15,10 @@ export const HeroSection = styled.section`
   flex-direction: column;
   width: 100%;
   height: 800px;
-  gap: var(--spacing-lg); 
+  gap: var(--spacing-lg);
 
-  background-image: radial-gradient(
-      circle,
-      rgba(0, 0, 0, 0) 40%,
-      rgba(0, 0, 0, 0.7) 100%
-    ),
+  background-image:
+    radial-gradient(circle, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.7) 100%),
     url(${heroBackground});
   background-size: cover;
   background-position: 80%;
@@ -45,19 +45,78 @@ export const HuntButtonWrapper = styled.div`
   text-align: center;
   justify-content: center;
   align-items: center;
-  margin-top: var(--spacing-sm); 
+  margin-top: var(--spacing-sm);
 
-  &:hover {
-    filter: brightness(1.3);
+  /* O LINK (Área clicável) */
+  a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    cursor: pointer;
+    background: transparent;
+
+    perspective: 1000px;
+
+    transition:
+      transform 0.3s,
+      filter 0.3s;
+    filter: drop-shadow(0 0 8px var(--color-gold-shadow));
+
+    /* CORREÇÃO DE BLUR 1: Força o navegador a preparar a renderização 3D */
+    transform: translateZ(0);
   }
 
-  a {
-    font-family: var(--font-accent); 
-    font-size: var(--font-size-xxl); 
-    font-weight: bold;
-    text-transform: uppercase;
-    text-align: center;
+  /* CONTAINER QUE VAI GIRAR */
+  a .flip-container {
+    position: relative;
+    display: inline-block;
 
+    /* 👇 MUDANÇA AQUI: 350px no Mobile, 400px no Desktop */
+    width: 350px;
+
+    height: 50px;
+
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    /* CORREÇÃO DE BLUR 2: Avisa o navegador que isso vai mexer */
+    will-change: transform;
+
+    @media (min-width: 768px) {
+      width: 400px;
+    }
+  }
+
+  /* ESTILO COMUM PARA FRENTE E VERSO */
+  a .front,
+  a .back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden; /* Importante para Safari/Chrome */
+
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    white-space: nowrap;
+
+    /* CORREÇÃO DE BLUR 3: Melhora a renderização de fontes */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Um leve hack para evitar serrilhado no 3D */
+    transform: translateZ(0.1px);
+
+    /* Gradiente Dourado */
     background: linear-gradient(
       to right,
       var(--color-gradient-start),
@@ -66,7 +125,32 @@ export const HuntButtonWrapper = styled.div`
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    letter-spacing: 3px;
+    background-clip: text;
+  }
+
+  /* --- A FRENTE (INGLÊS) --- */
+  a .front {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-xxl);
+    transform: rotateX(0deg);
+  }
+
+  /* --- O VERSO (RUNAS) --- */
+  a .back {
+    font-family: var(--font-witchcraft);
+    font-size: 2rem;
+    padding-top: 5px;
+    transform: rotateX(180deg);
+  }
+
+  /* --- HOVER --- */
+  a:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 15px var(--color-gold-shadow));
+  }
+
+  a:hover .flip-container {
+    transform: rotateX(180deg);
   }
 `;
 
@@ -75,7 +159,7 @@ export const PlatformContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding-bottom: var(--spacing-md); 
+  padding-bottom: var(--spacing-md);
   margin-bottom: 2rem;
   gap: 2rem;
 
@@ -99,13 +183,13 @@ export const TrailerSection = styled.section`
   width: 100%;
   height: 560px;
   padding: 3rem 0;
-  background: var(--color-background-dark); 
+  background: var(--color-background-dark);
 
   .trailer-video {
     width: 100%;
     max-width: 320px;
     height: 180px;
-    border-radius: var(--border-radius-md); 
+    border-radius: var(--border-radius-md);
 
     @media (min-width: 768px) {
       max-width: 600px;

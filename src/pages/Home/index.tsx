@@ -5,7 +5,7 @@ import Modal, { FormField } from "../../components/common/Modal";
 import ScrollToast from "../../components/common/ScrollToast";
 import { submitJoinTheHuntForm } from "../../services/api";
 
-import mainLogo from "../../assets/TDWLOGO_Main.png";
+import mainLogo from "../../assets/TheDarkWest_Logo.png";
 import steamLogo from "../../assets/steam_logo.png";
 import discordIcon from "../../assets/Discord.png";
 import useIntersectionObserver from './../../hooks/useIntersectionObserver';
@@ -55,7 +55,7 @@ const Home = () => {
     <S.HomeContainer>
       <S.HeroSection>
         <S.MainTitle src={mainLogo} alt="The Dark West Logo" />
-        <S.HuntButtonWrapper>
+<S.HuntButtonWrapper>
           <a
             href="#"
             id="joinHuntButton"
@@ -64,7 +64,11 @@ const Home = () => {
               setIsModalOpen(true);
             }}
           >
-            JOIN THE HUNT
+            {/* 👇 ESTRUTURA NOVA: CONTAINER COM FRENTE E VERSO 👇 */}
+            <span className="flip-container">
+              <span className="front">JOIN THE HUNT</span>
+              <span className="back">JOIN THE HUNT</span>
+            </span>
           </a>
         </S.HuntButtonWrapper>
         <S.PlatformContainer>
@@ -88,8 +92,8 @@ const Home = () => {
       <S.TrailerSection ref={trailerRef}>
         <iframe
           className="trailer-video"
-          src="https://www.youtube.com/embed/3ATksauvGMw"
-          title="The Dark West Trailer"
+          src="https://www.youtube.com/embed/JPFiWf1VkTg"
+          title="The Dark West - Official Reveal Trailer"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
