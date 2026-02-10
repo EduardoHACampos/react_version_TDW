@@ -42,7 +42,6 @@ const Footer = () => {
             </a>
           </S.SocialIcons>
 
-          {/* Link do Press Kit estilizado via CSS no pai (Section) */}
           <PressKitLink
             href="https://drive.google.com/drive/folders/1ZRpxJv9hIdQCQbjJ9i-3P8SYo7VLajOu"
             target="_blank"
