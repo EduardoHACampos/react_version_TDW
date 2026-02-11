@@ -1,3 +1,4 @@
+import DownloadButton from "../../common/DownloadButton";
 import styled from "styled-components";
 
 export const FooterContainer = styled.footer`
@@ -69,38 +70,6 @@ export const SocialIcons = styled.div`
     &:hover {
       opacity: 0.7;
     }
-  }
-`;
-
-export const PressKitLink = styled.a`
-  margin-top: var(--spacing-lg);
-  text-decoration: none;
-  margin: 0;
-
-  color: var(--color-text-light);
-
-  /* 👇 MUDANÇA: Agora usa Baskervville */
-  font-family: var(--font-primary);
-  font-size: 1.1rem;
-  font-weight: bold;
-
-  transition:
-    transform 0.2s,
-    color 0.2s,
-    filter 0.2s;
-
-  border-bottom: 1px solid transparent;
-
-  &:hover {
-    transform: translateY(-2px);
-    color: var(--color-hover-purple);
-    filter: drop-shadow(0 0 5px var(--color-hover-purple));
-    border-bottom-color: var(--color-hover-purple);
-  }
-
-  @media (max-width: 768px) {
-    margin-top: 1.5rem;
-    font-size: 1.1rem;
   }
 `;
 

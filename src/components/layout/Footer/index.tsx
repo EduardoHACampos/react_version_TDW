@@ -3,8 +3,8 @@ import discordIcon from "../../../assets/Discord.png";
 import instagramIcon from "../../../assets/Instagram.svg";
 import twitchIcon from "../../../assets/Twitch.svg";
 import twitterIcon from "../../../assets/Twitter.svg";
-import { PressKitLink } from "./styles";
-
+import DownloadButton from "../../common/DownloadButton";
+import * as SD from "../../common/DownloadButton/styles"; // Importe o novo styles.ts que você criou
 const Footer = () => {
   return (
     <S.FooterContainer>
@@ -41,15 +41,11 @@ const Footer = () => {
               <img src={twitterIcon} alt="Twitter" />
             </a>
           </S.SocialIcons>
-
-          <PressKitLink
-            href="https://drive.google.com/drive/folders/1ZRpxJv9hIdQCQbjJ9i-3P8SYo7VLajOu"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Download Press Kit (Zip)"
-          >
-            Press Kit
-          </PressKitLink>
+          <DownloadButton 
+            as={SD.DownloadLink} 
+            fileName="TheDarkWest-PressKit.zip" 
+            label="Press Kit" 
+          />
         </S.Section>
       </S.FooterContent>
       <S.Copyright>
