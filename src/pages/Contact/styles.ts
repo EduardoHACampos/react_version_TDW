@@ -1,10 +1,10 @@
 import styled, { keyframes } from "styled-components";
 
-/* 👇 Animação de "Girar e Voltar" (Igual ao Header/Home) */
+/* Definição da animação de rotação em 360 graus */
 const flipAndBack = keyframes`
   0% { transform: rotateX(0deg); }
-  50% { transform: rotateX(180deg); } /* Mostra Runas */
-  100% { transform: rotateX(360deg); } /* Volta para Inglês */
+  50% { transform: rotateX(180deg); } 
+  100% { transform: rotateX(360deg); }
 `;
 
 export const PageContainer = styled.div`
@@ -24,27 +24,25 @@ export const ModalTrigger = styled.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  vertical-align: bottom; /* Alinha melhor com o texto ao redor */
+  vertical-align: bottom;
 
   cursor: pointer;
   position: relative;
   perspective: 1000px;
   margin: 0 5px;
 
-  /* --- O CONTAINER QUE GIRA --- */
   .flip-container {
     position: relative;
     display: inline-block;
     transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Transição base reduzida para 0.4s */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
-    /* Largura mínima para evitar que o texto balance ao trocar de fonte */
     min-width: 110px;
     height: 1.2em;
     text-align: center;
   }
 
-  /* --- FACES (FRENTE E VERSO) --- */
   .front,
   .back {
     position: absolute;
@@ -64,9 +62,7 @@ export const ModalTrigger = styled.span`
     transition: color 0.3s;
   }
 
-  /* --- FRENTE (INGLÊS) --- */
   .front {
-    /* Agora usa Baskervville para consistência de legibilidade */
     font-family: var(--font-primary);
     font-weight: bold;
     color: var(--color-primary-text);
@@ -76,7 +72,6 @@ export const ModalTrigger = styled.span`
     transform: rotateX(0deg);
   }
 
-  /* --- VERSO (RUNAS) --- */
   .back {
     font-family: var(--font-witchcraft);
     color: var(--color-hover-purple);
@@ -85,16 +80,14 @@ export const ModalTrigger = styled.span`
     transform: rotateX(180deg);
   }
 
-  /* --- HOVER EFFECTS --- */
-
-  /* Dispara a animação Flip & Back */
+  /* Disparo da animação acelerada para 0.6s conforme especificação técnica de melhoria de performance visual */
   &:hover .flip-container {
-    animation: ${flipAndBack} 0.9s ease-in-out forwards;
+    animation: ${flipAndBack} 0.6s ease-in-out forwards;
   }
 
-  /* Muda a cor da frente para Roxo na metade da animação */
   &:hover .front {
     color: var(--color-hover-purple);
-    transition-delay: 0.45s;
+    /* Transição de cor ajustada para 0.3s */
+    transition-delay: 0.3s;
   }
 `;

@@ -6,7 +6,7 @@ const introSpin = keyframes`
   to { transform: rotateX(0deg); opacity: 1; }
 `;
 
-/* Animação: Gira 180 (Runas) e termina em 360 (Inglês) */
+/* Animação de rotação: Inicia em 0deg, atinge 180deg (Runas) e finaliza em 360deg (Original) */
 const flipAndBack = keyframes`
   0% { transform: rotateX(0deg); }
   50% { transform: rotateX(180deg); } 
@@ -77,7 +77,8 @@ export const StyledNavLink = styled(NavLink)<{ $ready?: boolean }>`
     position: relative;
     display: inline-block;
     transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Transição suave para o estado base da rotação */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     ${({ $ready }) =>
       $ready
         ? css`
@@ -99,7 +100,6 @@ export const StyledNavLink = styled(NavLink)<{ $ready?: boolean }>`
       text-shadow 0.3s;
   }
 
-  /* FRENTE: Baskervville (Legível) */
   .front {
     position: relative;
     z-index: 2;
@@ -109,7 +109,6 @@ export const StyledNavLink = styled(NavLink)<{ $ready?: boolean }>`
     transform: rotateX(0deg);
   }
 
-  /* VERSO: Runas (Witchcraft) */
   .back {
     position: absolute;
     top: 0;
@@ -123,16 +122,15 @@ export const StyledNavLink = styled(NavLink)<{ $ready?: boolean }>`
     transform: rotateX(180deg);
   }
 
-  /* --- HOVER --- */
   &:hover .flip-container {
-    /* 0.9s dá tempo de ver a runa antes de voltar */
-    animation: ${flipAndBack} 0.9s ease-in-out forwards;
+    /* Duração de 0.6s para um efeito visual de rotação rápida conforme feedback */
+    animation: ${flipAndBack} 0.6s ease-in-out forwards;
   }
 
   &:hover .front {
     color: var(--color-hover-purple);
-    /* Só fica roxo na volta (metade do tempo) */
-    transition-delay: 0.45s;
+    /* Delay sincronizado com a metade da animação de rotação (0.3s) */
+    transition-delay: 0.3s;
   }
 
   &.active .front {

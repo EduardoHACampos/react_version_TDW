@@ -72,7 +72,8 @@ export const HuntButtonWrapper = styled.div`
     width: 350px;
     height: 50px;
     transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Transição base de 0.4s para compatibilidade com o tempo de rotação acelerado */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     will-change: transform;
 
     @media (min-width: 768px) {
@@ -103,7 +104,6 @@ export const HuntButtonWrapper = styled.div`
     transition: background-image 0.3s;
   }
 
-  /* FRENTE */
   a .front {
     font-family: var(--font-heading);
     font-size: var(--font-size-xxl);
@@ -120,7 +120,6 @@ export const HuntButtonWrapper = styled.div`
     background-clip: text;
   }
 
-  /* VERSO */
   a .back {
     font-family: var(--font-witchcraft);
     font-size: 2rem;
@@ -138,19 +137,19 @@ export const HuntButtonWrapper = styled.div`
     filter: drop-shadow(0 0 15px var(--color-gold-shadow));
   }
 
-  /* 👇 AUMENTADO: 1.2s para um efeito mais dramático no botão principal */
+  /* Ciclo de animação configurado para 0.8s para aumentar o dinamismo visual */
   a:hover .flip-container {
-    animation: ${flipAndBack} 1.2s ease-in-out forwards;
+    animation: ${flipAndBack} 0.8s ease-in-out forwards;
   }
 
-  /* 👇 AJUSTADO: 0.6s (Metade de 1.2s) */
   a:hover .front {
     background-image: linear-gradient(
       to right,
       var(--color-hover-purple),
       #c4b5fd
     );
-    transition-delay: 0.6s;
+    /* Transição de cor sincronizada com o ponto médio da rotação (0.4s) */
+    transition-delay: 0.4s;
   }
 `;
 

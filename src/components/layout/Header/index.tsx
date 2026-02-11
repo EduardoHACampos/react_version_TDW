@@ -10,7 +10,7 @@ import xmarkIcon from "../../../assets/xmark.svg";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isLoading } = usePreloader();
-  const [animationFinished, setAnimationFinished] = useState(false);
+  const [, setAnimationFinished] = useState(false);
 
   useEffect(() => {
     if (!isLoading) {
