@@ -137,9 +137,9 @@ export const HuntButtonWrapper = styled.div`
     filter: drop-shadow(0 0 15px var(--color-gold-shadow));
   }
 
-  /* Ciclo de animação configurado para 0.8s para aumentar o dinamismo visual */
+  /* Ciclo de animação configurado para 0.6s para aumentar o dinamismo visual */
   a:hover .flip-container {
-    animation: ${flipAndBack} 0.8s ease-in-out forwards;
+    animation: ${flipAndBack} 0.6s ease-in-out forwards;
   }
 
   a:hover .front {
