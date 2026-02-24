@@ -24,12 +24,12 @@ const Opportunities = () => {
     jobsSectionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const modalFields: FormField[] = [
-    { name: "name", label: "Name", type: "text", required: true },
-    { name: "email", label: "Email", type: "email", required: true },
-    { name: "portfolio", label: "Portfolio", type: "text" },
-    { name: "message", label: "Message", type: "textarea", required: true },
-  ];
+const modalFields: FormField[] = [
+  { name: "name", label: "Name", type: "text", required: true },
+  { name: "email", label: "Email", type: "email", required: true },
+  { name: "portfolioLink", label: "Portfolio", type: "text" }, // Alterado de 'portfolio' para 'portfolioLink'
+  { name: "message", label: "Message", type: "textarea", required: true },
+];
 
 const handleApplySubmit = async (formData: Record<string, string>) => {
   if (!selectedJob) return;
@@ -38,7 +38,7 @@ const handleApplySubmit = async (formData: Record<string, string>) => {
     await applyToJob(selectedJob.id, {
       name: formData.name,
       email: formData.email,
-      portfolioLink: formData.portfolio,
+      portfolioLink: formData.portfolioLink,
       message: formData.message,
       jobName: selectedJob.title,
     });

@@ -23,6 +23,11 @@ export const contactSchema = z.object({
 export const applicationSchema = z.object({
   name: z.string().min(3, "Name is required"),
   email: z.string().email("Invalid email address"),
-  portfolioLink: z.string().url("Invalid URL"),
+  portfolioLink: z
+    .string()
+    .regex(
+      /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$/,
+      "Invalid link format (use example.com)"
+    ),
   message: z.string().min(10, "Message is too short"),
 });
