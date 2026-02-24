@@ -9,16 +9,14 @@ export const Wrapper = styled.div<{
   align-items: center;
   justify-content: center;
   gap: var(--spacing-md);
-  padding: var(--spacing-lg) 0;
+  padding: var(--spacing-lg) 15px; /* Adicionado padding lateral de segurança */
 
-  width: ${({ mobileWidth }) => mobileWidth || "auto"};
-  max-width: 100%;
+  width: ${({ mobileWidth }) => mobileWidth || "100%"};
+  max-width: 100vw; /* Garante que nunca ultrapassa a largura da janela */
+  box-sizing: border-box; /* Garante que o padding não aumente a largura total */
 
   @media (min-width: 768px) {
     width: ${({ desktopWidth }) => desktopWidth || "auto"};
-  }
-  @media (min-width: 2540px) {
-    width: 665px;
   }
 `;
 

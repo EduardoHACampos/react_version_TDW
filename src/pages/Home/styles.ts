@@ -69,15 +69,18 @@ export const HuntButtonWrapper = styled.div`
   a .flip-container {
     position: relative;
     display: inline-block;
-    width: 350px;
+    width: 280px; /* Reduzido de 350px para caber em 320px com margens */
     height: 50px;
     transform-style: preserve-3d;
-    /* Transição base de 0.4s para compatibilidade com o tempo de rotação acelerado */
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     will-change: transform;
 
+    @media (min-width: 375px) {
+      width: 320px; /* Aumenta ligeiramente em telemóveis maiores */
+    }
+
     @media (min-width: 768px) {
-      width: 400px;
+      width: 400px; /* Largura original para desktop */
     }
   }
 
@@ -106,7 +109,7 @@ export const HuntButtonWrapper = styled.div`
 
   a .front {
     font-family: var(--font-heading);
-    font-size: var(--font-size-xxl);
+    font-size: var(--font-size-xl);
     transform: rotateX(0deg);
 
     background: linear-gradient(
@@ -150,6 +153,12 @@ export const HuntButtonWrapper = styled.div`
     );
     /* Transição de cor sincronizada com o ponto médio da rotação (0.4s) */
     transition-delay: 0.4s;
+  }
+
+  @media (min-width: 768px) {
+    a .front {
+      font-size: var(--font-size-xxl);
+    }
   }
 `;
 

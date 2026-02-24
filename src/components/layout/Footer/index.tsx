@@ -3,8 +3,11 @@ import discordIcon from "../../../assets/Discord.png";
 import instagramIcon from "../../../assets/Instagram.svg";
 import twitchIcon from "../../../assets/Twitch.svg";
 import twitterIcon from "../../../assets/Twitter.svg";
-import DownloadButton from "../../common/DownloadButton";
-import * as SD from "../../common/DownloadButton/styles"; // Importe o novo styles.ts que você criou
+import redditIcon from "../../../assets/Reddit.svg";
+import youtubeIcon from "../../../assets/YouTube.svg";
+import tiktokIcon from "../../../assets/TikTok.svg";
+import { PressKitLink } from "./styles";
+
 const Footer = () => {
   return (
     <S.FooterContainer>
@@ -40,12 +43,37 @@ const Footer = () => {
             >
               <img src={twitterIcon} alt="Twitter" />
             </a>
+            <a
+              href="https://www.tiktok.com/@thedarkwest"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={tiktokIcon} alt="Tiktok" />
+            </a>
+            <a
+              href="https://www.youtube.com/@PlayTheDarkWest "
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={youtubeIcon} alt="Youtube" />
+            </a>
+            <a
+              href="https://www.reddit.com/r/TheDarkWest/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={redditIcon} alt="Reddit" />
+            </a>
           </S.SocialIcons>
-          <DownloadButton 
-            as={SD.DownloadLink} 
-            fileName="TheDarkWest-PressKit.zip" 
-            label="Press Kit" 
-          />
+
+          <PressKitLink
+            href="https://drive.google.com/drive/folders/1ZRpxJv9hIdQCQbjJ9i-3P8SYo7VLajOu"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Download Press Kit (Zip)"
+          >
+            Press Kit
+          </PressKitLink>
         </S.Section>
       </S.FooterContent>
       <S.Copyright>
