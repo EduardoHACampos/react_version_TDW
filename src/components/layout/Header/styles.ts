@@ -55,10 +55,11 @@ export const Nav = styled.nav<{ isOpen: boolean }>`
     position: absolute;
     top: 80px;
     left: 0;
-    width: 100%;
+    width: 100%; /* Certifique-se que é 100% e não um valor fixo */
     background-color: var(--color-background-dark);
     padding: 1rem 0;
     text-align: center;
+    box-sizing: border-box;
   }
 `;
 

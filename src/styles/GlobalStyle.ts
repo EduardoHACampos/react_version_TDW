@@ -83,7 +83,22 @@ export const GlobalStyle = createGlobalStyle`
   html {
     font-size: 16px; 
   }
+* {
+    box-sizing: border-box; /* Essencial para que padding/border não quebrem o width */
+  }
 
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* Corta qualquer transbordo acidental à direita */
+    position: relative;
+  }
+
+  #root {
+    width: 100%;
+    overflow-x: hidden;
+  }
   body {
     background-color: var(--color-background-dark);
     color: var(--color-text-light); /* Agora usa o Creme (#fff4df) */

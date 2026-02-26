@@ -41,7 +41,10 @@ export const Section = styled.div`
 export const SocialIcons = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center; /* Garante a centralização horizontal */
   gap: 15px;
+  flex-wrap: wrap; /* Permite que os itens quebrem para a linha de baixo */
+  max-width: 100%; /* Evita que o container ultrapasse a largura da tela */
 
   a {
     display: flex;
@@ -49,12 +52,11 @@ export const SocialIcons = styled.div`
     text-decoration: none;
     transition: opacity 0.3s;
 
-    /* 👇 MUDANÇA: Agora usa Baskervville para melhor leitura */
     font-family: var(--font-primary);
     color: var(--color-primary-text);
-    letter-spacing: 1px; /* Espaçamento levemente menor para fonte serifada */
+    letter-spacing: 1px;
     font-size: 1.1rem;
-    font-weight: bold; /* Bold ajuda na leitura da Baskervville sobre fundo escuro */
+    font-weight: bold;
 
     &:hover {
       opacity: 0.7;
@@ -66,9 +68,48 @@ export const SocialIcons = styled.div`
     height: 30px;
     display: block;
     transition: opacity 0.3s;
+
     &:hover {
       opacity: 0.7;
     }
+  }
+
+  /* Ajuste específico para telas pequenas (celular) */
+  @media (max-width: 480px) {
+    gap: 20px; /* Aumenta um pouco o espaço para facilitar o toque */
+    padding: 0 10px;
+  }
+`;
+
+export const PressKitLink = styled.a`
+  margin-top: var(--spacing-lg);
+  text-decoration: none;
+  margin: 0;
+
+  color: var(--color-text-light);
+
+  /* 👇 MUDANÇA: Agora usa Baskervville */
+  font-family: var(--font-primary);
+  font-size: 1.1rem;
+  font-weight: bold;
+
+  transition:
+    transform 0.2s,
+    color 0.2s,
+    filter 0.2s;
+
+  border-bottom: 1px solid transparent;
+
+  &:hover {
+    transform: translateY(-2px);
+    color: var(--color-hover-purple);
+    filter: drop-shadow(0 0 5px var(--color-hover-purple));
+    border-bottom-color: var(--color-hover-purple);
+  }
+
+  @media (max-width: 768px) {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
   }
 `;
 
