@@ -7,7 +7,7 @@ import * as S from "./styles";
 import Modal, { FormField } from "../../components/common/Modal";
 import SectionTextBlock from "../../components/common/SectionTextBlock";
 import { contactSchema } from "../../utils/schemas";
-import OccultText from "../../components/common/OccultText";
+import RuneCanvas from "../../components/common/RuneCanvas";
 
 const Contact = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,16 +41,18 @@ const Contact = () => {
           title="Make Your Mark"
           p1="The frontier isn’t built alone. Whether you’re looking to invest, collaborate, or ride alongside us, there’s a seat for you by the campfire."
           p2={
-            <>
-              <S.ModalTrigger onClick={() => setIsModalOpen(true)}>
-                <span className="flip-container">
-                  <span className="front">CONTACT</span>
-                  <span className="back">
-                    <OccultText text="CONTACT" />
-                  </span>
+            <S.ModalTrigger onClick={() => setIsModalOpen(true)}>
+              <span className="flip-container">
+                <span className="front">CONTACT</span>
+                <span className="back" aria-hidden="true">
+                  <RuneCanvas
+                    text="CONTACT"
+                    size={24}
+                    color="var(--color-hover-purple)"
+                  />
                 </span>
-              </S.ModalTrigger>
-            </>
+              </span>
+            </S.ModalTrigger>
           }
         />
       </S.PageContainer>

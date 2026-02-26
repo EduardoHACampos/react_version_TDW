@@ -1,10 +1,24 @@
 import styled, { keyframes } from "styled-components";
 
-/* Definição da animação de rotação em 360 graus */
-const flipAndBack = keyframes`
-  0% { transform: rotateX(0deg); }
-  50% { transform: rotateX(180deg); } 
+/**
+ * Mesmo comportamento do Header:
+ * Hover começa em RUNAS e termina em TEXTO (hovered, roxo, legível).
+ */
+const hoverFlipFromRunesToText = keyframes`
+  0%   { transform: rotateX(180deg); }
   100% { transform: rotateX(360deg); }
+`;
+
+const frontAppearAtEnd = keyframes`
+  0%   { opacity: 0; }
+  55%  { opacity: 0; }
+  100% { opacity: 1; }
+`;
+
+const backDisappearAtEnd = keyframes`
+  0%   { opacity: 1; }
+  55%  { opacity: 1; }
+  100% { opacity: 0; }
 `;
 
 export const PageContainer = styled.div`
@@ -35,21 +49,18 @@ export const ModalTrigger = styled.span`
     position: relative;
     display: inline-block;
     transform-style: preserve-3d;
-    /* Transição base reduzida para 0.4s */
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
     min-width: 110px;
     height: 1.2em;
     text-align: center;
+    overflow: hidden;
   }
 
   .front,
   .back {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
 
     display: flex;
     align-items: center;
@@ -73,21 +84,35 @@ export const ModalTrigger = styled.span`
   }
 
   .back {
-    font-family: var(--font-witchcraft);
     color: var(--color-hover-purple);
     font-size: 1.1em;
     padding-top: 3px;
     transform: rotateX(180deg);
+    opacity: 0;
+    will-change: transform, opacity;
+
+    canvas {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      will-change: transform;
+      transform: translateZ(0);
+    }
   }
 
-  /* Disparo da animação acelerada para 0.6s conforme especificação técnica de melhoria de performance visual */
-  &:hover .flip-container {
-    animation: ${flipAndBack} 0.6s ease-in-out forwards;
+  &:hover .flip-container,
+  &:focus-visible .flip-container {
+    animation: ${hoverFlipFromRunesToText} 0.6s ease-in-out forwards;
   }
 
-  &:hover .front {
+  &:hover .front,
+  &:focus-visible .front {
     color: var(--color-hover-purple);
-    /* Transição de cor ajustada para 0.3s */
-    transition-delay: 0.3s;
+    animation: ${frontAppearAtEnd} 0.6s ease-in-out forwards;
+  }
+
+  &:hover .back,
+  &:focus-visible .back {
+    opacity: 1;
+    animation: ${backDisappearAtEnd} 0.6s ease-in-out forwards;
   }
 `;

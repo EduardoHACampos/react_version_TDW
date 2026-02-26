@@ -8,13 +8,12 @@ import { submitJoinTheHuntForm } from "../../services/api";
 import mainLogo from "../../assets/TheDarkWest_Logo.png";
 import steamLogo from "../../assets/steam_logo.png";
 import discordIcon from "../../assets/Discord.png";
-import useIntersectionObserver from "./../../hooks/useIntersectionObserver";
+import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 import { joinHuntSchema } from "../../utils/schemas";
-import OccultText from "../../components/common/OccultText";
+import RuneAction from "../../components/common/RuneAction";
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const trailerRef = useRef<HTMLDivElement>(null);
   const [isToastPermanentlyClosed, setIsToastPermanentlyClosed] =
     useState(false);
@@ -56,24 +55,16 @@ const Home = () => {
     <S.HomeContainer>
       <S.HeroSection>
         <S.MainTitle src={mainLogo} alt="The Dark West Logo" />
+
         <S.HuntButtonWrapper>
-          <a
-            href="#"
-            id="joinHuntButton"
-            onClick={(e) => {
-              e.preventDefault();
-              setIsModalOpen(true);
-            }}
-          >
-            <span className="flip-container">
-              <span className="front">JOIN THE HUNT</span>
-              <span className="back">
-                <OccultText text="JOIN THE HUNT" />
-              </span>{" "}
-              {/* Ofuscação do verso do botão / Button back obfuscation */}
-            </span>
-          </a>
+          <RuneAction
+            text="JOIN THE HUNT"
+            size={32}
+            onClick={() => setIsModalOpen(true)}
+            className="hunt-rune-action"
+          />
         </S.HuntButtonWrapper>
+
         <S.PlatformContainer>
           <a
             target="_blank"
@@ -82,6 +73,7 @@ const Home = () => {
           >
             <img src={steamLogo} alt="Steam" />
           </a>
+
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -100,7 +92,7 @@ const Home = () => {
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
-        ></iframe>
+        />
       </S.TrailerSection>
 
       <Modal

@@ -1,5 +1,6 @@
 import styled, { keyframes } from "styled-components";
 import heroBackground from "../../assets/KeyartTheDarkWestFinalFasepaintover.png";
+import buttonBg from "../../assets/button01edited.png";
 
 const flipAndBack = keyframes`
   0% { transform: rotateX(0deg); }
@@ -17,9 +18,9 @@ export const HeroSection = styled.section`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 800px;
+  height: calc(-80px + 100vh);
+  min-height: 600px;
   gap: var(--spacing-lg);
-
   background-image:
     radial-gradient(circle, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.7) 100%),
     url(${heroBackground});
@@ -40,6 +41,19 @@ export const MainTitle = styled.img`
   padding: 2rem 0;
 `;
 
+/**
+ * Rune Animation Wrapper / Wrapper de Animação das Runas
+ * Controls the reveal effect of the canvas / Controla o efeito de revelação do canvas
+ */
+export const RuneWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  perspective: 1000px; /* Essential for the Canvas internal rotation / Essencial para a rotação interna do Canvas */
+`;
+
 export const HuntButtonWrapper = styled.div`
   display: flex;
   width: 100%;
@@ -50,67 +64,42 @@ export const HuntButtonWrapper = styled.div`
   align-items: center;
   margin-top: var(--spacing-sm);
 
-  a {
-    position: relative;
-    display: flex;
+  /* O RuneAction renderiza um <button> com essa className */
+  .hunt-rune-action {
+    width: auto;
+    height: auto;
+
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    text-decoration: none;
-    cursor: pointer;
+
+    /* ✅ REMOVE fundo/placa */
     background: transparent;
-    perspective: 1000px;
-    transition:
-      transform 0.3s,
-      filter 0.3s;
-    filter: drop-shadow(0 0 8px var(--color-gold-shadow));
+    border: none;
+    padding: 0;
+
+    /* ✅ remove sombra “de botão” */
+    filter: none;
+
+    cursor: pointer;
+
+    /* opcional: evita flicker em 3D */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform;
     transform: translateZ(0);
   }
 
-  a .flip-container {
-    position: relative;
-    display: inline-block;
-    width: 280px; /* Reduzido de 350px para caber em 320px com margens */
-    height: 50px;
-    transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    will-change: transform;
-
-    @media (min-width: 375px) {
-      width: 320px; /* Aumenta ligeiramente em telemóveis maiores */
-    }
-
-    @media (min-width: 768px) {
-      width: 400px; /* Largura original para desktop */
-    }
+  .hunt-rune-action:hover {
+    transform: none;
+    filter: none;
   }
-
-  a .front,
-  a .back {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    font-weight: normal;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    white-space: nowrap;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    transform: translateZ(0.1px);
-
-    transition: background-image 0.3s;
-  }
-
-  a .front {
+  /* Frente (texto normal) */
+  .hunt-rune-action .front {
     font-family: var(--font-heading);
     font-size: var(--font-size-xl);
-    transform: rotateX(0deg);
+    text-transform: uppercase;
+    letter-spacing: 3px;
 
     background: linear-gradient(
       to right,
@@ -123,40 +112,25 @@ export const HuntButtonWrapper = styled.div`
     background-clip: text;
   }
 
-  a .back {
-    font-family: var(--font-witchcraft);
-    font-size: 2rem;
-    padding-top: 5px;
-    transform: rotateX(180deg);
+  /* Verso (canvas) */
+  .hunt-rune-action .back {
+    padding-top: 3px;
 
-    background: var(--color-hover-purple);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+    /* Anti “sumir no flip” */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform;
 
-  a:hover {
-    transform: scale(1.05);
-    filter: drop-shadow(0 0 15px var(--color-gold-shadow));
-  }
-
-  /* Ciclo de animação configurado para 0.6s para aumentar o dinamismo visual */
-  a:hover .flip-container {
-    animation: ${flipAndBack} 0.6s ease-in-out forwards;
-  }
-
-  a:hover .front {
-    background-image: linear-gradient(
-      to right,
-      var(--color-hover-purple),
-      #c4b5fd
-    );
-    /* Transição de cor sincronizada com o ponto médio da rotação (0.4s) */
-    transition-delay: 0.4s;
+    canvas {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      will-change: transform;
+      transform: translateZ(0);
+    }
   }
 
   @media (min-width: 768px) {
-    a .front {
+    .hunt-rune-action .front {
       font-size: var(--font-size-xxl);
     }
   }
@@ -170,14 +144,12 @@ export const PlatformContainer = styled.div`
   padding-bottom: var(--spacing-md);
   margin-bottom: 2rem;
   gap: 2rem;
-
   img {
     display: block;
     object-fit: contain;
     width: 120px;
     height: 65px;
   }
-
   a:nth-child(2) img {
     width: 48px;
     height: 48px;
@@ -189,21 +161,18 @@ export const TrailerSection = styled.section`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 560px;
+  height: 615px;
   padding: 3rem 0;
   background: var(--color-background-dark);
-
   .trailer-video {
     width: 100%;
     max-width: 320px;
     height: 180px;
     border-radius: var(--border-radius-md);
-
     @media (min-width: 768px) {
       max-width: 600px;
       height: 338px;
     }
-
     @media (min-width: 1024px) {
       max-width: 900px;
       height: 506px;
