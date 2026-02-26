@@ -8,8 +8,9 @@ import { submitJoinTheHuntForm } from "../../services/api";
 import mainLogo from "../../assets/TheDarkWest_Logo.png";
 import steamLogo from "../../assets/steam_logo.png";
 import discordIcon from "../../assets/Discord.png";
-import useIntersectionObserver from './../../hooks/useIntersectionObserver';
+import useIntersectionObserver from "./../../hooks/useIntersectionObserver";
 import { joinHuntSchema } from "../../utils/schemas";
+import OccultText from "../../components/common/OccultText";
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,7 +56,7 @@ const Home = () => {
     <S.HomeContainer>
       <S.HeroSection>
         <S.MainTitle src={mainLogo} alt="The Dark West Logo" />
-<S.HuntButtonWrapper>
+        <S.HuntButtonWrapper>
           <a
             href="#"
             id="joinHuntButton"
@@ -64,10 +65,12 @@ const Home = () => {
               setIsModalOpen(true);
             }}
           >
-            {/* 👇 ESTRUTURA NOVA: CONTAINER COM FRENTE E VERSO 👇 */}
             <span className="flip-container">
               <span className="front">JOIN THE HUNT</span>
-              <span className="back">JOIN THE HUNT</span>
+              <span className="back">
+                <OccultText text="JOIN THE HUNT" />
+              </span>{" "}
+              {/* Ofuscação do verso do botão / Button back obfuscation */}
             </span>
           </a>
         </S.HuntButtonWrapper>

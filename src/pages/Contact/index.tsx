@@ -7,6 +7,7 @@ import * as S from "./styles";
 import Modal, { FormField } from "../../components/common/Modal";
 import SectionTextBlock from "../../components/common/SectionTextBlock";
 import { contactSchema } from "../../utils/schemas";
+import OccultText from "../../components/common/OccultText";
 
 const Contact = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,13 +42,14 @@ const Contact = () => {
           p1="The frontier isn’t built alone. Whether you’re looking to invest, collaborate, or ride alongside us, there’s a seat for you by the campfire."
           p2={
             <>
-              {/* 👇 ESTRUTURA NOVA: FLIP CONTAINER NO MEIO DO TEXTO */}
               <S.ModalTrigger onClick={() => setIsModalOpen(true)}>
                 <span className="flip-container">
                   <span className="front">CONTACT</span>
-                  <span className="back">CONTACT</span>
+                  <span className="back">
+                    <OccultText text="CONTACT" />
+                  </span>
                 </span>
-              </S.ModalTrigger>{" "}
+              </S.ModalTrigger>
             </>
           }
         />
