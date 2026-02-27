@@ -1,24 +1,22 @@
 import styled, { keyframes } from "styled-components";
 
 /**
- * Mesmo comportamento do Header:
- * Hover começa em RUNAS e termina em TEXTO (hovered, roxo, legível).
+ * Mesmo flip híbrido para o "CONTACT" no texto:
+ * - front gira (3D)
+ * - back (canvas) só aparece some por opacity (sem 3D)
  */
-const hoverFlipFromRunesToText = keyframes`
-  0%   { transform: rotateX(180deg); }
-  100% { transform: rotateX(360deg); }
+const frontFlip = keyframes`
+  0%   { transform: rotateX(0deg);   opacity: 1; }
+  45%  { transform: rotateX(180deg); opacity: 0; }
+  55%  { transform: rotateX(180deg); opacity: 0; }
+  100% { transform: rotateX(360deg); opacity: 1; }
 `;
 
-const frontAppearAtEnd = keyframes`
-  0%   { opacity: 0; }
-  55%  { opacity: 0; }
-  100% { opacity: 1; }
-`;
-
-const backDisappearAtEnd = keyframes`
-  0%   { opacity: 1; }
-  55%  { opacity: 1; }
-  100% { opacity: 0; }
+const backPulse = keyframes`
+  0%   { opacity: 0; transform: scale(0.96); }
+  8%   { opacity: 1; transform: scale(1); }
+  55%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.98); }
 `;
 
 export const PageContainer = styled.div`
@@ -42,15 +40,12 @@ export const ModalTrigger = styled.span`
 
   cursor: pointer;
   position: relative;
-  perspective: 1000px;
   margin: 0 5px;
 
   .flip-container {
     position: relative;
     display: inline-block;
-    transform-style: preserve-3d;
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
+    perspective: 1000px;
     min-width: 110px;
     height: 1.2em;
     text-align: center;
@@ -61,58 +56,54 @@ export const ModalTrigger = styled.span`
   .back {
     position: absolute;
     inset: 0;
-
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-
     white-space: nowrap;
-    transition: color 0.3s;
   }
 
   .front {
+    z-index: 2;
     font-family: var(--font-primary);
     font-weight: bold;
     color: var(--color-primary-text);
-
     text-decoration: underline;
     text-underline-offset: 4px;
-    transform: rotateX(0deg);
+
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
   .back {
-    color: var(--color-hover-purple);
-    font-size: 1.1em;
-    padding-top: 3px;
-    transform: rotateX(180deg);
+    z-index: 1;
     opacity: 0;
-    will-change: transform, opacity;
+    color: var(--color-hover-purple);
+    padding-top: 3px;
+
+    /* ✅ sem rotateX(180deg) */
+    transform: none;
+
+    pointer-events: none;
+
+    backface-visibility: visible;
+    -webkit-backface-visibility: visible;
 
     canvas {
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      will-change: transform;
       transform: translateZ(0);
+      backface-visibility: visible;
+      -webkit-backface-visibility: visible;
     }
-  }
-
-  &:hover .flip-container,
-  &:focus-visible .flip-container {
-    animation: ${hoverFlipFromRunesToText} 0.6s ease-in-out forwards;
   }
 
   &:hover .front,
   &:focus-visible .front {
     color: var(--color-hover-purple);
-    animation: ${frontAppearAtEnd} 0.6s ease-in-out forwards;
+    animation: ${frontFlip} 0.6s ease-in-out forwards;
   }
 
   &:hover .back,
   &:focus-visible .back {
-    opacity: 1;
-    animation: ${backDisappearAtEnd} 0.6s ease-in-out forwards;
+    animation: ${backPulse} 0.6s ease-in-out forwards;
   }
 `;

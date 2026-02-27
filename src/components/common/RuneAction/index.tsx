@@ -1,21 +1,16 @@
-import React from "react";
+import React, { useRef } from "react";
 import * as S from "./styles";
-import RuneCanvas from "../RuneCanvas";
+import RuneCanvas, { RuneCanvasHandle } from "../RuneCanvas";
 
 interface RuneActionProps {
   text: string;
-  to?: string; // If provided, renders Link or <a>
-  onClick?: () => void; // If provided, renders <button>
-  isExternal?: boolean; // If true, uses <a> instead of Link
-  size?: number; // Font size in pixels (runa size)
-  className?: string; // Custom styles (ex: Background image)
+  to?: string;
+  onClick?: () => void;
+  isExternal?: boolean;
+  size?: number;
+  className?: string;
 }
 
-/**
- * RuneAction
- * - Hover é um efeito transitório: começa em texto -> runa -> termina em texto.
- * - Sem state React controlando visibilidade.
- */
 const RuneAction: React.FC<RuneActionProps> = ({
   text,
   to,
@@ -24,11 +19,26 @@ const RuneAction: React.FC<RuneActionProps> = ({
   size = 24,
   className,
 }) => {
+  const runeRef = useRef<RuneCanvasHandle>(null);
+
+  const triggerKick = () => {
+    runeRef.current?.kick(6);
+  };
+
   const content = (
-    <span className="flip-container">
+    <span
+      className="flip-container"
+      onMouseEnter={triggerKick}
+      onFocus={triggerKick}
+    >
       <span className="front">{text}</span>
       <span className="back" aria-hidden="true">
-        <RuneCanvas text={text} size={size} color="var(--color-hover-purple)" />
+        <RuneCanvas
+          ref={runeRef}
+          text={text}
+          size={size}
+          color="currentColor"
+        />
       </span>
     </span>
   );

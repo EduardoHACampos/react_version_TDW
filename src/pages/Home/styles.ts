@@ -3,9 +3,9 @@ import heroBackground from "../../assets/KeyartTheDarkWestFinalFasepaintover.png
 import buttonBg from "../../assets/button01edited.png";
 
 const flipAndBack = keyframes`
-  0% { transform: rotateX(0deg); }
-  50% { transform: rotateX(180deg); }
-  100% { transform: rotateX(360deg); }
+  0%   { transform: rotateX(0deg); }
+  50%  { transform: rotateX(180deg); }
+  100% { transform: rotateX(0deg); }
 `;
 
 export const HomeContainer = styled.div`
@@ -73,17 +73,21 @@ export const HuntButtonWrapper = styled.div`
     align-items: center;
     justify-content: center;
 
-    /* ✅ REMOVE fundo/placa */
     background: transparent;
     border: none;
     padding: 0;
 
-    /* ✅ remove sombra “de botão” */
-    filter: none;
-
     cursor: pointer;
 
-    /* opcional: evita flicker em 3D */
+    /* ✅ flip 3D real */
+    perspective: 1000px;
+    transform-style: preserve-3d;
+
+    filter: drop-shadow(0 0 8px var(--color-gold-shadow));
+    transition:
+      transform 0.3s ease,
+      filter 0.3s ease;
+
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     will-change: transform;
@@ -91,15 +95,63 @@ export const HuntButtonWrapper = styled.div`
   }
 
   .hunt-rune-action:hover {
-    transform: none;
-    filter: none;
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 15px var(--color-gold-shadow));
   }
-  /* Frente (texto normal) */
+
+  .hunt-rune-action .flip-container {
+    position: relative;
+    display: inline-block;
+
+    width: 280px;
+    height: 50px;
+
+    transform-style: preserve-3d;
+    will-change: transform;
+    transform-origin: center;
+
+    transition: transform 0.6s
+      cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    /* ✅ evita “cortar” o 3D no meio */
+    overflow: visible;
+
+    @media (min-width: 375px) {
+      width: 320px;
+    }
+
+    @media (min-width: 768px) {
+      width: 400px;
+    }
+  }
+
+  .hunt-rune-action .front,
+  .hunt-rune-action .back {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    white-space: nowrap;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    transform: translateZ(0);
+  }
+
   .hunt-rune-action .front {
     font-family: var(--font-heading);
     font-size: var(--font-size-xl);
-    text-transform: uppercase;
-    letter-spacing: 3px;
+    transform: rotateX(0deg);
 
     background: linear-gradient(
       to right,
@@ -108,15 +160,21 @@ export const HuntButtonWrapper = styled.div`
       var(--color-gradient-end)
     );
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    filter: drop-shadow(0 0 6px var(--color-gold-shadow));
+    transition:
+      background 0.3s ease,
+      filter 0.3s ease;
   }
 
-  /* Verso (canvas) */
   .hunt-rune-action .back {
+    transform: rotateX(180deg);
     padding-top: 3px;
 
-    /* Anti “sumir no flip” */
+    color: var(--color-hover-purple);
+
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     will-change: transform;
@@ -127,6 +185,20 @@ export const HuntButtonWrapper = styled.div`
       will-change: transform;
       transform: translateZ(0);
     }
+  }
+
+  .hunt-rune-action:hover .front {
+    background: linear-gradient(
+      to right,
+      var(--color-hover-purple),
+      #c4b5fd
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    transition-delay: 0.4s;
   }
 
   @media (min-width: 768px) {

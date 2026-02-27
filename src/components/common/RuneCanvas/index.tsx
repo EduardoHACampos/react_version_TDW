@@ -1,41 +1,39 @@
-import React, { useRef, useEffect, useMemo } from "react";
+import React, {
+  useRef,
+  useEffect,
+  useMemo,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import {
   RUNE_DICTIONARY_PATHS,
   RUNE_VIEWBOX,
   RUNE_OFFSETS,
 } from "../../../constants/runes";
 
+export interface RuneCanvasHandle {
+  kick: (frames?: number) => void;
+}
+
 interface RuneCanvasProps {
   text: string;
   size?: number;
   spacing?: number;
-  /**
-   * Pode ser:
-   * - "#a796ff" / "rgb(...)" etc
-   * - "var(--color-hover-purple)"
-   * - "currentColor"
-   * Se omitido, usa "currentColor".
-   */
-  color?: string;
+  color?: string; // "#A796FF", "rgb(...)", "var(--...)" ou "currentColor"
   className?: string;
 }
 
-/**
- * Resolve QUALQUER string CSS de cor (incluindo var(...) e currentColor)
- * para um valor computado RGB(a), que o canvas entende.
- */
-function resolveToComputedColor(canvas: HTMLCanvasElement, color: string): string {
+function resolveToComputedColor(
+  canvas: HTMLCanvasElement,
+  color: string
+): string {
   const input = (color || "").trim() || "currentColor";
-
-  // Elemento de referência: pai (onde normalmente está a color do .back)
   const refEl = canvas.parentElement || canvas;
 
-  // currentColor: pega a cor computada do elemento de referência
   if (input === "currentColor") {
     return getComputedStyle(refEl).color || "rgb(167, 150, 255)";
   }
 
-  // Para var(...), hex, hsl, etc: usa um span temporário pra “forçar” o browser a computar
   const probe = document.createElement("span");
   probe.style.position = "absolute";
   probe.style.left = "-99999px";
@@ -51,93 +49,126 @@ function resolveToComputedColor(canvas: HTMLCanvasElement, color: string): strin
   return computed || "rgb(167, 150, 255)";
 }
 
-const RuneCanvas: React.FC<RuneCanvasProps> = ({
-  text,
-  size = 32,
-  spacing = 10,
-  color = "currentColor",
-  className,
-}) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+const RuneCanvas = forwardRef<RuneCanvasHandle, RuneCanvasProps>(
+  (
+    { text, size = 32, spacing = 10, color = "currentColor", className },
+    ref
+  ) => {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const rafRef = useRef<number | null>(null);
 
-  const runePaths = useMemo(() => {
-    const cache: Record<string, Path2D> = {};
-    const chars = Array.from(new Set(text.toUpperCase()));
-    chars.forEach((char) => {
-      const pathData = RUNE_DICTIONARY_PATHS[char];
-      if (pathData) cache[char] = new Path2D(pathData);
-    });
-    return cache;
-  }, [text]);
+    const runePaths = useMemo(() => {
+      const cache: Record<string, Path2D> = {};
+      const chars = Array.from(new Set(text.toUpperCase()));
+      chars.forEach((char) => {
+        const pathData = RUNE_DICTIONARY_PATHS[char];
+        if (pathData) cache[char] = new Path2D(pathData);
+      });
+      return cache;
+    }, [text]);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const draw = () => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
 
-    const ctx = canvas.getContext("2d", { alpha: true });
-    if (!ctx) return;
+      const ctx = canvas.getContext("2d", { alpha: true });
+      if (!ctx) return;
 
-    const chars = text.toUpperCase().split("");
-    const dpr = window.devicePixelRatio || 1;
-    const scale = size / RUNE_VIEWBOX;
+      const chars = text.toUpperCase().split("");
+      const dpr = window.devicePixelRatio || 1;
+      const scale = size / RUNE_VIEWBOX;
 
-    let currentX = 0;
-    const positions: number[] = [];
+      let currentX = 0;
+      const positions: number[] = [];
+      const baseCharWidth = size * 0.75;
 
-    const baseCharWidth = size * 0.75;
+      chars.forEach((char, index) => {
+        const offset = (RUNE_OFFSETS[char] || 0) * scale;
+        positions.push(currentX + offset);
 
-    chars.forEach((char, index) => {
-      const offset = (RUNE_OFFSETS[char] || 0) * scale;
-      positions.push(currentX + offset);
+        const spaceWidth = (RUNE_OFFSETS[" "] || 400) * scale;
+        const charWidth = char === " " ? spaceWidth : baseCharWidth;
 
-      const spaceWidth = (RUNE_OFFSETS[" "] || 400) * scale;
-      const charWidth = char === " " ? spaceWidth : baseCharWidth;
+        currentX += charWidth;
+        if (index < chars.length - 1) currentX += spacing;
+      });
 
-      currentX += charWidth;
-      if (index < chars.length - 1) currentX += spacing;
-    });
+      const totalWidth = currentX;
 
-    const totalWidth = currentX;
+      // ✅ folga interna para não cortar runas (topo/baixo/laterais)
+      const PAD_X = Math.ceil(size * 0.18);
+      const PAD_Y = Math.ceil(size * 0.22);
 
-    canvas.width = Math.ceil(totalWidth * dpr);
-    canvas.height = Math.ceil(size * dpr);
-    canvas.style.width = `${totalWidth}px`;
-    canvas.style.height = `${size}px`;
+      const safeWidth = Math.max(1, Math.ceil(totalWidth) + PAD_X * 2);
+      const safeHeight = Math.max(1, Math.ceil(size) + PAD_Y * 2);
 
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(dpr, dpr);
-    ctx.clearRect(0, 0, totalWidth, size);
+      canvas.width = Math.ceil(safeWidth * dpr);
+      canvas.height = Math.ceil(safeHeight * dpr);
+      canvas.style.width = `${safeWidth}px`;
+      canvas.style.height = `${safeHeight}px`;
 
-    // ✅ AQUI está a correção real: cor computada (RGB) sempre válida pro canvas
-    ctx.fillStyle = resolveToComputedColor(canvas, color);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+      ctx.clearRect(0, 0, safeWidth, safeHeight);
 
-    chars.forEach((char, i) => {
-      const path = runePaths[char];
-      if (path) {
-        ctx.save();
-        ctx.translate(positions[i], 0);
-        ctx.scale(scale, scale);
-        ctx.fill(path);
-        ctx.restore();
-      }
-    });
-  }, [text, size, spacing, runePaths, color]);
+      ctx.fillStyle = resolveToComputedColor(canvas, color);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className={className}
-      onContextMenu={(e) => e.preventDefault()}
-      style={{
-        display: "inline-block",
-        verticalAlign: "middle",
-        backfaceVisibility: "hidden",
-        WebkitBackfaceVisibility: "hidden",
-        willChange: "transform",
-        transform: "translateZ(0)",
-      }}
-    />
-  );
-};
+      chars.forEach((char, i) => {
+        const path = runePaths[char];
+        if (path) {
+          ctx.save();
+          // ✅ aplica padding no desenho
+          ctx.translate(PAD_X + positions[i], PAD_Y);
+          ctx.scale(scale, scale);
+          ctx.fill(path);
+          ctx.restore();
+        }
+      });
+    };
 
+    useEffect(() => {
+      draw();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [text, size, spacing, color, runePaths]);
+
+    const kick = (frames: number = 6) => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+
+      let remaining = Math.max(1, frames);
+      const loop = () => {
+        draw();
+        remaining -= 1;
+        if (remaining > 0) rafRef.current = requestAnimationFrame(loop);
+        else rafRef.current = null;
+      };
+
+      rafRef.current = requestAnimationFrame(loop);
+    };
+
+    useImperativeHandle(ref, () => ({ kick }), []);
+
+    useEffect(() => {
+      return () => {
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      };
+    }, []);
+
+    return (
+      <canvas
+        ref={canvasRef}
+        className={className}
+        onContextMenu={(e) => e.preventDefault()}
+        style={{
+          display: "block",
+          backfaceVisibility: "visible",
+          WebkitBackfaceVisibility: "visible",
+          willChange: "transform",
+          transform: "translateZ(0)",
+        }}
+      />
+    );
+  }
+);
+
+RuneCanvas.displayName = "RuneCanvas";
 export default RuneCanvas;

@@ -1,30 +1,40 @@
 import styled, { keyframes, css } from "styled-components";
 import { NavLink } from "react-router-dom";
 
+/** Intro do menu */
 const introSpin = keyframes`
   from { transform: rotateX(180deg); opacity: 0; }
-  to { transform: rotateX(0deg); opacity: 1; }
+  to   { transform: rotateX(0deg);   opacity: 1; }
+`;
+
+/** Flip real: 0 → 180 → 0 */
+const flipAndBack = keyframes`
+  0%   { transform: rotateX(0deg); }
+  50%  { transform: rotateX(180deg); }
+  100% { transform: rotateX(0deg); }
 `;
 
 /**
- * Hover começa em RUNA (180deg) e flipa 180° até TEXTO (360deg ≈ 0deg)
- * Importante: RUNAS são transitórias (nunca estado final).
+ * ✅ Runas aparecem no começo e somem antes do fim
+ * (igual comportamento esperado)
  */
-const hoverFlipFromRunesToText = keyframes`
-  0%   { transform: rotateX(180deg); }
-  100% { transform: rotateX(360deg); }
-`;
-
-const frontAppearAtEnd = keyframes`
-  0%   { opacity: 0; }
-  55%  { opacity: 0; }
-  100% { opacity: 1; }
-`;
-
-const backDisappearAtEnd = keyframes`
+const runeTransient = keyframes`
   0%   { opacity: 1; }
-  55%  { opacity: 1; }
+  70%  { opacity: 1; }
   100% { opacity: 0; }
+`;
+
+/**
+ * ✅ Texto normal some durante o “miolo” do flip e volta no final
+ * IMPORTANTE: usamos steps pra não dar “fade preto”
+ */
+const frontTransient = keyframes`
+  0%   { opacity: 1; }
+  40%  { opacity: 1; }
+  41%  { opacity: 0; }
+  84%  { opacity: 0; }
+  85%  { opacity: 1; }
+  100% { opacity: 1; }
 `;
 
 export const HeaderContainer = styled.header`
@@ -57,11 +67,11 @@ export const Logo = styled.img`
 
 export const Nav = styled.nav<{ isOpen: boolean }>`
   display: flex;
-  gap: 2rem;
+  gap: 4.5rem; /* ✅ mais espaço */
   align-items: center;
 
   @media (min-width: 1024px) {
-    gap: 3rem;
+    gap: 5.5rem; /* ✅ mais espaço no desktop */
   }
 
   @media (max-width: 768px) {
@@ -75,27 +85,63 @@ export const Nav = styled.nav<{ isOpen: boolean }>`
     padding: 1rem 0;
     text-align: center;
     box-sizing: border-box;
+    gap: 1.5rem; /* mobile */
+  }
+`;
+/**
+ * Container por item
+ */
+export const HeaderItem = styled("div").withConfig({
+  shouldForwardProp: (prop) =>
+    !["padX", "width", "height", "canvasNudgeY"].includes(prop),
+})<{
+  width: string;
+  padX: string;
+  height: string;
+  canvasNudgeY: string;
+}>`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
+
+  .flip-container {
+    width: 100%;
+    height: 100%;
+    padding: 0 ${({ padX }) => padX};
+  }
+
+  .back {
+    transform: translateY(${({ canvasNudgeY }) => canvasNudgeY});
   }
 `;
 
 export const StyledNavLink = styled(NavLink)<{ $ready?: boolean }>`
   position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  padding-bottom: 5px;
-  perspective: 1000px;
   cursor: pointer;
   font-size: 1.25rem;
   outline: none;
 
+  perspective: 1000px;
+
   .flip-container {
     position: relative;
-    display: inline-block;
+    display: inline-grid;
+    place-items: center;
+
     transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+
+    will-change: transform;
+    overflow: visible;
+
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    overflow: hidden;
 
     ${({ $ready }) =>
       $ready
@@ -107,57 +153,68 @@ export const StyledNavLink = styled(NavLink)<{ $ready?: boolean }>`
 
   .front,
   .back {
-    display: flex;
+    grid-area: 1 / 1;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    white-space: nowrap;
+
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-    white-space: nowrap;
   }
 
   .front {
-    position: relative;
     z-index: 2;
     font-family: var(--font-primary);
     color: var(--color-primary-text);
     font-weight: bold;
+
     transform: rotateX(0deg);
-    transition: color 0.3s, text-shadow 0.3s;
+    transition:
+      color 0.3s ease,
+      text-shadow 0.3s ease;
   }
 
   .back {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    font-family: unset;
-    color: var(--color-hover-purple);
-    font-size: 1.1em;
-    padding-top: 3px;
+    z-index: 1;
     transform: rotateX(180deg);
+    color: var(--color-hover-purple);
+    pointer-events: none;
+    line-height: 1;
+
+    /* ✅ por padrão, runas invisíveis */
     opacity: 0;
 
-    will-change: transform, opacity;
+    canvas {
+      display: block;
+      height: 1.05em;
+      width: auto;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      will-change: transform;
+    }
   }
 
-  /* ✅ gatilho é CSS puro (hover/focus), sem state React */
+  /* ✅ Flip e volta */
   &:hover .flip-container,
   &:focus-visible .flip-container {
-    animation: ${hoverFlipFromRunesToText} 0.6s ease-in-out forwards;
+    animation: ${flipAndBack} 0.6s ease-in-out both;
   }
 
+  /* ✅ Texto some SEM “fade preto” (steps = troca seca) */
   &:hover .front,
   &:focus-visible .front {
+    animation: ${frontTransient} 0.6s steps(1, end) both;
     color: var(--color-hover-purple);
     text-shadow: 0 0 8px rgba(167, 150, 255, 0.25);
-    animation: ${frontAppearAtEnd} 0.6s ease-in-out forwards;
   }
 
+  /* ✅ Runas aparecem só durante o flip */
   &:hover .back,
   &:focus-visible .back {
     opacity: 1;
-    animation: ${backDisappearAtEnd} 0.6s ease-in-out forwards;
+    animation: ${runeTransient} 0.6s steps(1, end) both;
   }
 
   &.active .front {
@@ -166,13 +223,19 @@ export const StyledNavLink = styled(NavLink)<{ $ready?: boolean }>`
     text-shadow: 0 0 8px rgba(167, 150, 255, 0.4);
   }
 
-  .back canvas {
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    will-change: transform;
-    transform: translateZ(0);
-    display: block;
-    margin: 0 auto;
+  @media (prefers-reduced-motion: reduce) {
+    &:hover .flip-container,
+    &:focus-visible .flip-container,
+    &:hover .front,
+    &:focus-visible .front,
+    &:hover .back,
+    &:focus-visible .back {
+      animation: none;
+    }
+
+    .back {
+      opacity: 0;
+    }
   }
 `;
 

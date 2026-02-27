@@ -61,7 +61,9 @@ export const RUNE_SPACE_ADVANCE = 350;
  * Valores negativos puxam o glifo para a esquerda.
  */
 export const RUNE_OFFSETS: Record<string, number> = {
-  I: -230,
-  // O: -120,
+  I: -200,
+  O: 200,
+  P:200,
+  T:-100,
   // A: -80,
 };
