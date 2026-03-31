@@ -55,7 +55,7 @@ export const JobTitle = styled.h3`
 export const JobDescription = styled.p`
   letter-spacing: 1.5px;
   font-size: 1rem;
-  color: var(--color-primary-text);
+  color: var(--color-text-light);
 `;
 
 export const IconButton = styled.button`

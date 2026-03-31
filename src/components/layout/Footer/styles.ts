@@ -1,125 +1,171 @@
+/*
+Styled components definitions for the Footer using a Mobile First approach.
+Base rules apply to 320px screens, utilizing min-width media queries to scale up to desktop.
+
+Definições de styled components para o rodapé usando a abordagem Mobile First.
+As regras base se aplicam a telas de 320px, utilizando media queries min-width para escalar até o desktop.
+*/
 import styled from "styled-components";
 
 export const FooterContainer = styled.footer`
-  background-color: #000000;
-  color: var(--color-text-light);
-  padding: 40px 20px;
+  background-color: var(--color-background-dark);
+  padding: 3rem 1.5rem 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+  @media (min-width: 1024px) {
+    padding: 4rem 5% 2rem;
+  }
 `;
 
 export const FooterContent = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  border-bottom: 1px solid #444;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
-  max-width: 1200px;
-  margin: 0 auto 20px auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-bottom: 2.5rem;
+
+  /* Allows the 'OTHER' column to span correctly on mobile
+  Permite que a coluna 'OTHER' ocupe o espaço correto no mobile
+  */
+  & > div:nth-child(5) {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    
+    & > div:nth-child(5) {
+      grid-column: auto;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2rem;
+  }
 `;
 
 export const Section = styled.div`
   display: flex;
-  align-items: center;
-  gap: 30px;
-  text-align: center;
-  margin: 20px;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.85rem;
 
-  /* TÍTULO DA SEÇÃO (Mantém Rye/Dourado por ser título) */
   h2 {
-    font-family: var(--font-heading);
+    font-family: var(--font-primary);
     color: var(--color-primary-text);
-    letter-spacing: 2px;
-    font-size: 1.2rem;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
   }
 
-  @media (min-width: 768px) {
+  a {
+    font-family: var(--font-primary);
+    color: var(--color-primary-text);
+    text-decoration: none;
+    font-size: 12px;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    opacity: 0.8;
+
+    &:hover {
+      color: var(--color-hover-purple);
+      opacity: 1;
+      text-shadow: 0 0 8px rgba(167, 150, 255, 0.25);
+    }
+  }
+`;
+
+export const BottomBar = styled.div`
+  margin-top: 1rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  @media (min-width: 1024px) {
     flex-direction: row;
+    justify-content: space-between;
+    gap: 0;
+  }
+`;
+
+export const BrandingGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    gap: 1rem;
+  }
+`;
+
+export const FooterLogo = styled.img`
+  height: 55px;
+  width: auto;
+  opacity: 0.9;
+  
+  @media (min-width: 1024px) {
+    height: 40px;
+  }
+`;
+
+export const CopyrightText = styled.div`
+  font-family: var(--font-primary);
+  color: var(--color-primary-text);
+  font-size: 12px;
+  opacity: 0.8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+
+  .separator {
+    display: none;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    
+    &:hover {
+      color: var(--color-hover-purple);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    gap: 0.4rem;
+
+    .separator {
+      display: inline;
+    }
   }
 `;
 
 export const SocialIcons = styled.div`
   display: flex;
+  gap: 1.5rem;
   align-items: center;
-  justify-content: center; /* Garante a centralização horizontal */
-  gap: 15px;
-  flex-wrap: wrap; /* Permite que os itens quebrem para a linha de baixo */
-  max-width: 100%; /* Evita que o container ultrapasse a largura da tela */
-
-  a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    transition: opacity 0.3s;
-
-    font-family: var(--font-primary);
-    color: var(--color-primary-text);
-    letter-spacing: 1px;
-    font-size: 1.1rem;
-    font-weight: bold;
-
-    &:hover {
-      opacity: 0.7;
-    }
-  }
 
   img {
-    width: 30px;
-    height: 30px;
-    display: block;
-    transition: opacity 0.3s;
+    height: 20px;
+    width: auto;
+    transition: transform 0.3s ease;
 
     &:hover {
-      opacity: 0.7;
+      transform: scale(1.15);
     }
-  }
-
-  /* Ajuste específico para telas pequenas (celular) */
-  @media (max-width: 480px) {
-    gap: 20px; /* Aumenta um pouco o espaço para facilitar o toque */
-    padding: 0 10px;
-  }
-`;
-
-export const PressKitLink = styled.a`
-  margin-top: var(--spacing-lg);
-  text-decoration: none;
-  margin: 0;
-
-  color: var(--color-text-light);
-
-  /* 👇 MUDANÇA: Agora usa Baskervville */
-  font-family: var(--font-primary);
-  font-size: 1.1rem;
-  font-weight: bold;
-
-  transition:
-    transform 0.2s,
-    color 0.2s,
-    filter 0.2s;
-
-  border-bottom: 1px solid transparent;
-
-  &:hover {
-    transform: translateY(-2px);
-    color: var(--color-hover-purple);
-    filter: drop-shadow(0 0 5px var(--color-hover-purple));
-    border-bottom-color: var(--color-hover-purple);
-  }
-
-  @media (max-width: 768px) {
-    margin-top: 1.5rem;
-    font-size: 1.1rem;
-  }
-`;
-
-export const Copyright = styled.div`
-  text-align: center;
-  padding-top: 15px;
-
-  /* Garante que o copyright também seja legível */
-  p {
-    font-family: var(--font-primary);
-    font-size: 0.9rem;
   }
 `;

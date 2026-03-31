@@ -1,22 +1,27 @@
 import styled, { keyframes } from "styled-components";
 
-/**
- * Mesmo flip híbrido para o "CONTACT" no texto:
- * - front gira (3D)
- * - back (canvas) só aparece some por opacity (sem 3D)
- */
-const frontFlip = keyframes`
-  0%   { transform: rotateX(0deg);   opacity: 1; }
-  45%  { transform: rotateX(180deg); opacity: 0; }
-  55%  { transform: rotateX(180deg); opacity: 0; }
-  100% { transform: rotateX(360deg); opacity: 1; }
+/** Flip real (igual JOIN THE HUNT / Header): 0 → 180 → 0 */
+const flipAndBack = keyframes`
+  0%   { transform: rotateX(0deg); }
+  50%  { transform: rotateX(180deg); }
+  100% { transform: rotateX(0deg); }
 `;
 
-const backPulse = keyframes`
-  0%   { opacity: 0; transform: scale(0.96); }
-  8%   { opacity: 1; transform: scale(1); }
-  55%  { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(0.98); }
+/** Texto normal some no meio do flip (sem “fade preto”) */
+const frontTransient = keyframes`
+  0%   { opacity: 1; }
+  40%  { opacity: 1; }
+  41%  { opacity: 0; }
+  84%  { opacity: 0; }
+  85%  { opacity: 1; }
+  100% { opacity: 1; }
+`;
+
+/** Runas aparecem durante o flip e somem no final */
+const runeTransient = keyframes`
+  0%   { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { opacity: 0; }
 `;
 
 export const PageContainer = styled.div`
@@ -42,24 +47,34 @@ export const ModalTrigger = styled.span`
   position: relative;
   margin: 0 5px;
 
+  /* ✅ perspectiva no elemento clicável */
+  perspective: 1000px;
+
   .flip-container {
     position: relative;
-    display: inline-block;
-    perspective: 1000px;
+    display: inline-grid;
+    place-items: center;
+
     min-width: 110px;
     height: 1.2em;
-    text-align: center;
-    overflow: hidden;
+
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+
+    will-change: transform;
+    overflow: visible;
   }
 
   .front,
   .back {
-    position: absolute;
-    inset: 0;
+    grid-area: 1 / 1;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     white-space: nowrap;
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
   .front {
@@ -70,40 +85,44 @@ export const ModalTrigger = styled.span`
     text-decoration: underline;
     text-underline-offset: 4px;
 
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
+    transform: rotateX(0deg);
   }
 
   .back {
     z-index: 1;
-    opacity: 0;
+    transform: rotateX(180deg);
     color: var(--color-hover-purple);
     padding-top: 3px;
-
-    /* ✅ sem rotateX(180deg) */
-    transform: none;
-
     pointer-events: none;
 
-    backface-visibility: visible;
-    -webkit-backface-visibility: visible;
+    /* ✅ runas invisíveis fora do flip */
+    opacity: 0;
 
     canvas {
       transform: translateZ(0);
-      backface-visibility: visible;
-      -webkit-backface-visibility: visible;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      will-change: transform;
     }
   }
 
-  &:hover .front,
-  &:focus-visible .front {
-    color: var(--color-hover-purple);
-    animation: ${frontFlip} 0.6s ease-in-out forwards;
+  /* ✅ o giro acontece no container (flip real) */
+  &:hover .flip-container,
+  &:focus-visible .flip-container {
+    animation: ${flipAndBack} 0.6s ease-in-out both;
   }
 
+  /* ✅ texto some no meio, sem “fade preto” */
+  &:hover .front,
+  &:focus-visible .front {
+    animation: ${frontTransient} 0.6s steps(1, end) both;
+    color: var(--color-hover-purple);
+  }
+
+  /* ✅ runas aparecem durante o flip */
   &:hover .back,
   &:focus-visible .back {
-    animation: ${backPulse} 0.6s ease-in-out forwards;
+    opacity: 1;
+    animation: ${runeTransient} 0.6s steps(1, end) both;
   }
 `;

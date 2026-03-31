@@ -1,31 +1,25 @@
-import { useState, useRef } from "react";
+/*
+ English: 
+ Complete Home component. Everything is wired up correctly with the full styles.
+ 
+ Explicação em português aqui: 
+ Componente Home completo. Tudo está conectado corretamente com os estilos completos.
+*/
+
+import { useState } from "react";
 import * as S from "./styles";
 
 import Modal, { FormField } from "../../components/common/Modal";
-import ScrollToast from "../../components/common/ScrollToast";
 import { submitJoinTheHuntForm } from "../../services/api";
 
 import mainLogo from "../../assets/TheDarkWest_Logo.png";
 import steamLogo from "../../assets/steam_logo.png";
 import discordIcon from "../../assets/Discord.png";
-import useIntersectionObserver from "../../hooks/useIntersectionObserver";
+
 import { joinHuntSchema } from "../../utils/schemas";
-import RuneAction from "../../components/common/RuneAction";
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const trailerRef = useRef<HTMLDivElement>(null);
-  const [isToastPermanentlyClosed, setIsToastPermanentlyClosed] =
-    useState(false);
-
-  const isTrailerVisible = useIntersectionObserver(trailerRef, {
-    threshold: 0.5,
-  });
-  const showToast = !isToastPermanentlyClosed && !isTrailerVisible;
-
-  const handleScrollToTrailer = () => {
-    trailerRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
 
   const joinHuntFields: FormField[] = [
     {
@@ -56,6 +50,16 @@ const Home = () => {
       <S.HeroSection>
         <S.MainTitle src={mainLogo} alt="The Dark West Logo" />
 
+        <S.VideoWrapper>
+          <iframe
+            src="https://www.youtube.com/embed/JPFiWf1VkTg?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&iv_load_policy=3"
+            title="The Dark West - Official Reveal Trailer"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
+        </S.VideoWrapper>
+{/* 
         <S.HuntButtonWrapper>
           <RuneAction
             text="JOIN THE HUNT"
@@ -63,37 +67,34 @@ const Home = () => {
             onClick={() => setIsModalOpen(true)}
             className="hunt-rune-action"
           />
-        </S.HuntButtonWrapper>
+        </S.HuntButtonWrapper> */}
 
-        <S.PlatformContainer>
-          <a
-            target="_blank"
+        <S.BottomActions>
+          <S.ActionLink 
+            href="https://store.steampowered.com/app/3574750/The_Dark_West/" 
+            target="_blank" 
             rel="noopener noreferrer"
-            href="https://store.steampowered.com/app/3574750/The_Dark_West/"
           >
-            <img src={steamLogo} alt="Steam" />
-          </a>
+            <S.ActionIcon src={steamLogo} alt="Steam" className="steam-icon" />
+            
+          </S.ActionLink>
 
-          <a
-            target="_blank"
+          <S.ActionLink 
+            href="https://discord.gg/47YskyYJcy" 
+            target="_blank" 
             rel="noopener noreferrer"
-            href="https://discord.gg/47YskyYJcy"
           >
-            <img src={discordIcon} alt="Discord" />
-          </a>
-        </S.PlatformContainer>
+            <S.ActionIcon src={discordIcon} alt="Discord" className="discord-icon" />
+            
+          </S.ActionLink>
+
+          <S.ActionButton onClick={() => setIsModalOpen(true)}>
+            <S.ActionIcon src={discordIcon} alt="Newsletter" className="newsletter-icon" />
+           
+          </S.ActionButton>
+        </S.BottomActions>
+
       </S.HeroSection>
-
-      <S.TrailerSection ref={trailerRef}>
-        <iframe
-          className="trailer-video"
-          src="https://www.youtube.com/embed/JPFiWf1VkTg"
-          title="The Dark West - Official Reveal Trailer"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
-        />
-      </S.TrailerSection>
 
       <Modal
         isOpen={isModalOpen}
@@ -106,13 +107,6 @@ const Home = () => {
         successMessage="Subscription successful! Welcome, hunter."
         errorMessage="An error occurred. Please try again later."
         validationSchema={joinHuntSchema}
-      />
-
-      <ScrollToast
-        isVisible={showToast}
-        onClose={() => setIsToastPermanentlyClosed(true)}
-        onScroll={handleScrollToTrailer}
-        text="Watch the official trailer!"
       />
     </S.HomeContainer>
   );

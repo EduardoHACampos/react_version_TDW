@@ -1,33 +1,23 @@
 import styled, { keyframes, css } from "styled-components";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
-/** Intro do menu */
 const introSpin = keyframes`
   from { transform: rotateX(180deg); opacity: 0; }
   to   { transform: rotateX(0deg);   opacity: 1; }
 `;
 
-/** Flip real: 0 → 180 → 0 */
 const flipAndBack = keyframes`
   0%   { transform: rotateX(0deg); }
   50%  { transform: rotateX(180deg); }
   100% { transform: rotateX(0deg); }
 `;
 
-/**
- * ✅ Runas aparecem no começo e somem antes do fim
- * (igual comportamento esperado)
- */
 const runeTransient = keyframes`
   0%   { opacity: 1; }
   70%  { opacity: 1; }
   100% { opacity: 0; }
 `;
 
-/**
- * ✅ Texto normal some durante o “miolo” do flip e volta no final
- * IMPORTANTE: usamos steps pra não dar “fade preto”
- */
 const frontTransient = keyframes`
   0%   { opacity: 1; }
   40%  { opacity: 1; }
@@ -67,14 +57,9 @@ export const Logo = styled.img`
 
 export const Nav = styled.nav<{ isOpen: boolean }>`
   display: flex;
-  gap: 4.5rem; /* ✅ mais espaço */
   align-items: center;
 
-  @media (min-width: 1024px) {
-    gap: 5.5rem; /* ✅ mais espaço no desktop */
-  }
-
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
     flex-direction: column;
     position: absolute;
@@ -82,15 +67,25 @@ export const Nav = styled.nav<{ isOpen: boolean }>`
     left: 0;
     width: 100%;
     background-color: var(--color-background-dark);
-    padding: 1rem 0;
+    padding: 1.5rem 0;
     text-align: center;
     box-sizing: border-box;
-    gap: 1.5rem; /* mobile */
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 1025px) {
+    gap: 2rem;
+  }
+
+  @media (min-width: 1280px) {
+    gap: 3.5rem;
+  }
+
+  @media (min-width: 1600px) {
+    gap: 4.25rem;
   }
 `;
-/**
- * Container por item
- */
+
 export const HeaderItem = styled("div").withConfig({
   shouldForwardProp: (prop) =>
     !["padX", "width", "height", "canvasNudgeY"].includes(prop),
@@ -125,7 +120,7 @@ export const StyledNavLink = styled(NavLink)<{ $ready?: boolean }>`
   justify-content: center;
   text-decoration: none;
   cursor: pointer;
-  font-size: 1.25rem;
+  font-size: 1rem;
   outline: none;
 
   perspective: 1000px;
@@ -182,7 +177,6 @@ export const StyledNavLink = styled(NavLink)<{ $ready?: boolean }>`
     pointer-events: none;
     line-height: 1;
 
-    /* ✅ por padrão, runas invisíveis */
     opacity: 0;
 
     canvas {
@@ -196,13 +190,11 @@ export const StyledNavLink = styled(NavLink)<{ $ready?: boolean }>`
     }
   }
 
-  /* ✅ Flip e volta */
   &:hover .flip-container,
   &:focus-visible .flip-container {
     animation: ${flipAndBack} 0.6s ease-in-out both;
   }
 
-  /* ✅ Texto some SEM “fade preto” (steps = troca seca) */
   &:hover .front,
   &:focus-visible .front {
     animation: ${frontTransient} 0.6s steps(1, end) both;
@@ -210,7 +202,6 @@ export const StyledNavLink = styled(NavLink)<{ $ready?: boolean }>`
     text-shadow: 0 0 8px rgba(167, 150, 255, 0.25);
   }
 
-  /* ✅ Runas aparecem só durante o flip */
   &:hover .back,
   &:focus-visible .back {
     opacity: 1;
@@ -250,7 +241,160 @@ export const MenuToggle = styled.button`
     height: 30px;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     display: block;
   }
+`;
+
+export const DropdownContainer = styled.div`
+  position: relative;
+  display: inline-block;
+
+  /* English: Hover logic for the Dropdown Trigger.
+     Explicação em português aqui: Lógica de hover para o gatilho do Dropdown. */
+  &:hover .dropdown-arrow {
+    background-color: var(--color-hover-purple);
+  }
+
+  /* English: Force the text inside the HeaderFlipItem (front face) to turn purple when the whole container is hovered.
+     Explicação em português aqui: Força o texto dentro do HeaderFlipItem (face frontal) a ficar roxo quando o contêiner inteiro recebe hover. */
+  &:hover .front {
+    color: var(--color-hover-purple);
+    text-shadow: 0 0 8px rgba(167, 150, 255, 0.25);
+  }
+
+  &:hover .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+
+    @media (max-width: 1024px) {
+      transform: none;
+      display: flex;
+    }
+  }
+`;
+
+export const DropdownContent = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background-color: var(--color-background-dark);
+  border: 1px solid rgba(167, 150, 255, 0.2);
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
+  padding: 0.5rem 0;
+  border-radius: 4px;
+
+  @media (max-width: 1024px) {
+    position: static;
+    transform: none;
+    display: none;
+    border: none;
+    box-shadow: none;
+    width: 100%;
+    padding: 1rem 0 0 0;
+    background-color: transparent;
+  }
+`;
+
+export const DropdownItem = styled(Link)`
+  color: var(--color-primary-text);
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &:hover {
+    background-color: rgba(167, 150, 255, 0.1);
+    color: var(--color-hover-purple);
+  }
+
+  @media (max-width: 1024px) {
+    justify-content: center;
+    gap: 0.5rem;
+  }
+`;
+
+export const DropdownItemExternal = styled.a`
+  color: var(--color-primary-text);
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &:hover {
+    background-color: rgba(167, 150, 255, 0.1);
+    color: var(--color-hover-purple);
+  }
+
+  .icon {
+    font-size: 0.8rem;
+    opacity: 0.7;
+  }
+
+  @media (max-width: 1024px) {
+    justify-content: center;
+    gap: 0.5rem;
+  }
+`;
+
+export const DropdownTrigger = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0; 
+  position: relative;
+
+  /* English: Prevents the 'active' class from making the trigger purple permanently 
+     Explicação em português aqui: Impede que a classe 'active' deixe o gatilho roxo permanentemente */
+  .active .front {
+    color: var(--color-primary-text) !important;
+    text-shadow: none !important;
+  }
+
+  /* English: Re-applies the purple hover effect specifically for the dropdown trigger
+     Explicação em português aqui: Reaplica o efeito roxo de hover especificamente para o gatilho do dropdown */
+  &:hover .front,
+  &:hover .active .front {
+    color: var(--color-hover-purple) !important;
+    text-shadow: 0 0 8px rgba(167, 150, 255, 0.25) !important;
+  }
+`;
+
+export const DropdownArrow = styled.div<{ $iconSrc: string }>`
+  width: 12px;
+  height: 12px;
+
+  /* English: Default color is now the primary text color (Gold/White).
+     Explicação em português aqui: A cor padrão agora é a cor primária de texto (Dourado/Branco). */
+  background-color: var(--color-primary-text);
+
+  -webkit-mask: url(${({ $iconSrc }) => $iconSrc}) no-repeat center / contain;
+  mask: url(${({ $iconSrc }) => $iconSrc}) no-repeat center / contain;
+
+  transform: rotate(90deg);
+  pointer-events: none;
+  transition: background-color 0.3s ease;
+
+  margin-left: -0.5rem;
+  margin-top: 0.1rem;
 `;
