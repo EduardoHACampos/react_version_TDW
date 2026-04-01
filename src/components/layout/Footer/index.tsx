@@ -11,11 +11,11 @@ import FooterColumn from "./FooterColumn";
 /* Assets */
 import logo from "../../../assets/TheDarkWest_TextWithFlourish.png";
 import discordIcon from "../../../assets/Discord.png";
-import instagramIcon from "../../../assets/Instagram.svg"; // Re-added / Reinserido
-import twitchIcon from "../../../assets/Twitch.svg"; // Adding Twitch to match previous set
+import instagramIcon from "../../../assets/Instagram.svg";
+import twitchIcon from "../../../assets/Twitch.svg"; 
 import twitterIcon from "../../../assets/Twitter.svg";
-import redditIcon from "../../../assets/reddit.svg";
-import youtubeIcon from "../../../assets/youtube.svg";
+import redditIcon from "../../../assets/Reddit.svg";
+import youtubeIcon from "../../../assets/Youtube.svg";
 
 const Footer = () => {
   const playLinks = [
