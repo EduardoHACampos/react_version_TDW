@@ -12,10 +12,10 @@ import FooterColumn from "./FooterColumn";
 import logo from "../../../assets/TheDarkWest_TextWithFlourish.png";
 import discordIcon from "../../../assets/Discord.png";
 import instagramIcon from "../../../assets/Instagram.svg";
-import twitchIcon from "../../../assets/Twitch.svg"; 
+import twitchIcon from "../../../assets/Twitch.svg";
 import twitterIcon from "../../../assets/Twitter.svg";
 import redditIcon from "../../../assets/Reddit.svg";
-import youtubeIcon from "../../../assets/Youtube.svg";
+import youtubeIcon from "../../../assets/youtube-icon.svg";
 
 const Footer = () => {
   const playLinks = [
