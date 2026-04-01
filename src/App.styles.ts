@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { motion } from "framer-motion"; // 1. Importar o 'motion'
 
-// 2. Alterar o AppWrapper para ser um componente animado
 export const AppWrapper = styled(motion.div)`
   display: flex;
   flex-direction: column;

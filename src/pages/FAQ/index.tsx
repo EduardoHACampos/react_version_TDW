@@ -1,11 +1,3 @@
-/*
-Main component for the FAQ page.
-Renders the layout, page headers, and iterates through the category data to display FAQ cards.
-
-Componente principal da página de FAQ.
-Renderiza o layout, os cabeçalhos da página e itera pelos dados de categoria para exibir os cartões de FAQ.
-*/
-
 import React from "react";
 import * as S from "./styles";
 import { faqContent } from "./content";

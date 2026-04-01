@@ -56,7 +56,6 @@ const BaseStyles = css`
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
 
-    /* ajuda a reduzir z-fighting/ruído */
     transform: translateZ(1px);
   }
 

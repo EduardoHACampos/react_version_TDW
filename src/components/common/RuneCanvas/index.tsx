@@ -19,7 +19,7 @@ interface RuneCanvasProps {
   text: string;
   size?: number;
   spacing?: number;
-  color?: string; // "#A796FF", "rgb(...)", "var(--...)" ou "currentColor"
+  color?: string; 
   className?: string;
 }
 
@@ -95,7 +95,6 @@ const RuneCanvas = forwardRef<RuneCanvasHandle, RuneCanvasProps>(
 
       const totalWidth = currentX;
 
-      // ✅ folga interna para não cortar runas (topo/baixo/laterais)
       const PAD_X = Math.ceil(size * 0.18);
       const PAD_Y = Math.ceil(size * 0.22);
 
@@ -117,7 +116,6 @@ const RuneCanvas = forwardRef<RuneCanvasHandle, RuneCanvasProps>(
         const path = runePaths[char];
         if (path) {
           ctx.save();
-          // ✅ aplica padding no desenho
           ctx.translate(PAD_X + positions[i], PAD_Y);
           ctx.scale(scale, scale);
           ctx.fill(path);
@@ -128,7 +126,6 @@ const RuneCanvas = forwardRef<RuneCanvasHandle, RuneCanvasProps>(
 
     useEffect(() => {
       draw();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [text, size, spacing, color, runePaths]);
 
     const kick = (frames: number = 6) => {

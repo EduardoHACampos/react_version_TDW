@@ -1,4 +1,3 @@
-/* src/App.tsx */
 import { useContext } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer } from "react-toastify";

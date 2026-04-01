@@ -1,19 +1,8 @@
-/*
- English: 
- Styles for the standalone About page.
- Reuses the Steam-like aesthetic we previously created, adapted to be a full page layout with proper header spacing.
- 
- Explicação em português aqui: 
- Estilos para a página standalone About.
- Reutiliza a estética estilo Steam que criamos anteriormente, adaptada para ser um layout de página inteira com o espaçamento correto do header.
-*/
-
 import styled from "styled-components";
 
 export const AboutContainer = styled.div`
   width: 100%;
   min-height: 100vh;
-  /* English: 120px top padding ensures the content isn't hidden behind the fixed header / Explicação em português aqui: 120px de padding superior garante que o conteúdo não fique escondido atrás do header fixo */
   padding: 120px 1.5rem 4rem 1.5rem; 
   background-color: var(--color-background-dark);
   display: flex;

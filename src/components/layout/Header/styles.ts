@@ -250,14 +250,10 @@ export const DropdownContainer = styled.div`
   position: relative;
   display: inline-block;
 
-  /* English: Hover logic for the Dropdown Trigger.
-     Explicação em português aqui: Lógica de hover para o gatilho do Dropdown. */
   &:hover .dropdown-arrow {
     background-color: var(--color-hover-purple);
   }
 
-  /* English: Force the text inside the HeaderFlipItem (front face) to turn purple when the whole container is hovered.
-     Explicação em português aqui: Força o texto dentro do HeaderFlipItem (face frontal) a ficar roxo quando o contêiner inteiro recebe hover. */
   &:hover .front {
     color: var(--color-hover-purple);
     text-shadow: 0 0 8px rgba(167, 150, 255, 0.25);
@@ -364,15 +360,13 @@ export const DropdownTrigger = styled.div`
   gap: 0; 
   position: relative;
 
-  /* English: Prevents the 'active' class from making the trigger purple permanently 
-     Explicação em português aqui: Impede que a classe 'active' deixe o gatilho roxo permanentemente */
+
   .active .front {
     color: var(--color-primary-text) !important;
     text-shadow: none !important;
   }
 
-  /* English: Re-applies the purple hover effect specifically for the dropdown trigger
-     Explicação em português aqui: Reaplica o efeito roxo de hover especificamente para o gatilho do dropdown */
+
   &:hover .front,
   &:hover .active .front {
     color: var(--color-hover-purple) !important;
@@ -384,8 +378,6 @@ export const DropdownArrow = styled.div<{ $iconSrc: string }>`
   width: 12px;
   height: 12px;
 
-  /* English: Default color is now the primary text color (Gold/White).
-     Explicação em português aqui: A cor padrão agora é a cor primária de texto (Dourado/Branco). */
   background-color: var(--color-primary-text);
 
   -webkit-mask: url(${({ $iconSrc }) => $iconSrc}) no-repeat center / contain;

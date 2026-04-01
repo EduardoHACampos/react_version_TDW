@@ -1,17 +1,3 @@
-/*
- English: 
- Styles for the reusable FAQ Card Accordion.
- Added the RuneSvg component to render the custom runic SVGs inline with the text.
- The runes are styled with the theme's purple and a subtle glow to emphasize the decoding magic.
- 
- Explicação em português aqui: 
- Estilos para o Cartão Sanfona de FAQ reutilizável.
- Adicionado o componente RuneSvg para renderizar os SVGs rúnicos personalizados em linha com o texto.
- As runas são estilizadas com o roxo do tema e um brilho subtil para enfatizar a magia de descodificação.
- 
- Caminho / Path: src/components/common/FAQCard/styles.ts
-*/
-
 import styled from "styled-components";
 
 export const CardContainer = styled.div<{ $isOpen: boolean }>`
@@ -99,7 +85,6 @@ export const AnswerContent = styled.div`
   }
 `;
 
-/* English: New styled component for the inline rune SVGs / Explicação em português aqui: Novo componente estilizado para os SVGs rúnicos em linha */
 export const RuneSvg = styled.svg`
   width: 0.75em;
   height: 1em;

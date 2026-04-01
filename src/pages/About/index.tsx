@@ -1,18 +1,10 @@
-/*
- English: 
- Complete About page. Reintegrates the Steam Emulator text, the heavy GIFs, and the Early Access Q&A section into a dedicated route.
- 
- Explicação em português aqui: 
- Página About completa. Reintegra o texto do Emulador da Steam, os GIFs pesados e a seção de Q&A do Acesso Antecipado numa rota dedicada.
-*/
-
 import React from "react";
 import * as S from "./styles";
 
-import combat1Gif from "../../assets/TheDarkWest_Combat1.gif";
-import combat2Gif from "../../assets/TheDarkWest_Combat2.gif";
-import townGif from "../../assets/TheDarkWest_Town.gif";
-import witchGif from "../../assets/TheDarkWest_Witch1.gif";
+import combat1Gif from "../../assets/TheDarkWest_Combat1.webm";
+import combat2Gif from "../../assets/TheDarkWest_Combat2.webm";
+import townGif from "../../assets/TheDarkWest_Town.webm";
+import witchGif from "../../assets/TheDarkWest_Witch1.webm";
 
 const About: React.FC = () => {
   return (

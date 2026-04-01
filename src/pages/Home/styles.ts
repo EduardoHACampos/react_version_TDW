@@ -1,15 +1,3 @@
-/*
- English: 
- Complete styles for the Home page (Single-screen landing page).
- Includes all original containers, the video wrapper, and the new bottom action links with GOLDEN hover effects.
- The links are now visible by default (light grey) and glow gold on hover.
- 
- Explicação em português aqui: 
- Estilos completos para a página Home (Landing page de ecrã único).
- Inclui todos os contentores originais, o wrapper do vídeo e os novos links de ação inferiores com efeitos de hover DOURADO.
- Os links estão agora visíveis por defeito (cinzento claro) e brilham em dourado ao passar o rato.
-*/
-
 import styled, { css } from "styled-components";
 import heroBackground from "../../assets/KeyartTheDarkWestFinalFasepaintover.png";
 
@@ -32,16 +20,16 @@ export const HeroSection = styled.section`
   width: 100%;
   box-sizing: border-box;
   padding: 3rem 1rem; 
-
+  background-position: 75% center;
   @media (min-width: 1024px) {
     padding: 3rem 2rem; 
   }
 
-  background-image:
-    radial-gradient(circle, rgba(0, 0, 0, 0.2) 40%, rgba(0, 0, 0, 0.8) 100%),
+  background-image: 
+    radial-gradient(circle, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.7) 100%), 
     url(${heroBackground});
   background-size: cover;
-  background-position: center;
+  background-position: 80% center;
   background-repeat: no-repeat;
 `;
 
@@ -242,7 +230,6 @@ const highlightHoverEffect = css`
     opacity: 1;
     transform: scale(1.05);
     
-    /* English: GOLD gradient for text on hover / Explicação em português aqui: Gradiente DOURADO para o texto no hover */
     background: linear-gradient(
       to right,
       var(--color-gradient-start, #fceabb),
@@ -254,7 +241,6 @@ const highlightHoverEffect = css`
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 0 10px var(--color-gold-shadow));
 
-    /* English: Golden tint for the icons on hover / Explicação em português aqui: Tom dourado para os ícones no hover */
     img {
       filter: drop-shadow(0 0 10px var(--color-gold-shadow)) brightness(1.2) sepia(1) hue-rotate(35deg) saturate(3);
     }
@@ -271,7 +257,6 @@ const actionTextStructure = css`
   text-transform: uppercase;
   cursor: pointer;
   
-  /* English: Default visible state (White/Grey) / Explicação em português aqui: Estado visível por defeito (Branco/Cinzento) */
   color: #c7d5e0; 
   background: none;
   -webkit-text-fill-color: initial;
@@ -298,4 +283,115 @@ export const ActionButton = styled.button`
   border: none;
   padding: 0;
   outline: none;
+`;
+export const FloatingTwitchContainer = styled.aside`
+  display: none; 
+
+  @media (min-width: 1400px) {
+    display: flex;
+    flex-direction: column;
+    
+    position: fixed;
+    left: 2rem;
+    bottom: 2rem;
+    z-index: 50; 
+    
+    /* Fundo mais escuro e integrado com o tema / Darker background integrated with theme */
+    background: rgba(15, 15, 20, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 1.2rem;
+    border-radius: 12px;
+    border: 1px solid rgba(167, 150, 255, 0.3); /* Volta ao Roxo / Back to Purple */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    transition: opacity 0.3s ease;
+  }
+`;
+
+export const TwitchHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(167, 150, 255, 0.2); /* Volta ao Roxo / Back to Purple */
+  padding-bottom: 0.5rem;
+`;
+
+export const FloatingStreamTitle = styled.h4`
+  color: #fff; /* Título Branco Limpo / Clean White Title */
+  font-family: var(--font-primary);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+  display: block;
+
+  &::before {
+    display: none; 
+  }
+`;
+
+export const CloseTwitchButton = styled.button`
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5); /* Cinza claro discreto / Subtle light grey */
+  font-size: 1.8rem;
+  line-height: 0.8;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    color: var(--color-hover-purple); /* Hover Roxo / Purple Hover */
+    transform: scale(1.1);
+  }
+`;
+
+export const FloatingStreamWrapper = styled.div`
+  width: 280px; 
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(167, 150, 255, 0.2); /* Volta ao Roxo / Back to Purple */
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    border-color: var(--color-hover-purple); /* Hover Roxo / Purple Hover */
+    box-shadow: 0 0 15px rgba(167, 150, 255, 0.25);
+  }
+`;
+
+export const IframeWrapper = styled.div`
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+`;
+
+export const StreamerInfo = styled.div`
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  
+  span.name {
+    font-family: var(--font-primary);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+  }
+  
+  span.playing {
+    font-family: var(--font-primary);
+    color: var(--color-hover-purple); /* Texto Menor Roxo / Purple Subtext */
+    font-size: 0.85rem;
+  }
 `;

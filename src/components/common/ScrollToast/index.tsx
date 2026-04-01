@@ -16,7 +16,7 @@ const ScrollToast = ({
   text,
 }: ScrollToastProps) => {
   const handleCloseClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Impede que o clique no 'X' acione a rolagem
+    e.stopPropagation(); 
     onClose();
   };
 

@@ -1,15 +1,3 @@
-/*
- English: 
- Header component updated to implement the vector icon pointing down with proper spacing.
- Width constraint "5ch" was changed to "fit-content" to stop the text from compressing and overlapping the icon.
- 
- Explicação em português aqui: 
- Componente Header atualizado para implementar o ícone vetorial apontando para baixo com o espaçamento adequado.
- A restrição de largura "5ch" foi alterada para "fit-content" para evitar que o texto seja comprimido e sobreponha o ícone.
- 
- Caminho / Path: src/components/layout/Header/index.tsx
-*/
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { usePreloader } from "../../../hooks/usePreloader";
@@ -51,7 +39,6 @@ const Header = () => {
                 to="#"
                 label="GAME"
                 ready={!isLoading}
-                /* English: fit-content prevents squishing / Explicação em português aqui: fit-content previne o esmagamento */
                 width="fit-content"
                 canvasSize={23}
               />
@@ -64,7 +51,9 @@ const Header = () => {
               <S.DropdownItem to="/about" onClick={closeMenu}>
                 About
               </S.DropdownItem>
-
+              <S.DropdownItem to="/news" onClick={closeMenu}>
+                News
+              </S.DropdownItem>
               <S.DropdownItem to="/game/ladders" onClick={closeMenu}>
                 Ladders
               </S.DropdownItem>
@@ -88,7 +77,6 @@ const Header = () => {
                 to="#"
                 label="SHOP"
                 ready={!isLoading}
-                /* English: fit-content prevents squishing / Explicação em português aqui: fit-content previne o esmagamento */
                 width="fit-content"
                 canvasSize={23}
               />
@@ -98,16 +86,16 @@ const Header = () => {
               />
             </S.DropdownTrigger>
             <S.DropdownContent className="dropdown-content">
-              <S.DropdownItem to="/shop/purchase" onClick={closeMenu}>
+              <S.DropdownItem to="/coming-soon" onClick={closeMenu}>
                 Purchase Game
               </S.DropdownItem>
-              <S.DropdownItem to="/shop/founder-packs" onClick={closeMenu}>
+              <S.DropdownItem to="/coming-soon" onClick={closeMenu}>
                 Founder / Support Pack
               </S.DropdownItem>
-              <S.DropdownItem to="/shop/mtx" onClick={closeMenu}>
+              <S.DropdownItem to="/coming-soon" onClick={closeMenu}>
                 MTX
               </S.DropdownItem>
-              <S.DropdownItem to="/shop/expansions" onClick={closeMenu}>
+              <S.DropdownItem to="/coming-soon" onClick={closeMenu}>
                 Expansions
               </S.DropdownItem>
             </S.DropdownContent>

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { usePreloader } from "../../../hooks/usePreloader";
-import AppRoutes from "../../../routes/Routes"; // Mantive o nome do arquivo que você está usando
+import AppRoutes from "../../../routes/Routes"; 
 import * as S from "./styles";
 
 // Assets
@@ -24,7 +24,6 @@ const PageLayout = () => {
 
   useEffect(() => {
     const assetsForCurrentPage = currentBg ? [currentBg] : [];
-    // Passa o caminho da rota atual para a função de carregamento
     startLoading(location.pathname, assetsForCurrentPage);
   }, [location.pathname, startLoading]);
 

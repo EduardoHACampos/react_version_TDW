@@ -1,10 +1,3 @@
-/*
- English: 
- Complete Home component. Everything is wired up correctly with the full styles.
- 
- Explicação em português aqui: 
- Componente Home completo. Tudo está conectado corretamente com os estilos completos.
-*/
 
 import { useState } from "react";
 import * as S from "./styles";
@@ -15,11 +8,15 @@ import { submitJoinTheHuntForm } from "../../services/api";
 import mainLogo from "../../assets/TheDarkWest_Logo.png";
 import steamLogo from "../../assets/steam_logo.png";
 import discordIcon from "../../assets/Discord.png";
+import RuneAction from "../../components/common/RuneAction";
 
 import { joinHuntSchema } from "../../utils/schemas";
 
+const liveStreamers = ["playdarkwest"]; 
+
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTwitchVisible, setIsTwitchVisible] = useState(true); 
 
   const joinHuntFields: FormField[] = [
     {
@@ -52,15 +49,15 @@ const Home = () => {
 
         <S.VideoWrapper>
           <iframe
-            src="https://www.youtube.com/embed/JPFiWf1VkTg?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&iv_load_policy=3"
+            src="https://www.youtube.com/embed/JPFiWf1VkTg?autoplay=1&mute=1"
             title="The Dark West - Official Reveal Trailer"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
           />
         </S.VideoWrapper>
-{/* 
-        <S.HuntButtonWrapper>
+
+        {/* <S.HuntButtonWrapper>
           <RuneAction
             text="JOIN THE HUNT"
             size={32}
@@ -76,7 +73,6 @@ const Home = () => {
             rel="noopener noreferrer"
           >
             <S.ActionIcon src={steamLogo} alt="Steam" className="steam-icon" />
-            
           </S.ActionLink>
 
           <S.ActionLink 
@@ -85,14 +81,38 @@ const Home = () => {
             rel="noopener noreferrer"
           >
             <S.ActionIcon src={discordIcon} alt="Discord" className="discord-icon" />
-            
           </S.ActionLink>
 
           <S.ActionButton onClick={() => setIsModalOpen(true)}>
             <S.ActionIcon src={discordIcon} alt="Newsletter" className="newsletter-icon" />
-           
           </S.ActionButton>
         </S.BottomActions>
+
+  
+        {liveStreamers.length > 0 && isTwitchVisible && (
+          <S.FloatingTwitchContainer>
+            <S.TwitchHeader>
+              <S.FloatingStreamTitle>Live Now</S.FloatingStreamTitle>
+              <S.CloseTwitchButton onClick={() => setIsTwitchVisible(false)} title="Close Stream">
+                &times;
+              </S.CloseTwitchButton>
+            </S.TwitchHeader>
+            
+            {liveStreamers.map((streamer) => (
+              <S.FloatingStreamWrapper key={streamer}>
+                <S.IframeWrapper>
+                  <iframe
+                    src={`https://player.twitch.tv/?channel=${streamer}&parent=localhost&muted=true`}
+                    allowFullScreen>
+                  </iframe>
+                </S.IframeWrapper>
+                <S.StreamerInfo>
+                  <span className="playing">Playing The Dark West</span>
+                </S.StreamerInfo>
+              </S.FloatingStreamWrapper>
+            ))}
+          </S.FloatingTwitchContainer>
+        )}
 
       </S.HeroSection>
 

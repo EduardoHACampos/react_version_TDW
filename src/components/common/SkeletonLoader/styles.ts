@@ -1,6 +1,5 @@
 import styled, { keyframes } from "styled-components";
 
-// Animação de brilho (shimmer)
 const shimmer = keyframes`
   100% {
     transform: translateX(100%);
@@ -10,12 +9,11 @@ const shimmer = keyframes`
 export const SkeletonWrapper = styled.div<{ width?: string; height?: string }>`
   position: relative;
   overflow: hidden;
-  background-color: #333; /* Cor base do skeleton */
+  background-color: #333; 
   width: ${({ width }) => width || "100%"};
   height: ${({ height }) => height || "20px"};
   border-radius: 4px;
 
-  /* Pseudo-elemento que cria o efeito de brilho */
   &::after {
     content: "";
     position: absolute;

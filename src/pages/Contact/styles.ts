@@ -1,13 +1,11 @@
 import styled, { keyframes } from "styled-components";
 
-/** Flip real (igual JOIN THE HUNT / Header): 0 → 180 → 0 */
 const flipAndBack = keyframes`
   0%   { transform: rotateX(0deg); }
   50%  { transform: rotateX(180deg); }
   100% { transform: rotateX(0deg); }
 `;
 
-/** Texto normal some no meio do flip (sem “fade preto”) */
 const frontTransient = keyframes`
   0%   { opacity: 1; }
   40%  { opacity: 1; }
@@ -17,7 +15,6 @@ const frontTransient = keyframes`
   100% { opacity: 1; }
 `;
 
-/** Runas aparecem durante o flip e somem no final */
 const runeTransient = keyframes`
   0%   { opacity: 1; }
   70%  { opacity: 1; }
@@ -47,7 +44,6 @@ export const ModalTrigger = styled.span`
   position: relative;
   margin: 0 5px;
 
-  /* ✅ perspectiva no elemento clicável */
   perspective: 1000px;
 
   .flip-container {
@@ -95,7 +91,6 @@ export const ModalTrigger = styled.span`
     padding-top: 3px;
     pointer-events: none;
 
-    /* ✅ runas invisíveis fora do flip */
     opacity: 0;
 
     canvas {
@@ -106,20 +101,17 @@ export const ModalTrigger = styled.span`
     }
   }
 
-  /* ✅ o giro acontece no container (flip real) */
   &:hover .flip-container,
   &:focus-visible .flip-container {
     animation: ${flipAndBack} 0.6s ease-in-out both;
   }
 
-  /* ✅ texto some no meio, sem “fade preto” */
   &:hover .front,
   &:focus-visible .front {
     animation: ${frontTransient} 0.6s steps(1, end) both;
     color: var(--color-hover-purple);
   }
 
-  /* ✅ runas aparecem durante o flip */
   &:hover .back,
   &:focus-visible .back {
     opacity: 1;

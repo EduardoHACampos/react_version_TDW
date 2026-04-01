@@ -25,7 +25,6 @@ export interface ApplyFormData {
   jobName: string;
 }
 
-// --- Nova função para se aplicar a uma vaga ---
 export const applyToJob = async (jobId: number, data: ApplyFormData) => {
   try {
     const response = await httpClient.post(`/jobs/${jobId}/apply`, data);
@@ -36,7 +35,6 @@ export const applyToJob = async (jobId: number, data: ApplyFormData) => {
   }
 };
 
-// --- Dados para o formulário de contato ---
 export interface ContactFormData {
   name: string;
   email: string;
@@ -53,7 +51,6 @@ export const submitContactForm = async (data: ContactFormData) => {
   }
 };
 
-// --- Dados para o formulário "Join The Hunt" ---
 export interface HuntFormData {
   name: string;
   email: string;

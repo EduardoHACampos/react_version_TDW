@@ -5,7 +5,6 @@ Corrected to include missing Instagram icon and maintain Mobile First layout.
 Componente principal do rodapé com links de navegação agrupados e área inferior de branding/socials.
 Corrigido para incluir o ícone do Instagram faltante e manter o layout Mobile First.
 */
-import { Link } from "react-router-dom";
 import * as S from "./styles";
 import FooterColumn from "./FooterColumn";
 
