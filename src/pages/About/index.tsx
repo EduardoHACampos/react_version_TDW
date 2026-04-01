@@ -19,20 +19,48 @@ const About: React.FC = () => {
             <strong>The Dark West</strong> is an Action RPG that challenges both your skill and sanity.
           </S.Paragraph>
           
-          <S.GifImage src={combat1Gif} alt="Fast paced action combat in The Dark West" loading="lazy" />
+          <S.GifImage 
+            src={combat1Gif} 
+            aria-label="Fast paced action combat in The Dark West" 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+          />
           
           <S.Paragraph>
             Face a cursed western frontier, where faith and damnation war beneath an eternal dusk.
           </S.Paragraph>
 
-          <S.GifImage src={townGif} alt="A gloomy, cursed western town" loading="lazy" />
+          <S.GifImage 
+            src={townGif} 
+            aria-label="A gloomy, cursed western town" 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+          />
 
           <S.Paragraph>
             Your choices will carve a path through a world where greed unearthed something fouler than death.
           </S.Paragraph>
 
-          <S.GifImage src={witchGif} alt="Occult rituals and witchcraft" loading="lazy" />
-          <S.GifImage src={combat2Gif} alt="Intense gunfight and magic combat" loading="lazy" />
+          <S.GifImage 
+            src={witchGif} 
+            aria-label="Occult rituals and witchcraft" 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+          />
+          <S.GifImage 
+            src={combat2Gif} 
+            aria-label="Intense gunfight and magic combat" 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+          />
           
         </S.SectionBlock>
 
