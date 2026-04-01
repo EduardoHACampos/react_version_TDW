@@ -20,7 +20,7 @@ export const HeroSection = styled.section`
   width: 100%;
   box-sizing: border-box;
   padding: 3rem 1rem; 
-  background-position: 75% center;
+
   @media (min-width: 1024px) {
     padding: 3rem 2rem; 
   }
@@ -213,13 +213,13 @@ export const ActionIcon = styled.img`
   }
 
   &.discord-icon {
-    width: 48px; /* Tamanho original proporcional ao da Steam / Original size proportional to Steam */
+    width: 48px;
     height: 48px;
     filter: brightness(0.9);
   }
 
   &.newsletter-icon {
-    width: 36px; /* Ajustado para acompanhar os outros / Adjusted to match the others */
+    width: 36px;
     height: 36px;
     filter: brightness(0.9);
   }
@@ -239,10 +239,11 @@ const highlightHoverEffect = css`
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 10px var(--color-gold-shadow));
+    
+    filter: drop-shadow(0 0 4px rgba(248, 181, 0, 0.3));
 
     img {
-      filter: drop-shadow(0 0 10px var(--color-gold-shadow)) brightness(1.2) sepia(1) hue-rotate(35deg) saturate(3);
+      filter: drop-shadow(0 0 5px rgba(248, 181, 0, 0.5)) brightness(1.05);
     }
   }
 `;
@@ -284,6 +285,7 @@ export const ActionButton = styled.button`
   padding: 0;
   outline: none;
 `;
+
 export const FloatingTwitchContainer = styled.aside`
   display: none; 
 
@@ -296,13 +298,12 @@ export const FloatingTwitchContainer = styled.aside`
     bottom: 2rem;
     z-index: 50; 
     
-    /* Fundo mais escuro e integrado com o tema / Darker background integrated with theme */
     background: rgba(15, 15, 20, 0.85);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     padding: 1.2rem;
     border-radius: 12px;
-    border: 1px solid rgba(167, 150, 255, 0.3); /* Volta ao Roxo / Back to Purple */
+    border: 1px solid rgba(167, 150, 255, 0.3);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
     transition: opacity 0.3s ease;
   }
@@ -313,12 +314,12 @@ export const TwitchHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
-  border-bottom: 1px solid rgba(167, 150, 255, 0.2); /* Volta ao Roxo / Back to Purple */
+  border-bottom: 1px solid rgba(167, 150, 255, 0.2);
   padding-bottom: 0.5rem;
 `;
 
 export const FloatingStreamTitle = styled.h4`
-  color: #fff; /* Título Branco Limpo / Clean White Title */
+  color: #fff;
   font-family: var(--font-primary);
   font-size: 0.9rem;
   text-transform: uppercase;
@@ -334,7 +335,7 @@ export const FloatingStreamTitle = styled.h4`
 export const CloseTwitchButton = styled.button`
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.5); /* Cinza claro discreto / Subtle light grey */
+  color: rgba(255, 255, 255, 0.5);
   font-size: 1.8rem;
   line-height: 0.8;
   padding: 0;
@@ -342,56 +343,35 @@ export const CloseTwitchButton = styled.button`
   transition: color 0.3s ease, transform 0.2s ease;
 
   &:hover {
-    color: var(--color-hover-purple); /* Hover Roxo / Purple Hover */
+    color: var(--color-hover-purple);
     transform: scale(1.1);
   }
 `;
 
 export const FloatingStreamWrapper = styled.div`
-  width: 280px; 
+  width: 320px; 
   border-radius: 6px;
   overflow: hidden;
-  border: 1px solid rgba(167, 150, 255, 0.2); /* Volta ao Roxo / Back to Purple */
+  border: 1px solid rgba(167, 150, 255, 0.2); 
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
-    border-color: var(--color-hover-purple); /* Hover Roxo / Purple Hover */
+    border-color: var(--color-hover-purple); 
     box-shadow: 0 0 15px rgba(167, 150, 255, 0.25);
   }
 `;
 
 export const IframeWrapper = styled.div`
   width: 100%;
-  aspect-ratio: 16 / 9;
+  height: 220px; 
   
   iframe {
     width: 100%;
     height: 100%;
     border: none;
     display: block;
-  }
-`;
-
-export const StreamerInfo = styled.div`
-  padding: 0.8rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  
-  span.name {
-    font-family: var(--font-primary);
-    color: #fff;
-    font-size: 1rem;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-  }
-  
-  span.playing {
-    font-family: var(--font-primary);
-    color: var(--color-hover-purple); /* Texto Menor Roxo / Purple Subtext */
-    font-size: 0.85rem;
   }
 `;

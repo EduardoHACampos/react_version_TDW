@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import * as S from "./styles";
 
@@ -8,6 +7,7 @@ import { submitJoinTheHuntForm } from "../../services/api";
 import mainLogo from "../../assets/TheDarkWest_Logo.png";
 import steamLogo from "../../assets/steam_logo.png";
 import discordIcon from "../../assets/Discord.png";
+
 import { joinHuntSchema } from "../../utils/schemas";
 
 const liveStreamers = ["playdarkwest"]; 
@@ -15,6 +15,7 @@ const liveStreamers = ["playdarkwest"];
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTwitchVisible, setIsTwitchVisible] = useState(true); 
+  const currentDomain = window.location.hostname;
 
   const joinHuntFields: FormField[] = [
     {
@@ -71,6 +72,7 @@ const Home = () => {
             rel="noopener noreferrer"
           >
             <S.ActionIcon src={steamLogo} alt="Steam" className="steam-icon" />
+            
           </S.ActionLink>
 
           <S.ActionLink 
@@ -79,6 +81,7 @@ const Home = () => {
             rel="noopener noreferrer"
           >
             <S.ActionIcon src={discordIcon} alt="Discord" className="discord-icon" />
+            
           </S.ActionLink>
 
           <S.ActionButton onClick={() => setIsModalOpen(true)}>
@@ -86,7 +89,6 @@ const Home = () => {
           </S.ActionButton>
         </S.BottomActions>
 
-  
         {liveStreamers.length > 0 && isTwitchVisible && (
           <S.FloatingTwitchContainer>
             <S.TwitchHeader>
@@ -100,13 +102,10 @@ const Home = () => {
               <S.FloatingStreamWrapper key={streamer}>
                 <S.IframeWrapper>
                   <iframe
-                    src={`https://player.twitch.tv/?channel=${streamer}&parent=localhost&muted=true`}
+                    src={`https://player.twitch.tv/?channel=${streamer}&parent=${currentDomain}&muted=true`}
                     allowFullScreen>
                   </iframe>
                 </S.IframeWrapper>
-                <S.StreamerInfo>
-                  <span className="playing">Playing The Dark West</span>
-                </S.StreamerInfo>
               </S.FloatingStreamWrapper>
             ))}
           </S.FloatingTwitchContainer>
