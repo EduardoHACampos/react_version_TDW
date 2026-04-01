@@ -69,14 +69,13 @@ export const ModalHeader = styled.div`
   margin-bottom: var(--spacing-lg);
 
   h2 {
-    /* 👇 MUDANÇA: Agora usa Baskervville para leitura clara */
     font-family: var(--font-primary);
-    font-weight: bold; /* Bold para manter hierarquia de título */
+    font-weight: bold;
 
     font-size: var(--font-size-xl);
     color: var(
       --color-text-light
-    ); /* Cor Creme para leitura, ou use primary-text para Dourado */
+    ); 
     margin-bottom: var(--spacing-sm);
 
     @media (min-width: 768px) {

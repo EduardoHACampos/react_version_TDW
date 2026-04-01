@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { submitContactForm } from "../../services/api";
 import { toast } from "react-toastify";
 import * as S from "./styles";
 
-// Importando os componentes reutilizáveis necessários
 import Modal, { FormField } from "../../components/common/Modal";
 import SectionTextBlock from "../../components/common/SectionTextBlock";
 import { contactSchema } from "../../utils/schemas";
-import OccultText from "../../components/common/OccultText";
+import RuneCanvas, { RuneCanvasHandle } from "../../components/common/RuneCanvas";
 
 const Contact = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const runeRef = useRef<RuneCanvasHandle>(null);
 
   const contactModalFields: FormField[] = [
     { name: "name", label: "Name", type: "text", required: true },
@@ -41,16 +41,25 @@ const Contact = () => {
           title="Make Your Mark"
           p1="The frontier isn’t built alone. Whether you’re looking to invest, collaborate, or ride alongside us, there’s a seat for you by the campfire."
           p2={
-            <>
-              <S.ModalTrigger onClick={() => setIsModalOpen(true)}>
-                <span className="flip-container">
-                  <span className="front">CONTACT</span>
-                  <span className="back">
-                    <OccultText text="CONTACT" />
-                  </span>
+            <S.ModalTrigger
+              role="button"
+              tabIndex={0}
+              onClick={() => setIsModalOpen(true)}
+              onMouseEnter={() => runeRef.current?.kick(6)}
+              onFocus={() => runeRef.current?.kick(6)}
+            >
+              <span className="flip-container">
+                <span className="front">CONTACT</span>
+                <span className="back" aria-hidden="true">
+                  <RuneCanvas
+                    ref={runeRef}
+                    text="CONTACT"
+                    size={24}
+                    color="currentColor"
+                  />
                 </span>
-              </S.ModalTrigger>
-            </>
+              </span>
+            </S.ModalTrigger>
           }
         />
       </S.PageContainer>

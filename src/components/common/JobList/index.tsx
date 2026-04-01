@@ -6,7 +6,7 @@ import JobCardSkeleton from "./JobCardSkeleton";
 
 interface JobListProps {
   onJobClick: (job: Job) => void;
-  jobs?: Job[]; // Prop opcional para dados estáticos
+  jobs?: Job[]; 
 }
 
 const JobList = ({ onJobClick, jobs: staticJobs }: JobListProps) => {
@@ -15,14 +15,12 @@ const JobList = ({ onJobClick, jobs: staticJobs }: JobListProps) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Se dados estáticos forem fornecidos, use-os.
     if (staticJobs) {
       setJobs(staticJobs);
       setLoading(false);
       return;
     }
 
-    // Caso contrário, busque da API.
     const fetchJobs = async () => {
       try {
         setLoading(true);

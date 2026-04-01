@@ -1,96 +1,126 @@
-import styled, { keyframes } from "styled-components";
+import styled, { css } from "styled-components";
 import heroBackground from "../../assets/KeyartTheDarkWestFinalFasepaintover.png";
-
-const flipAndBack = keyframes`
-  0% { transform: rotateX(0deg); }
-  50% { transform: rotateX(180deg); }
-  100% { transform: rotateX(360deg); }
-`;
 
 export const HomeContainer = styled.div`
   width: 100%;
-  padding-top: 80px;
+  min-height: 100vh;
+  padding-top: 80px; /* Header Offset / Compensação do Header */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const HeroSection = styled.section`
+  flex: 1;
   position: relative;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  height: 800px;
-  gap: var(--spacing-lg);
+  box-sizing: border-box;
+  padding: 3rem 1rem; 
 
-  background-image:
-    radial-gradient(circle, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.7) 100%),
+  @media (min-width: 1024px) {
+    padding: 3rem 2rem; 
+  }
+
+  background-image: 
+    radial-gradient(circle, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.7) 100%), 
     url(${heroBackground});
   background-size: cover;
-  background-position: 80%;
+  background-position: 80% center;
   background-repeat: no-repeat;
-  justify-content: space-between;
-  @media (min-width: 2560px) {
-    height: 1100px;
-  }
 `;
 
 export const MainTitle = styled.img`
-  max-width: 420px;
-  width: calc(100% - 32px);
-  margin: 0 auto;
-  text-align: center;
-  padding: 2rem 0;
+  max-width: 280px;
+  width: 100%;
+  margin-bottom: 2.5rem;
+  
+  @media (min-width: 768px) {
+    max-width: 350px;
+    margin-bottom: 3.5rem;
+  }
+`;
+
+export const VideoWrapper = styled.div`
+  width: 100%;
+  max-width: 640px;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(167, 150, 255, 0.2);
+  margin-bottom: 2rem;
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 760px;
+  }
 `;
 
 export const HuntButtonWrapper = styled.div`
   display: flex;
   width: 100%;
-  height: 80px;
-  background-color: rgb(0 0 0 / 50%);
   text-align: center;
   justify-content: center;
   align-items: center;
-  margin-top: var(--spacing-sm);
+  margin-bottom: 4rem; 
 
-  a {
-    position: relative;
-    display: flex;
+  .hunt-rune-action {
+    width: auto;
+    height: auto;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    text-decoration: none;
-    cursor: pointer;
     background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
     perspective: 1000px;
-    transition:
-      transform 0.3s,
-      filter 0.3s;
+    transform-style: preserve-3d;
     filter: drop-shadow(0 0 8px var(--color-gold-shadow));
+    transition: transform 0.3s ease, filter 0.3s ease;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform;
     transform: translateZ(0);
   }
 
-  a .flip-container {
+  .hunt-rune-action:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 15px var(--color-gold-shadow));
+  }
+
+  .hunt-rune-action .flip-container {
     position: relative;
     display: inline-block;
-    width: 280px; /* Reduzido de 350px para caber em 320px com margens */
+    width: 280px;
     height: 50px;
     transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     will-change: transform;
+    transform-origin: center;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: visible;
 
     @media (min-width: 375px) {
-      width: 320px; /* Aumenta ligeiramente em telemóveis maiores */
+      width: 320px;
     }
-
     @media (min-width: 768px) {
-      width: 400px; /* Largura original para desktop */
+      width: 400px;
     }
   }
 
-  a .front,
-  a .back {
+  .hunt-rune-action .front,
+  .hunt-rune-action .back {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -102,16 +132,13 @@ export const HuntButtonWrapper = styled.div`
     white-space: nowrap;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    transform: translateZ(0.1px);
-
-    transition: background-image 0.3s;
+    transform: translateZ(0);
   }
 
-  a .front {
+  .hunt-rune-action .front {
     font-family: var(--font-heading);
     font-size: var(--font-size-xl);
     transform: rotateX(0deg);
-
     background: linear-gradient(
       to right,
       var(--color-gradient-start),
@@ -119,94 +146,232 @@ export const HuntButtonWrapper = styled.div`
       var(--color-gradient-end)
     );
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 6px var(--color-gold-shadow));
+    transition: background 0.3s ease, filter 0.3s ease;
   }
 
-  a .back {
-    font-family: var(--font-witchcraft);
-    font-size: 2rem;
-    padding-top: 5px;
+  .hunt-rune-action .back {
     transform: rotateX(180deg);
+    padding-top: 3px;
+    color: var(--color-hover-purple);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform;
 
-    background: var(--color-hover-purple);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    canvas {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      will-change: transform;
+      transform: translateZ(0);
+    }
   }
 
-  a:hover {
-    transform: scale(1.05);
-    filter: drop-shadow(0 0 15px var(--color-gold-shadow));
-  }
-
-  /* Ciclo de animação configurado para 0.6s para aumentar o dinamismo visual */
-  a:hover .flip-container {
-    animation: ${flipAndBack} 0.6s ease-in-out forwards;
-  }
-
-  a:hover .front {
-    background-image: linear-gradient(
+  .hunt-rune-action:hover .front {
+    background: linear-gradient(
       to right,
       var(--color-hover-purple),
       #c4b5fd
     );
-    /* Transição de cor sincronizada com o ponto médio da rotação (0.4s) */
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     transition-delay: 0.4s;
   }
 
   @media (min-width: 768px) {
-    a .front {
+    .hunt-rune-action .front {
       font-size: var(--font-size-xxl);
     }
   }
 `;
 
-export const PlatformContainer = styled.div`
+export const BottomActions = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: auto; 
+  padding-bottom: 2rem;
   align-items: center;
-  justify-content: center;
-  padding-bottom: var(--spacing-md);
-  margin-bottom: 2rem;
-  gap: 2rem;
 
-  img {
-    display: block;
-    object-fit: contain;
-    width: 120px;
-    height: 65px;
-  }
-
-  a:nth-child(2) img {
-    width: 48px;
-    height: 48px;
+  @media (min-width: 768px) {
+    flex-direction: row;
+    gap: 3rem;
   }
 `;
 
-export const TrailerSection = styled.section`
+export const ActionIcon = styled.img`
+  display: block;
+  object-fit: contain;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  
+  &.steam-icon {
+    width: 120px;
+    height: 65px;
+    filter: brightness(0.9);
+  }
+
+  &.discord-icon {
+    width: 48px;
+    height: 48px;
+    filter: brightness(0.9);
+  }
+
+  &.newsletter-icon {
+    width: 36px;
+    height: 36px;
+    filter: brightness(0.9);
+  }
+`;
+
+const highlightHoverEffect = css`
+  &:hover {
+    opacity: 1;
+    transform: scale(1.05);
+    
+    background: linear-gradient(
+      to right,
+      var(--color-gradient-start, #fceabb),
+      var(--color-gradient-middle, #f8b500),
+      var(--color-gradient-end, #fceabb)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    filter: drop-shadow(0 0 4px rgba(248, 181, 0, 0.3));
+
+    img {
+      filter: drop-shadow(0 0 5px rgba(248, 181, 0, 0.5)) brightness(1.05);
+    }
+  }
+`;
+
+const actionTextStructure = css`
   display: flex;
-  justify-content: center;
   align-items: center;
+  gap: 0.75rem; 
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  
+  color: #c7d5e0; 
+  background: none;
+  -webkit-text-fill-color: initial;
+  filter: none;
+  opacity: 0.85; 
+  
+  transition: transform 0.3s ease, filter 0.3s ease, background 0.3s ease, opacity 0.3s ease, color 0.3s ease;
+
+  ${highlightHoverEffect}
+
+  @media (min-width: 768px) {
+    font-size: 1.3rem;
+  }
+`;
+
+export const ActionLink = styled.a`
+  ${actionTextStructure}
+  text-decoration: none;
+`;
+
+export const ActionButton = styled.button`
+  ${actionTextStructure}
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+`;
+
+export const FloatingTwitchContainer = styled.aside`
+  display: none; 
+
+  @media (min-width: 1400px) {
+    display: flex;
+    flex-direction: column;
+    
+    position: fixed;
+    left: 2rem;
+    bottom: 2rem;
+    z-index: 50; 
+    
+    background: rgba(15, 15, 20, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 1.2rem;
+    border-radius: 12px;
+    border: 1px solid rgba(167, 150, 255, 0.3);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    transition: opacity 0.3s ease;
+  }
+`;
+
+export const TwitchHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(167, 150, 255, 0.2);
+  padding-bottom: 0.5rem;
+`;
+
+export const FloatingStreamTitle = styled.h4`
+  color: #fff;
+  font-family: var(--font-primary);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+  display: block;
+
+  &::before {
+    display: none; 
+  }
+`;
+
+export const CloseTwitchButton = styled.button`
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.8rem;
+  line-height: 0.8;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    color: var(--color-hover-purple);
+    transform: scale(1.1);
+  }
+`;
+
+export const FloatingStreamWrapper = styled.div`
+  width: 320px; 
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(167, 150, 255, 0.2); 
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    border-color: var(--color-hover-purple); 
+    box-shadow: 0 0 15px rgba(167, 150, 255, 0.25);
+  }
+`;
+
+export const IframeWrapper = styled.div`
   width: 100%;
-  height: 560px;
-  padding: 3rem 0;
-  background: var(--color-background-dark);
-
-  .trailer-video {
+  height: 220px; 
+  
+  iframe {
     width: 100%;
-    max-width: 320px;
-    height: 180px;
-    border-radius: var(--border-radius-md);
-
-    @media (min-width: 768px) {
-      max-width: 600px;
-      height: 338px;
-    }
-
-    @media (min-width: 1024px) {
-      max-width: 900px;
-      height: 506px;
-    }
+    height: 100%;
+    border: none;
+    display: block;
   }
 `;

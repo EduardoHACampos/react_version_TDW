@@ -9,23 +9,20 @@ export const Wrapper = styled.div<{
   align-items: center;
   justify-content: center;
   gap: var(--spacing-md);
-  padding: var(--spacing-lg) 15px; /* Adicionado padding lateral de segurança */
+  padding: var(--spacing-lg) 15px; 
 
   width: ${({ mobileWidth }) => mobileWidth || "100%"};
-  max-width: 100vw; /* Garante que nunca ultrapassa a largura da janela */
-  box-sizing: border-box; /* Garante que o padding não aumente a largura total */
-
+  max-width: 100vw; 
+  box-sizing: border-box; 
   @media (min-width: 768px) {
     width: ${({ desktopWidth }) => desktopWidth || "auto"};
   }
 `;
 
 export const Title = styled.h1`
-  /* 👇 MUDANÇA: Títulos agora em Baskervville (Legível e Clássico) */
   font-family: var(--font-primary);
-  font-weight: bold; /* Peso bold para destacar como título */
+  font-weight: bold; 
 
-  /* 👇 MUDANÇA: Dourado para diferenciar do texto comum (que é Creme) */
   color: var(--color-primary-text);
 
   font-size: var(--font-size-xxl);
