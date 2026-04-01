@@ -1,10 +1,17 @@
 /*
-Main Footer component with grouped navigation links and bottom branding/socials area.
-Corrected to include missing Instagram icon and maintain Mobile First layout.
-
-Componente principal do rodapé com links de navegação agrupados e área inferior de branding/socials.
-Corrigido para incluir o ícone do Instagram faltante e manter o layout Mobile First.
+ English: 
+ Main Footer component updated based on the visual guide.
+ - Unfinished pages (marked with Red X) are now redirected to "/coming-soon".
+ - Functional pages (marked with Green Arrow) route to their respective pages or external URLs.
+ - Contact Support links directly to the "/contact" route.
+ 
+ Explicação em português aqui: 
+ Componente principal do rodapé atualizado com base no guia visual.
+ - Páginas inacabadas (marcadas com X Vermelho) estão agora redirecionadas para "/coming-soon".
+ - Páginas funcionais (marcadas com Seta Verde) encaminham para as suas respetivas páginas ou URLs externos.
+ - Contact Support aponta diretamente para a rota "/contact".
 */
+
 import * as S from "./styles";
 import FooterColumn from "./FooterColumn";
 
@@ -19,37 +26,37 @@ import youtubeIcon from "../../../assets/youtube-icon.svg";
 
 const Footer = () => {
   const playLinks = [
-    { label: "Download", to: "/game/download" },
-    { label: "Patch Notes", to: "/news/patch-notes" },
-    { label: "Supporter Packs", to: "/shop/supporter-packs" },
-    { label: "Steam Store", href: "https://store.steampowered.com" },
-    { label: "Twitch Drops", to: "/events/twitch-drops" },
+    { label: "Download", to: "/coming-soon" },
+    { label: "Patch Notes", to: "/news" },
+    { label: "Supporter Packs", to: "/coming-soon" },
+    { label: "Steam Store", href: "https://store.steampowered.com/app/3574750/The_Dark_West/" },
+    { label: "Twitch Drops", to: "/coming-soon" },
   ];
 
   const learnLinks = [
-    { label: "Skill System", to: "/wiki/skills" },
-    { label: "Items & Crafting", to: "/wiki/items" },
-    { label: "End Game", to: "/wiki/endgame" },
-    { label: "Classes", to: "/wiki/classes" },
-    { label: "World & Story", to: "/wiki/lore" },
+    { label: "Skill System", to: "/coming-soon" },
+    { label: "Items & Crafting", to: "/coming-soon" },
+    { label: "End Game", to: "/coming-soon" },
+    { label: "Classes", to: "/coming-soon" },
+    { label: "World & Story", to: "/coming-soon" },
   ];
 
   const visualLinks = [
-    { label: "Wallpapers", to: "/media/wallpapers" },
-    { label: "PNG's", to: "/media/pngs" },
-    { label: "Mobile / Desktop", to: "/media/formatted" },
+    { label: "Wallpapers", to: "/coming-soon" },
+    { label: "PNG's", to: "/coming-soon" },
+    { label: "Mobile / Desktop", to: "/coming-soon" },
   ];
 
   const hangOutLinks = [
-    { label: "Forum", href: "https://forum.playdarkwest.com" },
-    { label: "Discord", href: "https://discord.com/invite/47YskyYJcy" },
+    { label: "Forum", to: "/coming-soon" },
+    { label: "Discord", href: "https://discord.gg/47YskyYJcy" },
     { label: "r/TheDarkWest", href: "https://www.reddit.com/r/TheDarkWest/" },
   ];
 
   const otherLinks = [
     { label: "Careers", to: "/opportunities" },
     { label: "Contact Support", to: "/contact" },
-    { label: "Code of Conduct", to: "/legal/eula" },
+    { label: "Code of Conduct", to: "/coming-soon" },
   ];
 
   return (

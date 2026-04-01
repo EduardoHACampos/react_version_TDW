@@ -6,6 +6,17 @@ const pulse = keyframes`
   100% { opacity: 0.6; }
 `;
 
+const fadeIn = keyframes`
+  from { 
+    opacity: 0; 
+    transform: translateY(15px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+`;
+
 export const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -16,6 +27,13 @@ export const PageContainer = styled.div`
   padding: 2rem;
   text-align: center;
   margin-top: 80px;
+`;
+
+export const ContentFadeIn = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: ${fadeIn} 0.5s ease-out;
 `;
 
 export const IconWrapper = styled.div`

@@ -84,7 +84,7 @@ const Home = () => {
           </S.ActionLink>
 
           <S.ActionButton onClick={() => setIsModalOpen(true)}>
-            <S.ActionIcon src={discordIcon} alt="Newsletter" className="newsletter-icon" />
+            Newsletter
           </S.ActionButton>
         </S.BottomActions>
 
