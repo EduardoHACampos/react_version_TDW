@@ -15,6 +15,7 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import Loader from "./components/common/Loader";
 import PageLayout from "./components/layout/PageLayout";
+import ScrollToTop from "./components/common/ScrollToTop";
 
 const AppContent = () => {
   const { isLoading } = useContext(PreloadContext)!;
@@ -42,6 +43,7 @@ const App = () => {
       <Router>
         <GlobalResetStyle />
         <GlobalStyle />
+        <ScrollToTop />
         <AppContent />
         <ToastContainer
           position="bottom-right"

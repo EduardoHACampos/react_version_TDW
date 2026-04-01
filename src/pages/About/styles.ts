@@ -49,7 +49,7 @@ export const Paragraph = styled.p`
   }
 `;
 
-export const GifImage = styled.img`
+export const GifImage = styled.video`
   width: 100%;
   height: auto;
   border-radius: 4px;
