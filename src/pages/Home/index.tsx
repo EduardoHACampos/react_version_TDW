@@ -8,8 +8,6 @@ import { submitJoinTheHuntForm } from "../../services/api";
 import mainLogo from "../../assets/TheDarkWest_Logo.png";
 import steamLogo from "../../assets/steam_logo.png";
 import discordIcon from "../../assets/Discord.png";
-import RuneAction from "../../components/common/RuneAction";
-
 import { joinHuntSchema } from "../../utils/schemas";
 
 const liveStreamers = ["playdarkwest"]; 
