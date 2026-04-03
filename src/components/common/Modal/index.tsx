@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
-import { ZodSchema } from "zod"; 
+import { ZodSchema } from "zod";
 import * as S from "./styles";
+import { ApiClientError } from "../../../services/httpClient";
 
 import closeIcon from "../../../assets/xmark.svg";
 import Button from "../Button";
@@ -37,11 +38,12 @@ const Modal = ({
   onSubmit,
   successMessage = "Sent successfully!",
   errorMessage = "An error occurred. Please try again.",
-  validationSchema, // Recebendo o schema
+  validationSchema,
 }: ModalProps) => {
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionMessage, setSubmissionMessage] = useState(errorMessage);
   const [submissionStatus, setSubmissionStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
@@ -52,6 +54,7 @@ const Modal = ({
     } else {
       document.body.style.overflow = "unset";
     }
+
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -66,11 +69,13 @@ const Modal = ({
         },
         {} as Record<string, string>,
       );
+
       setFormData(initialFormState);
-      setErrors({}); // Limpa erros
+      setErrors({});
+      setSubmissionMessage(errorMessage);
       setSubmissionStatus("idle");
     }
-  }, [isOpen, fields]);
+  }, [isOpen, fields, errorMessage]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -81,13 +86,22 @@ const Modal = ({
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
+
+    if (submissionStatus === "error") {
+      setSubmissionStatus("idle");
+      setSubmissionMessage(errorMessage);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const sanitizedFormData = Object.fromEntries(
+      Object.entries(formData).map(([key, value]) => [key, value.trim()]),
+    ) as Record<string, string>;
+
     if (validationSchema) {
-      const result = validationSchema.safeParse(formData);
+      const result = validationSchema.safeParse(sanitizedFormData);
 
       if (!result.success) {
         const fieldErrors: Record<string, string> = {};
@@ -100,13 +114,30 @@ const Modal = ({
       }
     }
 
+    setFormData(sanitizedFormData);
+    setErrors({});
     setIsSubmitting(true);
     setSubmissionStatus("idle");
+
     try {
-      await onSubmit(formData);
+      await onSubmit(sanitizedFormData);
       setSubmissionStatus("success");
     } catch (error) {
-      console.error("Submission error:", error);
+      if (error instanceof ApiClientError && error.fieldErrors) {
+        const hasFieldErrors = Object.keys(error.fieldErrors).length > 0;
+
+        if (hasFieldErrors) {
+          setErrors((prev) => ({ ...prev, ...error.fieldErrors }));
+          setSubmissionMessage("Please review the highlighted fields.");
+        } else {
+          setSubmissionMessage(error.message);
+        }
+      } else if (error instanceof Error && error.message) {
+        setSubmissionMessage(error.message);
+      } else {
+        setSubmissionMessage(errorMessage);
+      }
+
       setSubmissionStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -138,51 +169,57 @@ const Modal = ({
               {subtitle && <p>{subtitle}</p>}
             </S.ModalHeader>
 
-            {submissionStatus !== "success" && submissionStatus !== "error" && (
-              <S.Form onSubmit={handleSubmit}>
-                {fields.map((field) => (
-                  <S.FormGroup key={field.name}>
-                    <label htmlFor={field.name}>{field.label}</label>
-                    {field.type === "textarea" ? (
-                      <textarea
-                        id={field.name}
-                        name={field.name}
-                        placeholder={field.placeholder}
-                        value={formData[field.name] || ""}
-                        onChange={handleChange}
-                        rows={5}
-                      />
-                    ) : (
-                      <input
-                        id={field.name}
-                        name={field.name}
-                        type={field.type}
-                        placeholder={field.placeholder}
-                        // required={field.required}
-                        value={formData[field.name] || ""}
-                        onChange={handleChange}
-                      />
-                    )}
-                    {errors[field.name] && (
-                      <S.ErrorMessage>{errors[field.name]}</S.ErrorMessage>
-                    )}
-                  </S.FormGroup>
-                ))}
-                <Button
-                  text={isSubmitting ? "Sending..." : buttonText}
-                  type="submit"
-                  disabled={isSubmitting}
-                />
-              </S.Form>
+            {submissionStatus !== "success" && (
+              <>
+                {submissionStatus === "error" && (
+                  <S.FeedbackMessage type="error">
+                    {submissionMessage}
+                  </S.FeedbackMessage>
+                )}
+
+                <S.Form onSubmit={handleSubmit}>
+                  {fields.map((field) => (
+                    <S.FormGroup key={field.name}>
+                      <label htmlFor={field.name}>{field.label}</label>
+                      {field.type === "textarea" ? (
+                        <textarea
+                          id={field.name}
+                          name={field.name}
+                          placeholder={field.placeholder}
+                          value={formData[field.name] || ""}
+                          onChange={handleChange}
+                          rows={5}
+                        />
+                      ) : (
+                        <input
+                          id={field.name}
+                          name={field.name}
+                          type={field.type}
+                          placeholder={field.placeholder}
+                          value={formData[field.name] || ""}
+                          onChange={handleChange}
+                        />
+                      )}
+
+                      {errors[field.name] && (
+                        <S.ErrorMessage>{errors[field.name]}</S.ErrorMessage>
+                      )}
+                    </S.FormGroup>
+                  ))}
+
+                  <Button
+                    text={isSubmitting ? "Sending..." : buttonText}
+                    type="submit"
+                    disabled={isSubmitting}
+                  />
+                </S.Form>
+              </>
             )}
 
             {submissionStatus === "success" && (
               <S.FeedbackMessage type="success">
                 {successMessage}
               </S.FeedbackMessage>
-            )}
-            {submissionStatus === "error" && (
-              <S.FeedbackMessage type="error">{errorMessage}</S.FeedbackMessage>
             )}
           </S.ModalContainer>
         </S.Backdrop>

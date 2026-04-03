@@ -11,10 +11,7 @@ import { GlobalResetStyle } from "./styles/GlobalReset";
 import { GlobalStyle } from "./styles/GlobalStyle";
 
 // Components
-import Header from "./components/layout/Header";
-import Footer from "./components/layout/Footer";
 import Loader from "./components/common/Loader";
-import PageLayout from "./components/layout/PageLayout";
 import ScrollToTop from "./components/common/ScrollToTop";
 import { AuthProvider } from "./contexts/AuthContext";
 import AppRoutes from "./routes/Routes";

@@ -1,16 +1,28 @@
 import { z } from "zod";
 
-/* * Join The Hunt Schema
- * Validation for the simple newsletter signup.
- */
+const portfolioLinkSchema = z.string().trim().refine((value) => {
+  if (!value) {
+    return true;
+  }
+
+  const normalizedValue =
+    value.startsWith("http://") || value.startsWith("https://")
+      ? value
+      : `https://${value}`;
+
+  try {
+    new URL(normalizedValue);
+    return true;
+  } catch {
+    return false;
+  }
+}, "Invalid link format (use example.com or https://example.com)");
+
 export const joinHuntSchema = z.object({
   name: z.string().min(2, "Name is required"),
   email: z.string().email("Invalid email address"),
 });
 
-/* * Contact Form Schema
- * Validation rules for the General Contact form.
- */
 export const contactSchema = z.object({
   name: z.string().min(3, "Name is required"),
   email: z.string().email("Invalid email address"),
@@ -18,17 +30,9 @@ export const contactSchema = z.object({
   message: z.string().min(10, "Message must be at least 10 characters"),
 });
 
-/* * Apply Form Schema
- * Validation rules for the Job Application form.
- */
 export const applicationSchema = z.object({
   name: z.string().min(3, "Name is required"),
   email: z.string().email("Invalid email address"),
-  portfolioLink: z
-    .string()
-    .regex(
-      /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$/,
-      "Invalid link format (use example.com)"
-    ),
-  message: z.string().min(10, "Message is too short"),
+  portfolioLink: portfolioLinkSchema,
+  coverLetter: z.string().trim().min(10, "Message is too short"),
 });

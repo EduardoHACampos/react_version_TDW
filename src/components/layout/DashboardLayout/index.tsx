@@ -1,11 +1,3 @@
-/*
- Base layout for the internal administrative panel.
- Provides the sidebar and renders protected routes via Outlet.
-
- Layout base para o painel administrativo interno.
- Fornece a barra lateral e renderiza as rotas protegidas via Outlet.
-*/
-
 import React, { useContext } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../contexts/AuthContext";
@@ -17,7 +9,7 @@ const DashboardLayout: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/studio/access");
+    navigate("/internal/access", { replace: true });
   };
 
   return (
@@ -29,18 +21,16 @@ const DashboardLayout: React.FC = () => {
         </S.SidebarHeader>
 
         <S.NavList>
-          <S.NavItem to="/studio/dashboard">Overview</S.NavItem>
-          <S.NavItem to="/studio/news">Patch Notes</S.NavItem>
-          <S.NavItem to="/studio/jobs">Job Board</S.NavItem>
-          
+          <S.NavItem to="/internal/dashboard">Overview</S.NavItem>
+          <S.NavItem to="/internal/news">Patch Notes</S.NavItem>
+          <S.NavItem to="/internal/jobs">Job Board</S.NavItem>
+
           {(user?.role === "ADMIN" || user?.role === "LEADER") && (
-            <S.NavItem to="/studio/team">Team Management</S.NavItem>
+            <S.NavItem to="/internal/team">Team Management</S.NavItem>
           )}
         </S.NavList>
 
-        <S.LogoutButton onClick={handleLogout}>
-          Logout
-        </S.LogoutButton>
+        <S.LogoutButton onClick={handleLogout}>Logout</S.LogoutButton>
       </S.Sidebar>
 
       <S.MainContent>

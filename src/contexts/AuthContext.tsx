@@ -1,11 +1,8 @@
-import React, { createContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useEffect, useState, ReactNode } from "react";
+import { AUTH_STORAGE_KEYS } from "../constants/auth";
+import type { AuthUser } from "../interface";
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: "ADMIN" | "LEADER" | "DEVELOPER";
-}
+export type User = AuthUser;
 
 interface AuthContextData {
   user: User | null;
@@ -16,32 +13,93 @@ interface AuthContextData {
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
+const isValidUser = (value: unknown): value is User => {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const candidate = value as Record<string, unknown>;
+
+  return (
+    typeof candidate.id === "string" &&
+    typeof candidate.name === "string" &&
+    typeof candidate.email === "string" &&
+    (candidate.role === "ADMIN" ||
+      candidate.role === "LEADER" ||
+      candidate.role === "DEVELOPER")
+  );
+};
+
+const clearStoredAuth = () => {
+  localStorage.removeItem(AUTH_STORAGE_KEYS.token);
+  localStorage.removeItem(AUTH_STORAGE_KEYS.user);
+};
+
+const readStoredAuth = (): { token: string; user: User } | null => {
+  const storedToken = localStorage.getItem(AUTH_STORAGE_KEYS.token)?.trim();
+  const storedUser = localStorage.getItem(AUTH_STORAGE_KEYS.user);
+
+  if (!storedToken || !storedUser) {
+    clearStoredAuth();
+    return null;
+  }
+
+  try {
+    const parsedUser = JSON.parse(storedUser) as unknown;
+
+    if (!isValidUser(parsedUser)) {
+      clearStoredAuth();
+      return null;
+    }
+
+    return {
+      token: storedToken,
+      user: parsedUser,
+    };
+  } catch {
+    clearStoredAuth();
+    return null;
+  }
+};
+
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
-    const storagedUser = localStorage.getItem("@TDW:user");
-    const storagedToken = localStorage.getItem("@TDW:token");
+    const storedAuth = readStoredAuth();
 
-    if (storagedUser && storagedToken) {
-      setUser(JSON.parse(storagedUser));
+    if (storedAuth) {
+      setToken(storedAuth.token);
+      setUser(storedAuth.user);
     }
   }, []);
 
-  const login = (token: string, loggedUser: User) => {
-    localStorage.setItem("@TDW:token", token);
-    localStorage.setItem("@TDW:user", JSON.stringify(loggedUser));
+  const login = (nextToken: string, loggedUser: User) => {
+    const trimmedToken = nextToken.trim();
+
+    localStorage.setItem(AUTH_STORAGE_KEYS.token, trimmedToken);
+    localStorage.setItem(AUTH_STORAGE_KEYS.user, JSON.stringify(loggedUser));
+
+    setToken(trimmedToken);
     setUser(loggedUser);
   };
 
   const logout = () => {
-    localStorage.removeItem("@TDW:token");
-    localStorage.removeItem("@TDW:user");
+    clearStoredAuth();
+    setToken(null);
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated: Boolean(user && token),
+        login,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

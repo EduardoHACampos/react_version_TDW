@@ -12,28 +12,23 @@ const Contact = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const runeRef = useRef<RuneCanvasHandle>(null);
 
-  // 1. Adicionado o campo "subject" à lista de campos do modal
   const contactModalFields: FormField[] = [
     { name: "name", label: "Name", type: "text", required: true },
     { name: "email", label: "Email", type: "email", required: true },
-    { name: "subject", label: "Subject", type: "text", required: true }, 
+    { name: "subject", label: "Subject", type: "text", required: true },
     { name: "message", label: "Message", type: "textarea", required: true },
   ];
 
   const handleFormSubmit = async (formData: Record<string, string>) => {
-    try {
-      // 2. O subject agora é capturado e enviado para a API
-      await submitContactForm({
-        name: formData.name,
-        email: formData.email,
-        subject: formData.subject,
-        message: formData.message,
-      });
-      toast.success("Message sent successfully!");
-      setIsModalOpen(false);
-    } catch (error) {
-      throw error;
-    }
+    await submitContactForm({
+      name: formData.name,
+      email: formData.email,
+      subject: formData.subject,
+      message: formData.message,
+    });
+
+    toast.success("Message sent successfully!");
+    setIsModalOpen(false);
   };
 
   return (
@@ -43,7 +38,7 @@ const Contact = () => {
           mobileWidth="320px"
           desktopWidth="460px"
           title="Make Your Mark"
-          p1="The frontier isn’t built alone. Whether you’re looking to invest, collaborate, or ride alongside us, there’s a seat for you by the campfire."
+          p1="The frontier isn't built alone. Whether you're looking to invest, collaborate, or ride alongside us, there's a seat for you by the campfire."
           p2={
             <S.ModalTrigger
               role="button"

@@ -1,23 +1,14 @@
-/*
- Adds the protected routing group for the studio dashboard.
-
- Adiciona o grupo de rotas protegidas para o dashboard do estúdio.
-*/
-
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
-// Layouts
 import MainLayout from "../components/layout/MainLayout";
 import PageLayout from "../components/layout/PageLayout";
-import DashboardLayout from "../components/layout/Footer";
-
-// Components
+import DashboardLayout from "../components/layout/DashboardLayout";
 import PrivateRoute from "../components/common/PrivateRoute";
 
-// Pages
 import Home from "../pages/Home";
 import News from "../pages/News";
+import TheGoal from "../pages/TheGoal";
 import ComingSoon from "../pages/ComingSoon";
 import About from "../pages/About";
 import FAQ from "../pages/FAQ";
@@ -35,11 +26,14 @@ const AppRoutes: React.FC = () => {
 
       <Route element={<PageLayout />}>
         <Route path="/about" element={<About />} />
+        <Route path="/the-goal" element={<TheGoal />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/opportunities" element={<Opportunities />} />
+        <Route path="/coming-soon" element={<ComingSoon />} />
         <Route path="/media" element={<ComingSoon />} />
-        
+        <Route path="/game/ladders" element={<ComingSoon />} />
+        <Route path="/game/download" element={<ComingSoon />} />
         <Route path="/ladder" element={<ComingSoon />} />
         <Route path="/wiki" element={<ComingSoon />} />
         <Route path="/community" element={<ComingSoon />} />
@@ -56,7 +50,6 @@ const AppRoutes: React.FC = () => {
         </Route>
       </Route>
 
-      {/* ROTA CURINGA: Se o usuário digitar um link que não existe, joga pra Home */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

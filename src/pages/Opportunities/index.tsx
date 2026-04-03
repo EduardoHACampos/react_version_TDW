@@ -24,31 +24,26 @@ const Opportunities = () => {
     jobsSectionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-const modalFields: FormField[] = [
-  { name: "name", label: "Name", type: "text", required: true },
-  { name: "email", label: "Email", type: "email", required: true },
-  { name: "portfolioLink", label: "Portfolio", type: "text" }, // Alterado de 'portfolio' para 'portfolioLink'
-  { name: "message", label: "Message", type: "textarea", required: true },
-];
+  const modalFields: FormField[] = [
+    { name: "name", label: "Name", type: "text", required: true },
+    { name: "email", label: "Email", type: "email", required: true },
+    { name: "portfolioLink", label: "Portfolio", type: "text" },
+    { name: "coverLetter", label: "Message", type: "textarea", required: true },
+  ];
 
-const handleApplySubmit = async (formData: Record<string, string>) => {
-  if (!selectedJob) return;
+  const handleApplySubmit = async (formData: Record<string, string>) => {
+    if (!selectedJob) return;
 
-  try {
     await applyToJob(selectedJob.id, {
       name: formData.name,
       email: formData.email,
       portfolioLink: formData.portfolioLink,
-      message: formData.message,
-      jobName: selectedJob.title,
+      coverLetter: formData.coverLetter,
     });
+
     toast.success(`Application for ${selectedJob.title} sent successfully!`);
     handleCloseModal();
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
+  };
 
   return (
     <>
@@ -57,7 +52,7 @@ const handleApplySubmit = async (formData: Record<string, string>) => {
           mobileWidth="320px"
           desktopWidth="465px"
           title="Stake Your Claim in The Dark West"
-          p1="The Dark West isn’t just a game — it’s a frontier, and we need those ready to carve their name into it."
+          p1="The Dark West isn't just a game - it's a frontier, and we need those ready to carve their name into it."
         >
           <S.ScrollButtonContainer>
             <Button text="OPPORTUNITY" onClick={handleScrollToJobs} />

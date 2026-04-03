@@ -1,12 +1,8 @@
-/*
- Refactored InternalLogin to use the AuthContext for state management instead of manual localStorage manipulation.
-
- InternalLogin refatorado para usar o AuthContext para o gerenciamento de estado em vez da manipulação manual do localStorage.
-*/
-
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
+import { ApiClientError } from "../../services/httpClient";
+import { loginInternal } from "../../services/api";
 import * as S from "./styles";
 import blackhandLogo from "../../assets/blackhand_logo_white.webp";
 
@@ -24,23 +20,24 @@ const InternalLogin: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3000/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const { token, user } = await loginInternal(email, password);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Invalid credentials.");
+      login(token, user);
+      navigate("/internal/dashboard", { replace: true });
+    } catch (err) {
+      if (err instanceof ApiClientError && err.fieldErrors) {
+        if (err.fieldErrors.email) {
+          setError(`Email: ${err.fieldErrors.email}`);
+        } else if (err.fieldErrors.password) {
+          setError(`Password: ${err.fieldErrors.password}`);
+        } else {
+          setError(err.message);
+        }
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Unable to sign in right now.");
       }
-
-      login(data.token, data.user);
-      navigate("/studio/dashboard"); 
-      
-    } catch (err: any) {
-      setError(err.message);
     } finally {
       setIsLoading(false);
     }
@@ -51,27 +48,31 @@ const InternalLogin: React.FC = () => {
       <S.LoginBox>
         <S.Logo src={blackhandLogo} alt="Blackhand Studio" />
         <S.Subtitle>Internal Access</S.Subtitle>
-        
+
         <S.Form onSubmit={handleLogin}>
           {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
-          
+
           <S.InputGroup>
             <label>Email</label>
-            <S.Input 
-              type="email" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
-              required 
+            <S.Input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
+              disabled={isLoading}
+              required
             />
           </S.InputGroup>
-          
+
           <S.InputGroup>
             <label>Password</label>
-            <S.Input 
-              type="password" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
-              required 
+            <S.Input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              disabled={isLoading}
+              required
             />
           </S.InputGroup>
 

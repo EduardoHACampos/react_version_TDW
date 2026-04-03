@@ -10,11 +10,11 @@ import discordIcon from "../../assets/Discord.png";
 
 import { joinHuntSchema } from "../../utils/schemas";
 
-const liveStreamers = ["playdarkwest"]; 
+const liveStreamers = ["playdarkwest"];
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isTwitchVisible, setIsTwitchVisible] = useState(true); 
+  const [isTwitchVisible, setIsTwitchVisible] = useState(true);
   const currentDomain = window.location.hostname;
 
   const joinHuntFields: FormField[] = [
@@ -34,17 +34,11 @@ const Home = () => {
     },
   ];
 
- const handleHuntSubmit = async (formData: Record<string, string>) => {
-    try {
-      await submitJoinTheHuntForm({
-        name: formData.name,
-        email: formData.email,
-      });
-      // Se der sucesso, o Modal já vai mostrar a successMessage automaticamente
-    } catch (error: any) {
-      // Se der erro (ex: e-mail duplicado), lançamos o erro para que o catch do Modal o apanhe e o defina como estado de erro
-      throw new Error(error.message);
-    }
+  const handleHuntSubmit = async (formData: Record<string, string>) => {
+    await submitJoinTheHuntForm({
+      name: formData.name,
+      email: formData.email,
+    });
   };
 
   return (
@@ -62,32 +56,25 @@ const Home = () => {
           />
         </S.VideoWrapper>
 
-        {/* <S.HuntButtonWrapper>
-          <RuneAction
-            text="JOIN THE HUNT"
-            size={32}
-            onClick={() => setIsModalOpen(true)}
-            className="hunt-rune-action"
-          />
-        </S.HuntButtonWrapper> */}
-
         <S.BottomActions>
-          <S.ActionLink 
-            href="https://store.steampowered.com/app/3574750/The_Dark_West/" 
-            target="_blank" 
+          <S.ActionLink
+            href="https://store.steampowered.com/app/3574750/The_Dark_West/"
+            target="_blank"
             rel="noopener noreferrer"
           >
             <S.ActionIcon src={steamLogo} alt="Steam" className="steam-icon" />
-            
           </S.ActionLink>
 
-          <S.ActionLink 
-            href="https://discord.gg/47YskyYJcy" 
-            target="_blank" 
+          <S.ActionLink
+            href="https://discord.gg/47YskyYJcy"
+            target="_blank"
             rel="noopener noreferrer"
           >
-            <S.ActionIcon src={discordIcon} alt="Discord" className="discord-icon" />
-            
+            <S.ActionIcon
+              src={discordIcon}
+              alt="Discord"
+              className="discord-icon"
+            />
           </S.ActionLink>
 
           <S.ActionButton onClick={() => setIsModalOpen(true)}>
@@ -99,24 +86,26 @@ const Home = () => {
           <S.FloatingTwitchContainer>
             <S.TwitchHeader>
               <S.FloatingStreamTitle>Live Now</S.FloatingStreamTitle>
-              <S.CloseTwitchButton onClick={() => setIsTwitchVisible(false)} title="Close Stream">
+              <S.CloseTwitchButton
+                onClick={() => setIsTwitchVisible(false)}
+                title="Close Stream"
+              >
                 &times;
               </S.CloseTwitchButton>
             </S.TwitchHeader>
-            
+
             {liveStreamers.map((streamer) => (
               <S.FloatingStreamWrapper key={streamer}>
                 <S.IframeWrapper>
                   <iframe
                     src={`https://player.twitch.tv/?channel=${streamer}&parent=${currentDomain}&muted=true`}
-                    allowFullScreen>
-                  </iframe>
+                    allowFullScreen
+                  />
                 </S.IframeWrapper>
               </S.FloatingStreamWrapper>
             ))}
           </S.FloatingTwitchContainer>
         )}
-
       </S.HeroSection>
 
       <Modal
