@@ -6,7 +6,9 @@ import * as S from "./styles";
 import Modal, { FormField } from "../../components/common/Modal";
 import SectionTextBlock from "../../components/common/SectionTextBlock";
 import { contactSchema } from "../../utils/schemas";
-import RuneCanvas, { RuneCanvasHandle } from "../../components/common/RuneCanvas";
+import RuneCanvas, {
+  RuneCanvasHandle,
+} from "../../components/common/RuneCanvas";
 
 const Contact = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,7 +17,7 @@ const Contact = () => {
   const contactModalFields: FormField[] = [
     { name: "name", label: "Name", type: "text", required: true },
     { name: "email", label: "Email", type: "email", required: true },
-    { name: "subject", label: "Subject", type: "text", required: true },
+    { name: "portfolioLink", label: "Portfolio", type: "text" },
     { name: "message", label: "Message", type: "textarea", required: true },
   ];
 
@@ -23,7 +25,7 @@ const Contact = () => {
     await submitContactForm({
       name: formData.name,
       email: formData.email,
-      subject: formData.subject,
+      portfolioLink: formData.portfolioLink,
       message: formData.message,
     });
 

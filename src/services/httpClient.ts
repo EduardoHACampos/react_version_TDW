@@ -66,6 +66,42 @@ const extractFieldErrors = (
   payload: unknown,
   fieldMap: Record<string, string> = {},
 ): FieldErrors => {
+  if (isObject(payload) && Array.isArray(payload.errors)) {
+    return payload.errors.reduce<FieldErrors>((acc, issue) => {
+      if (!isObject(issue)) {
+        return acc;
+      }
+
+      const field =
+        typeof issue.field === "string" && issue.field.trim()
+          ? issue.field.trim()
+          : null;
+      const message = getMessageString(issue.message);
+
+      if (!field || !message) {
+        return acc;
+      }
+
+      acc[fieldMap[field] ?? field] = message;
+      return acc;
+    }, {});
+  }
+
+  if (isObject(payload) && isObject(payload.errors)) {
+    return Object.entries(payload.errors).reduce<FieldErrors>(
+      (acc, [field, value]) => {
+        const message = getMessageString(value);
+
+        if (message) {
+          acc[fieldMap[field] ?? field] = message;
+        }
+
+        return acc;
+      },
+      {},
+    );
+  }
+
   const candidate =
     isObject(payload) && isObject(payload.message) ? payload.message : payload;
 

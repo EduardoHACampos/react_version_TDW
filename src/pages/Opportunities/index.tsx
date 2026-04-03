@@ -28,7 +28,7 @@ const Opportunities = () => {
     { name: "name", label: "Name", type: "text", required: true },
     { name: "email", label: "Email", type: "email", required: true },
     { name: "portfolioLink", label: "Portfolio", type: "text" },
-    { name: "coverLetter", label: "Message", type: "textarea", required: true },
+    { name: "message", label: "Message", type: "textarea", required: true },
   ];
 
   const handleApplySubmit = async (formData: Record<string, string>) => {
@@ -38,7 +38,8 @@ const Opportunities = () => {
       name: formData.name,
       email: formData.email,
       portfolioLink: formData.portfolioLink,
-      coverLetter: formData.coverLetter,
+      message: formData.message,
+      jobName: selectedJob.title,
     });
 
     toast.success(`Application for ${selectedJob.title} sent successfully!`);

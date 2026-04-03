@@ -106,7 +106,8 @@ export interface ApplyFormData {
   name: string;
   email: string;
   portfolioLink?: string;
-  coverLetter: string;
+  message: string;
+  jobName: string;
 }
 
 export const applyToJob = async (jobId: number, data: ApplyFormData) => {
@@ -114,7 +115,8 @@ export const applyToJob = async (jobId: number, data: ApplyFormData) => {
     const payload: Record<string, string> = {
       name: data.name.trim(),
       email: data.email.trim(),
-      coverLetter: data.coverLetter.trim(),
+      message: data.message.trim(),
+      jobName: data.jobName.trim(),
     };
 
     if (data.portfolioLink?.trim()) {
@@ -139,18 +141,23 @@ export const applyToJob = async (jobId: number, data: ApplyFormData) => {
 export interface ContactFormData {
   name: string;
   email: string;
-  subject: string;
   message: string;
+  portfolioLink?: string;
 }
 
 export const submitContactForm = async (data: ContactFormData) => {
   try {
-    const response = await httpClient.post("/jobs/contact/", {
+    const payload: Record<string, string> = {
       name: data.name.trim(),
       email: data.email.trim(),
-      subject: data.subject.trim(),
       message: data.message.trim(),
-    });
+    };
+
+    if (data.portfolioLink?.trim()) {
+      payload.portfolioLink = data.portfolioLink.trim();
+    }
+
+    const response = await httpClient.post("/jobs/contact/", payload);
     return response.data;
   } catch (error) {
     throw normalizeApiError(error, {
@@ -181,6 +188,7 @@ export const submitJoinTheHuntForm = async (data: HuntFormData) => {
       fallbackMessage:
         "We couldn't complete your subscription right now. Please try again later.",
       statusMessages: {
+        409: "This email is already registered.",
         429: "Too many attempts. Please wait a moment and try again.",
         500: "We couldn't complete your subscription right now. Please try again later.",
       },
