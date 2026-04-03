@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { PreloadContext } from "../context/PreloadContext";
+import { PreloadContext } from "../contexts/PreloadContext";
 
 export const usePreloader = () => {
   const context = useContext(PreloadContext);

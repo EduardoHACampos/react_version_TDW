@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { AnimatePresence } from "framer-motion";
 
 // Context & Styles
-import { PreloaderProvider, PreloadContext } from "./context/PreloadContext";
+import { PreloaderProvider, PreloadContext } from "./contexts/PreloadContext";
 import * as S from "./App.styles";
 import { GlobalResetStyle } from "./styles/GlobalReset";
 import { GlobalStyle } from "./styles/GlobalStyle";
@@ -16,6 +16,8 @@ import Footer from "./components/layout/Footer";
 import Loader from "./components/common/Loader";
 import PageLayout from "./components/layout/PageLayout";
 import ScrollToTop from "./components/common/ScrollToTop";
+import { AuthProvider } from "./contexts/AuthContext";
+import AppRoutes from "./routes/Routes";
 
 const AppContent = () => {
   const { isLoading } = useContext(PreloadContext)!;
@@ -29,9 +31,8 @@ const AppContent = () => {
         animate={{ opacity: isLoading ? 0 : 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <Header />
-        <PageLayout />
-        <Footer />
+        {/* O AppRoutes vai chamar os Layouts corretos que já contêm o Header/Footer */}
+        <AppRoutes /> 
       </S.AppWrapper>
     </>
   );
@@ -39,26 +40,21 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <PreloaderProvider>
-      <Router>
-        <GlobalResetStyle />
-        <GlobalStyle />
-        <ScrollToTop />
-        <AppContent />
-        <ToastContainer
-          position="bottom-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
-      </Router>
-    </PreloaderProvider>
+    <AuthProvider>
+      <PreloaderProvider>
+        <Router>
+          <GlobalResetStyle />
+          <GlobalStyle />
+          <ScrollToTop />
+          <AppContent />
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            theme="dark"
+          />
+        </Router>
+      </PreloaderProvider>
+    </AuthProvider>
   );
 };
 

@@ -1,7 +1,6 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Outlet } from "react-router-dom"; // Importe o Outlet aqui!
 import { usePreloader } from "../../../hooks/usePreloader";
-import AppRoutes from "../../../routes/Routes"; 
 import * as S from "./styles";
 
 // Assets
@@ -29,7 +28,8 @@ const PageLayout = () => {
 
   return (
     <S.MainContent bgImage={currentBg}>
-      <AppRoutes />
+      {/* O Outlet renderiza as páginas filhas (About, FAQ, etc) por dentro deste layout */}
+      <Outlet />
     </S.MainContent>
   );
 };

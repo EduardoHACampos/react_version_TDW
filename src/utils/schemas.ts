@@ -14,6 +14,7 @@ export const joinHuntSchema = z.object({
 export const contactSchema = z.object({
   name: z.string().min(3, "Name is required"),
   email: z.string().email("Invalid email address"),
+  subject: z.string().trim().min(3).max(150),
   message: z.string().min(10, "Message must be at least 10 characters"),
 });
 

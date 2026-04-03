@@ -34,11 +34,17 @@ const Home = () => {
     },
   ];
 
-  const handleHuntSubmit = async (formData: Record<string, string>) => {
-    await submitJoinTheHuntForm({
-      name: formData.name,
-      email: formData.email,
-    });
+ const handleHuntSubmit = async (formData: Record<string, string>) => {
+    try {
+      await submitJoinTheHuntForm({
+        name: formData.name,
+        email: formData.email,
+      });
+      // Se der sucesso, o Modal já vai mostrar a successMessage automaticamente
+    } catch (error: any) {
+      // Se der erro (ex: e-mail duplicado), lançamos o erro para que o catch do Modal o apanhe e o defina como estado de erro
+      throw new Error(error.message);
+    }
   };
 
   return (

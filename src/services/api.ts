@@ -22,7 +22,7 @@ export interface ApplyFormData {
   email: string;
   portfolioLink: string;
   message: string;
-  jobName: string;
+  // jobName foi removido daqui!
 }
 
 export const applyToJob = async (jobId: number, data: ApplyFormData) => {
@@ -38,6 +38,7 @@ export const applyToJob = async (jobId: number, data: ApplyFormData) => {
 export interface ContactFormData {
   name: string;
   email: string;
+  subject: string; // <-- ADICIONADO AQUI
   message: string;
 }
 
@@ -56,12 +57,17 @@ export interface HuntFormData {
   email: string;
 }
 
-export const submitJoinTheHuntForm = async (data: HuntFormData) => {
+
+export const submitJoinTheHuntForm = async (data: { name: string; email: string }) => {
   try {
-    const response = await httpClient.post("/jobs/user-info/", data);
+    // Aponta para a nova rota que criámos no backend
+    const response = await httpClient.post("/subscribe", data);
     return response.data;
-  } catch (error) {
-    console.error("Error submitting join the hunt form:", error);
-    throw error;
+  } catch (error: any) {
+    // Repassa o erro para que o frontend (o Modal) consiga mostrar a mensagem correta
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data.error || "Failed to subscribe.");
+    }
+    throw new Error("An unexpected error occurred.");
   }
 };
