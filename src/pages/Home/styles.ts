@@ -44,6 +44,155 @@ export const MainTitle = styled.img`
   }
 `;
 
+export const CountdownPanel = styled.section`
+  position: relative;
+  width: min(100%, 760px);
+  min-height: 94px;
+  margin-top: 0.15rem;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.72));
+
+  @media (max-width: 640px) {
+    width: min(100%, 440px);
+    min-height: 88px;
+    margin-top: -0.1rem;
+  }
+
+  @media (max-width: 430px) {
+    width: 100%;
+    min-height: 84px;
+    margin-top: -0.05rem;
+  }
+`;
+
+export const CountdownFrame = styled.svg`
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+`;
+
+export const CountdownContent = styled.div`
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2.2rem, 600px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 1rem 0.44rem;
+
+  @media (max-width: 640px) {
+    width: min(100% - 1.2rem, 372px);
+    padding: 0 0.55rem 0.4rem;
+  }
+
+  @media (max-width: 430px) {
+    width: calc(100% - 0.95rem);
+    padding: 0 0.4rem 0.36rem;
+  }
+`;
+
+export const CountdownEyebrow = styled.span`
+  color: rgba(240, 199, 118, 0.86);
+  font-family: var(--font-primary);
+  font-size: clamp(0.76rem, 1.25vw, 0.92rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(208, 142, 38, 0.32);
+
+  @media (max-width: 640px) {
+    font-size: 0.66rem;
+    letter-spacing: 0.09em;
+  }
+
+  @media (max-width: 430px) {
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+  }
+`;
+
+export const CountdownGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  width: 100%;
+  margin-top: 0.06rem;
+
+  @media (max-width: 640px) {
+    margin-top: 0.04rem;
+  }
+`;
+
+export const CountdownUnit = styled.div`
+  position: relative;
+  min-width: 0;
+  min-height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 0.2rem 0;
+
+  @media (max-width: 640px) {
+    min-height: 43px;
+    padding-top: 0.42rem;
+  }
+
+  @media (max-width: 430px) {
+    min-height: 39px;
+    padding-inline: 0.05rem;
+    padding-top: 0.34rem;
+  }
+`;
+
+export const CountdownValue = styled.span`
+  color: #e8bf65;
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 3.2vw, 2.35rem);
+  font-weight: 400;
+  line-height: 0.78;
+  letter-spacing: 0;
+  text-shadow:
+    0 0 8px rgba(208, 142, 38, 0.26),
+    0 2px 0 rgba(0, 0, 0, 0.9);
+  font-variant-numeric: tabular-nums;
+
+  @media (max-width: 640px) {
+    font-size: clamp(1.35rem, 6.7vw, 1.9rem);
+  }
+
+  @media (max-width: 430px) {
+    font-size: clamp(1.1rem, 7.3vw, 1.52rem);
+  }
+`;
+
+export const CountdownLabel = styled.span`
+  margin-top: 0.2rem;
+  color: rgba(255, 236, 190, 0.92);
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.9);
+
+  @media (max-width: 640px) {
+    font-size: 0.62rem;
+  }
+
+  @media (max-width: 430px) {
+    font-size: 0.46rem;
+  }
+`;
+
 export const VideoWrapper = styled.div`
   width: 100%;
   max-width: 640px;
@@ -192,7 +341,7 @@ export const BottomActions = styled.div`
   flex-direction: column;
   gap: 1.5rem;
   margin-top: auto; 
-  padding-bottom: 2rem;
+  padding-bottom: 1.45rem;
   align-items: center;
 
   @media (min-width: 768px) {
@@ -284,6 +433,22 @@ export const ActionButton = styled.button`
   border: none;
   padding: 0;
   outline: none;
+`;
+
+export const ModalModeButton = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-hover-purple);
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+  }
 `;
 
 export const FloatingTwitchContainer = styled.aside`
