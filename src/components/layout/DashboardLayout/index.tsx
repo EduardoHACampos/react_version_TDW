@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { canManageJobs, canManageUsers } from "../../../utils/roles";
 import * as S from "./styles";
 
 const DashboardLayout: React.FC = () => {
@@ -14,24 +15,29 @@ const DashboardLayout: React.FC = () => {
 
   return (
     <S.LayoutContainer>
-      <S.Sidebar>
-        <S.SidebarHeader>
-          <S.Title>Studio Panel</S.Title>
-          <S.Subtitle>Welcome, {user?.name}</S.Subtitle>
-        </S.SidebarHeader>
+      <S.SidebarRail>
+        <S.Sidebar>
+          <S.SidebarHeader>
+            <S.Title>Studio Panel</S.Title>
+            <S.Subtitle>Welcome, {user?.name}</S.Subtitle>
+          </S.SidebarHeader>
 
-        <S.NavList>
-          <S.NavItem to="/internal/dashboard">Overview</S.NavItem>
-          <S.NavItem to="/internal/news">Patch Notes</S.NavItem>
-          <S.NavItem to="/internal/jobs">Job Board</S.NavItem>
+          <S.NavList>
+            <S.NavItem to="/internal/dashboard">Overview</S.NavItem>
+            <S.NavItem to="/internal/news">Publications</S.NavItem>
 
-          {(user?.role === "ADMIN" || user?.role === "LEADER") && (
-            <S.NavItem to="/internal/team">Team Management</S.NavItem>
-          )}
-        </S.NavList>
+            {canManageJobs(user?.role) && (
+              <S.NavItem to="/internal/jobs">Job Board</S.NavItem>
+            )}
 
-        <S.LogoutButton onClick={handleLogout}>Logout</S.LogoutButton>
-      </S.Sidebar>
+            {canManageUsers(user?.role) && (
+              <S.NavItem to="/internal/team">Team Management</S.NavItem>
+            )}
+          </S.NavList>
+
+          <S.LogoutButton onClick={handleLogout}>Logout</S.LogoutButton>
+        </S.Sidebar>
+      </S.SidebarRail>
 
       <S.MainContent>
         <Outlet />

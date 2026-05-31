@@ -176,14 +176,21 @@ const Home = () => {
 
             <S.CountdownGrid>
               {countdownUnits.map((unit) => (
-                <S.CountdownUnit key={unit.label}>
+                <S.CountdownUnit key={unit.label} aria-label={unit.label}>
                   <S.CountdownValue>
                     {String(unit.value).padStart(2, "0")}
                   </S.CountdownValue>
-                  <S.CountdownLabel>{unit.label}</S.CountdownLabel>
                 </S.CountdownUnit>
               ))}
             </S.CountdownGrid>
+
+            <S.CountdownLabelGrid aria-hidden="true">
+              {countdownUnits.map((unit) => (
+                <S.CountdownLabel key={unit.label}>
+                  {unit.label}
+                </S.CountdownLabel>
+              ))}
+            </S.CountdownLabelGrid>
           </S.CountdownContent>
         </S.CountdownPanel>
 

@@ -32,21 +32,21 @@ const Opportunities = () => {
   ];
 
   const handleApplySubmit = async (formData: Record<string, string>) => {
-  console.log("FORM DATA:", formData);
+    if (!selectedJob) {
+      return;
+    }
 
-  if (!selectedJob) return;
+    await applyToJob(selectedJob.id, {
+      name: formData.name,
+      email: formData.email,
+      portfolioLink: formData.portfolioLink,
+      message: formData.message,
+      jobName: selectedJob.title,
+    });
 
-  await applyToJob(selectedJob.id, {
-    name: formData.name,
-    email: formData.email,
-    portfolioLink: formData.portfolioLink,
-    message: formData.message,
-    jobName: selectedJob.title,
-  });
-
-  toast.success(`Application for ${selectedJob.title} sent successfully!`);
-  handleCloseModal();
-};
+    toast.success(`Application for ${selectedJob.title} sent successfully!`);
+    handleCloseModal();
+  };
 
   return (
     <>

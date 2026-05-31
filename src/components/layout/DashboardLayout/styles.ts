@@ -8,19 +8,42 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 export const LayoutContainer = styled.div`
-  display: flex;
   min-height: 100vh;
   background-color: var(--color-background-dark);
 `;
 
-export const Sidebar = styled.aside`
+export const SidebarRail = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
   width: 250px;
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+
+  @media (max-width: 760px) {
+    position: static;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+`;
+
+export const Sidebar = styled.aside`
+  min-height: 100%;
   background-color: var(--color-background-card);
   border-right: 1px solid var(--color-border);
   padding: 2rem 1rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  @media (max-width: 760px) {
+    min-height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
 `;
 
 export const SidebarHeader = styled.div`
@@ -81,8 +104,12 @@ export const LogoutButton = styled.button`
 `;
 
 export const MainContent = styled.main`
-  flex: 1;
+  min-height: 100vh;
+  margin-left: 250px;
   padding: 2rem;
   color: var(--color-text-light);
-  overflow-y: auto;
+
+  @media (max-width: 760px) {
+    margin-left: 0;
+  }
 `;

@@ -5,16 +5,22 @@ import MainLayout from "../components/layout/MainLayout";
 import PageLayout from "../components/layout/PageLayout";
 import DashboardLayout from "../components/layout/DashboardLayout";
 import PrivateRoute from "../components/common/PrivateRoute";
+import RoleRoute from "../components/common/RoleRoute";
 
 import Home from "../pages/Home";
 import News from "../pages/News";
+import PublicationDetail from "../pages/PublicationDetail";
 import TheGoal from "../pages/TheGoal";
 import ComingSoon from "../pages/ComingSoon";
 import About from "../pages/About";
 import FAQ from "../pages/FAQ";
 import Contact from "../pages/Contact";
 import Opportunities from "../pages/Opportunities";
+import InternalDashboard from "../pages/InternalDashboard";
 import InternalLogin from "../pages/InternalLogin";
+import InternalNews from "../pages/InternalNews";
+import InternalJobs from "../pages/InternalJobs";
+import InternalTeam from "../pages/InternalTeam";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -22,6 +28,7 @@ const AppRoutes: React.FC = () => {
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/news" element={<News />} />
+        <Route path="/news/:slug" element={<PublicationDetail />} />
       </Route>
 
       <Route element={<PageLayout />}>
@@ -43,10 +50,13 @@ const AppRoutes: React.FC = () => {
 
       <Route element={<PrivateRoute />}>
         <Route element={<DashboardLayout />}>
-          <Route path="/internal/dashboard" element={<h1>Overview (WiP)</h1>} />
-          <Route path="/internal/news" element={<h1>Patch Notes (WiP)</h1>} />
-          <Route path="/internal/jobs" element={<h1>Job Board (WiP)</h1>} />
-          <Route path="/internal/team" element={<h1>Team Management (WiP)</h1>} />
+          <Route path="/internal/dashboard" element={<InternalDashboard />} />
+          <Route path="/internal/news" element={<InternalNews />} />
+
+          <Route element={<RoleRoute allowedRoles={["ADMIN", "LEADER"]} />}>
+            <Route path="/internal/jobs" element={<InternalJobs />} />
+            <Route path="/internal/team" element={<InternalTeam />} />
+          </Route>
         </Route>
       </Route>
 

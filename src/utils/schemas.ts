@@ -23,10 +23,14 @@ export const joinHuntSchema = z.object({
   email: z.string().trim().email("Invalid email address"),
 });
 
+export const newsletterUnsubscribeSchema = z.object({
+  email: z.string().trim().email("Invalid email address"),
+});
+
 export const contactSchema = z.object({
   name: z.string().trim().min(3, "Name is required"),
   email: z.string().trim().email("Invalid email address"),
-  portfolioLink: portfolioLinkSchema.optional(),
+  subject: z.string().trim().min(3, "Subject is required"),
   message: z.string().trim().min(10, "Message must be at least 10 characters"),
 });
 

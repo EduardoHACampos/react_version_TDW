@@ -149,3 +149,9 @@ export const ErrorMessage = styled.span`
   margin-top: 4px;
   display: block;
 `;
+
+export const FooterContent = styled.div`
+  margin-top: var(--spacing-md);
+  display: flex;
+  justify-content: center;
+`;

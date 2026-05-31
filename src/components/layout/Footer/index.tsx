@@ -1,21 +1,5 @@
-/*
- English: 
- Main Footer component updated based on the visual guide.
- - Unfinished pages (marked with Red X) are now redirected to "/coming-soon".
- - Functional pages (marked with Green Arrow) route to their respective pages or external URLs.
- - Contact Support links directly to the "/contact" route.
- 
- Explicação em português aqui: 
- Componente principal do rodapé atualizado com base no guia visual.
- - Páginas inacabadas (marcadas com X Vermelho) estão agora redirecionadas para "/coming-soon".
- - Páginas funcionais (marcadas com Seta Verde) encaminham para as suas respetivas páginas ou URLs externos.
- - Contact Support aponta diretamente para a rota "/contact".
-*/
-
 import * as S from "./styles";
 import FooterColumn from "./FooterColumn";
-
-/* Assets */
 import logo from "../../../assets/TheDarkWest_TextWithFlourish.png";
 import discordIcon from "../../../assets/Discord.png";
 import instagramIcon from "../../../assets/Instagram.svg";
@@ -24,16 +8,31 @@ import twitterIcon from "../../../assets/Twitter.svg";
 import redditIcon from "../../../assets/Reddit.svg";
 import youtubeIcon from "../../../assets/youtube-icon.svg";
 
+interface FooterLinkItem {
+  label: string;
+  to?: string;
+  href?: string;
+}
+
+const isAvailableFooterLink = (link: FooterLinkItem) =>
+  link.to !== "/coming-soon";
+
 const Footer = () => {
-  const playLinks = [
+  const playLinks: FooterLinkItem[] = [
     { label: "Download", to: "/coming-soon" },
     { label: "Patch Notes", to: "/news" },
-    { label: "Supporter Packs", to: "/coming-soon" },
-    { label: "Steam Store", href: "https://store.steampowered.com/app/3574750/The_Dark_West/" },
+    {
+      label: "Supporter Packs",
+      to: "/coming-soon",
+    },
+    {
+      label: "Steam Store",
+      href: "https://store.steampowered.com/app/3574750/The_Dark_West/",
+    },
     { label: "Twitch Drops", to: "/coming-soon" },
   ];
 
-  const learnLinks = [
+  const learnLinks: FooterLinkItem[] = [
     { label: "Skill System", to: "/coming-soon" },
     { label: "Items & Crafting", to: "/coming-soon" },
     { label: "End Game", to: "/coming-soon" },
@@ -41,32 +40,46 @@ const Footer = () => {
     { label: "World & Story", to: "/coming-soon" },
   ];
 
-  const visualLinks = [
+  const visualLinks: FooterLinkItem[] = [
     { label: "Wallpapers", to: "/coming-soon" },
     { label: "PNG's", to: "/coming-soon" },
     { label: "Mobile / Desktop", to: "/coming-soon" },
   ];
 
-  const hangOutLinks = [
+  const hangOutLinks: FooterLinkItem[] = [
     { label: "Forum", to: "/coming-soon" },
     { label: "Discord", href: "https://discord.gg/47YskyYJcy" },
     { label: "r/TheDarkWest", href: "https://www.reddit.com/r/TheDarkWest/" },
   ];
 
-  const otherLinks = [
+  const otherLinks: FooterLinkItem[] = [
     { label: "Careers", to: "/opportunities" },
+    {
+      label: "Press Kit",
+      href: "https://the-dark-west.b-cdn.net/press-kit/TheDarkWest-PressKit.zip",
+    },
     { label: "Contact Support", to: "/contact" },
     { label: "Code of Conduct", to: "/coming-soon" },
   ];
 
+  const footerSections = [
+    { title: "PLAY", links: playLinks.filter(isAvailableFooterLink) },
+    { title: "LEARN", links: learnLinks.filter(isAvailableFooterLink) },
+    { title: "VISUALS", links: visualLinks.filter(isAvailableFooterLink) },
+    { title: "HANG OUT", links: hangOutLinks.filter(isAvailableFooterLink) },
+    { title: "OTHER", links: otherLinks.filter(isAvailableFooterLink) },
+  ].filter((section) => section.links.length > 0);
+
   return (
     <S.FooterContainer>
       <S.FooterContent>
-        <FooterColumn title="PLAY" links={playLinks} />
-        <FooterColumn title="LEARN" links={learnLinks} />
-        <FooterColumn title="VISUALS" links={visualLinks} />
-        <FooterColumn title="HANG OUT" links={hangOutLinks} />
-        <FooterColumn title="OTHER" links={otherLinks} />
+        {footerSections.map((section) => (
+          <FooterColumn
+            key={section.title}
+            title={section.title}
+            links={section.links}
+          />
+        ))}
       </S.FooterContent>
 
       <S.BottomBar>
@@ -74,8 +87,6 @@ const Footer = () => {
           <S.FooterLogo src={logo} alt="BlackHandStudio Logo" />
           <S.CopyrightText>
             <span>© 2026 BlackHandStudio</span>
-            {/* <span className="separator">•</span>
-            <Link to="/legal/termofuse">Terms of Use & Privacy Policy</Link> */}
           </S.CopyrightText>
         </S.BrandingGroup>
 

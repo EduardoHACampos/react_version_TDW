@@ -25,8 +25,8 @@ const FooterColumn: React.FC<FooterColumnProps> = ({ title, links }) => {
   return (
     <S.Section>
       <h2>{title}</h2>
-      {links.map((link, index) => (
-        <React.Fragment key={index}>
+      {links.map((link) => (
+        <React.Fragment key={link.label}>
           {link.to ? (
             <Link to={link.to}>{link.label}</Link>
           ) : (

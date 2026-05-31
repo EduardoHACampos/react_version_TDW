@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import { ZodSchema } from "zod";
 import * as S from "./styles";
@@ -22,10 +22,11 @@ interface ModalProps {
   subtitle?: string;
   fields: FormField[];
   buttonText: string;
-  onSubmit: (formData: Record<string, string>) => Promise<void>;
+  onSubmit: (formData: Record<string, string>) => Promise<void | string>;
   successMessage?: string;
   errorMessage?: string;
   validationSchema?: ZodSchema;
+  footerContent?: ReactNode;
 }
 
 const Modal = ({
@@ -39,11 +40,15 @@ const Modal = ({
   successMessage = "Sent successfully!",
   errorMessage = "An error occurred. Please try again.",
   validationSchema,
+  footerContent,
 }: ModalProps) => {
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionMessage, setSubmissionMessage] = useState(errorMessage);
+  const [resolvedSuccessMessage, setResolvedSuccessMessage] = useState(
+    successMessage,
+  );
   const [submissionStatus, setSubmissionStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
@@ -73,9 +78,10 @@ const Modal = ({
       setFormData(initialFormState);
       setErrors({});
       setSubmissionMessage(errorMessage);
+      setResolvedSuccessMessage(successMessage);
       setSubmissionStatus("idle");
     }
-  }, [isOpen, fields, errorMessage]);
+  }, [isOpen, fields, errorMessage, successMessage]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -120,7 +126,10 @@ const Modal = ({
     setSubmissionStatus("idle");
 
     try {
-      await onSubmit(sanitizedFormData);
+      const result = await onSubmit(sanitizedFormData);
+      setResolvedSuccessMessage(
+        typeof result === "string" && result.trim() ? result.trim() : successMessage,
+      );
       setSubmissionStatus("success");
     } catch (error) {
       if (error instanceof ApiClientError && error.fieldErrors) {
@@ -218,9 +227,11 @@ const Modal = ({
 
             {submissionStatus === "success" && (
               <S.FeedbackMessage type="success">
-                {successMessage}
+                {resolvedSuccessMessage}
               </S.FeedbackMessage>
             )}
+
+            {footerContent && <S.FooterContent>{footerContent}</S.FooterContent>}
           </S.ModalContainer>
         </S.Backdrop>
       )}

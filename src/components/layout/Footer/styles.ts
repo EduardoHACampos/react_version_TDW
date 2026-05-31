@@ -1,10 +1,3 @@
-/*
-Styled components definitions for the Footer using a Mobile First approach.
-Base rules apply to 320px screens, utilizing min-width media queries to scale up to desktop.
-
-Definições de styled components para o rodapé usando a abordagem Mobile First.
-As regras base se aplicam a telas de 320px, utilizando media queries min-width para escalar até o desktop.
-*/
 import styled from "styled-components";
 
 export const FooterContainer = styled.footer`
@@ -19,29 +12,14 @@ export const FooterContainer = styled.footer`
 
 export const FooterContent = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 3rem 1rem;
   max-width: 1400px;
   margin: 0 auto;
   padding-bottom: 2.5rem;
 
-  /* Allows the 'OTHER' column to span correctly on mobile
-  Permite que a coluna 'OTHER' ocupe o espaço correto no mobile
-  */
-  & > div:nth-child(5) {
-    grid-column: 1 / -1;
-  }
-
   @media (min-width: 768px) {
-    grid-template-columns: repeat(3, 1fr);
-    
-    & > div:nth-child(5) {
-      grid-column: auto;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
     gap: 2rem;
   }
 `;
@@ -114,7 +92,7 @@ export const FooterLogo = styled.img`
   height: 55px;
   width: auto;
   opacity: 0.9;
-  
+
   @media (min-width: 1024px) {
     height: 40px;
   }
@@ -138,7 +116,7 @@ export const CopyrightText = styled.div`
     color: inherit;
     text-decoration: none;
     transition: color 0.3s ease;
-    
+
     &:hover {
       color: var(--color-hover-purple);
     }

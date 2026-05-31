@@ -83,17 +83,20 @@ export const CountdownContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 16px;
   text-align: center;
-  padding: 0 1rem 0.44rem;
+  padding: 0 1rem 0.52rem;
 
   @media (max-width: 640px) {
     width: min(100% - 1.2rem, 372px);
-    padding: 0 0.55rem 0.4rem;
+    gap: 12px;
+    padding: 0 0.55rem 0.48rem;
   }
 
   @media (max-width: 430px) {
     width: calc(100% - 0.95rem);
-    padding: 0 0.4rem 0.36rem;
+    gap: 10px;
+    padding: 0 0.4rem 0.44rem;
   }
 `;
 
@@ -123,41 +126,57 @@ export const CountdownGrid = styled.div`
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0;
   width: 100%;
-  margin-top: 0.06rem;
+  margin-top: 0.08rem;
 
   @media (max-width: 640px) {
     margin-top: 0.04rem;
   }
 `;
 
+export const CountdownLabelGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  width: 100%;
+  margin-top: 0.18rem;
+
+  @media (max-width: 640px) {
+    margin-top: 0.14rem;
+  }
+
+  @media (max-width: 430px) {
+    margin-top: 0.1rem;
+  }
+`;
+
 export const CountdownUnit = styled.div`
   position: relative;
   min-width: 0;
-  min-height: 48px;
+  min-height: 31px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem 0.2rem 0;
+  padding: 0.28rem 0.2rem 0;
 
   @media (max-width: 640px) {
-    min-height: 43px;
-    padding-top: 0.42rem;
+    min-height: 29px;
+    padding-top: 0.24rem;
   }
 
   @media (max-width: 430px) {
-    min-height: 39px;
+    min-height: 26px;
     padding-inline: 0.05rem;
-    padding-top: 0.34rem;
+    padding-top: 0.2rem;
   }
 `;
 
 export const CountdownValue = styled.span`
   color: #e8bf65;
   font-family: var(--font-heading);
-  font-size: clamp(1.6rem, 3.2vw, 2.35rem);
+  font-size: clamp(1.48rem, 2.92vw, 2.12rem);
   font-weight: 400;
-  line-height: 0.78;
+  line-height: 0.9;
   letter-spacing: 0;
   text-shadow:
     0 0 8px rgba(208, 142, 38, 0.26),
@@ -165,16 +184,15 @@ export const CountdownValue = styled.span`
   font-variant-numeric: tabular-nums;
 
   @media (max-width: 640px) {
-    font-size: clamp(1.35rem, 6.7vw, 1.9rem);
+    font-size: clamp(1.28rem, 6.1vw, 1.72rem);
   }
 
   @media (max-width: 430px) {
-    font-size: clamp(1.1rem, 7.3vw, 1.52rem);
+    font-size: clamp(1.04rem, 6.7vw, 1.36rem);
   }
 `;
 
 export const CountdownLabel = styled.span`
-  margin-top: 0.2rem;
   color: rgba(255, 236, 190, 0.92);
   font-family: var(--font-heading);
   font-size: 0.72rem;
