@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import buttonBg from "../../../assets/button01edited.png";
+import buttonBg from "../../../assets/button01edited-ui.webp";
 
 export const CustomButton = styled.button`
   width: 160px;

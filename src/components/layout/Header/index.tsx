@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { usePreloader } from "../../../hooks/usePreloader";
 import * as S from "./styles";
 
-import logo from "../../../assets/TheDarkWest_Logo.png";
+import logo from "../../../assets/TheDarkWest_Logo-ui.webp";
 import barsIcon from "../../../assets/bars.svg";
 import xmarkIcon from "../../../assets/xmark.svg";
 import arrowIcon from "../../../assets/Vector2.svg";

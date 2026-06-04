@@ -14,6 +14,9 @@ export const canManageJobs = (role: UserRole | null | undefined) =>
 export const canManageUsers = (role: UserRole | null | undefined) =>
   hasAllowedRole(role, ["ADMIN", "LEADER"]);
 
+export const canManageEmailQueue = (role: UserRole | null | undefined) =>
+  hasAllowedRole(role, ["ADMIN", "LEADER"]);
+
 export const canCreateUsers = (role: UserRole | null | undefined) =>
   role === "ADMIN";
 

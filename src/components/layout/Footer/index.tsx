@@ -1,6 +1,6 @@
 import * as S from "./styles";
 import FooterColumn from "./FooterColumn";
-import logo from "../../../assets/TheDarkWest_TextWithFlourish.png";
+import logo from "../../../assets/TheDarkWest_TextWithFlourish-footer.webp";
 import discordIcon from "../../../assets/Discord.png";
 import instagramIcon from "../../../assets/Instagram.svg";
 import twitchIcon from "../../../assets/Twitch.svg";
@@ -84,7 +84,12 @@ const Footer = () => {
 
       <S.BottomBar>
         <S.BrandingGroup>
-          <S.FooterLogo src={logo} alt="BlackHandStudio Logo" />
+          <S.FooterLogo
+            src={logo}
+            alt="BlackHandStudio Logo"
+            loading="lazy"
+            decoding="async"
+          />
           <S.CopyrightText>
             <span>© 2026 BlackHandStudio</span>
           </S.CopyrightText>
@@ -96,38 +101,38 @@ const Footer = () => {
             target="_blank"
             rel="noreferrer"
           >
-            <img src={discordIcon} alt="Discord" />
+            <img src={discordIcon} alt="Discord" loading="lazy" decoding="async" />
           </a>
           <a
             href="https://www.twitch.tv/playdarkwest"
             target="_blank"
             rel="noreferrer"
           >
-            <img src={twitchIcon} alt="Twitch" />
+            <img src={twitchIcon} alt="Twitch" loading="lazy" decoding="async" />
           </a>
           <a
             href="https://www.instagram.com/playdarkwest/"
             target="_blank"
             rel="noreferrer"
           >
-            <img src={instagramIcon} alt="Instagram" />
+            <img src={instagramIcon} alt="Instagram" loading="lazy" decoding="async" />
           </a>
           <a href="https://x.com/PlayDarkWest" target="_blank" rel="noreferrer">
-            <img src={twitterIcon} alt="Twitter" />
+            <img src={twitterIcon} alt="Twitter" loading="lazy" decoding="async" />
           </a>
           <a
             href="https://www.youtube.com/@PlayTheDarkWest"
             target="_blank"
             rel="noreferrer"
           >
-            <img src={youtubeIcon} alt="Youtube" />
+            <img src={youtubeIcon} alt="Youtube" loading="lazy" decoding="async" />
           </a>
           <a
             href="https://www.reddit.com/r/TheDarkWest/"
             target="_blank"
             rel="noreferrer"
           >
-            <img src={redditIcon} alt="Reddit" />
+            <img src={redditIcon} alt="Reddit" loading="lazy" decoding="async" />
           </a>
         </S.SocialIcons>
       </S.BottomBar>

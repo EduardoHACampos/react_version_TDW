@@ -1,5 +1,5 @@
 import * as S from "./styles";
-import loaderImage from "../../../assets/TheDarkWest_TextOnly.png";
+import loaderImage from "../../../assets/TheDarkWest_TextOnly-loader.webp";
 
 const Loader = () => {
   return (

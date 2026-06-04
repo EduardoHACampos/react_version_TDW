@@ -204,6 +204,62 @@ export interface ApiHealthReady {
   requestId?: string;
 }
 
+export const EMAIL_QUEUE_STATUSES = [
+  "PENDING",
+  "PROCESSING",
+  "SENT",
+  "FAILED",
+  "RETRYING",
+  "CANCELLED",
+] as const;
+
+export const EMAIL_QUEUE_TYPES = [
+  "CONTACT",
+  "APPLICATION",
+  "USER_INFO",
+  "PUBLICATION_BROADCAST",
+] as const;
+
+export type EmailQueueStatus = (typeof EMAIL_QUEUE_STATUSES)[number];
+export type EmailQueueType = (typeof EMAIL_QUEUE_TYPES)[number];
+
+export type EmailQueueCounts = Record<EmailQueueStatus, number>;
+
+export interface EmailQueueStatusResponse {
+  counts: EmailQueueCounts;
+  nextScheduledAt: string | null;
+}
+
+export interface EmailQueueJob {
+  id: number;
+  type: EmailQueueType;
+  status: EmailQueueStatus;
+  to: string;
+  subject: string;
+  attempts: number;
+  maxAttempts: number;
+  scheduledAt: string | null;
+  sentAt: string | null;
+  lastError: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PaginatedEmailQueueJobsResponse {
+  data: EmailQueueJob[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+export interface ListEmailQueueJobsParams {
+  page: number;
+  limit: number;
+  status?: EmailQueueStatus;
+  type?: EmailQueueType;
+}
+
 const normalizeJob = (value: unknown): Job | null => {
   if (!isObject(value)) {
     return null;
@@ -277,6 +333,105 @@ const normalizeHealthReady = (value: unknown): ApiHealthReady => {
   };
 };
 
+const isEmailQueueStatus = (value: unknown): value is EmailQueueStatus =>
+  typeof value === "string" &&
+  EMAIL_QUEUE_STATUSES.includes(value as EmailQueueStatus);
+
+const isEmailQueueType = (value: unknown): value is EmailQueueType =>
+  typeof value === "string" &&
+  EMAIL_QUEUE_TYPES.includes(value as EmailQueueType);
+
+const createEmptyEmailQueueCounts = (): EmailQueueCounts =>
+  EMAIL_QUEUE_STATUSES.reduce<EmailQueueCounts>((acc, status) => {
+    acc[status] = 0;
+    return acc;
+  }, {} as EmailQueueCounts);
+
+const normalizeEmailQueueStatus = (value: unknown): EmailQueueStatusResponse => {
+  const payload = unwrapPayload(value);
+  const counts = createEmptyEmailQueueCounts();
+
+  if (isObject(payload) && isObject(payload.counts)) {
+    const payloadCounts = payload.counts;
+
+    EMAIL_QUEUE_STATUSES.forEach((status) => {
+      const countValue = payloadCounts[status];
+      counts[status] = typeof countValue === "number" ? countValue : 0;
+    });
+  }
+
+  return {
+    counts,
+    nextScheduledAt:
+      isObject(payload) && typeof payload.nextScheduledAt === "string"
+        ? payload.nextScheduledAt
+        : null,
+  };
+};
+
+const normalizeEmailQueueJob = (value: unknown): EmailQueueJob | null => {
+  if (!isObject(value)) {
+    return null;
+  }
+
+  if (
+    typeof value.id !== "number" ||
+    !isEmailQueueType(value.type) ||
+    !isEmailQueueStatus(value.status) ||
+    typeof value.to !== "string" ||
+    typeof value.subject !== "string" ||
+    typeof value.attempts !== "number" ||
+    typeof value.maxAttempts !== "number" ||
+    typeof value.createdAt !== "string" ||
+    typeof value.updatedAt !== "string"
+  ) {
+    return null;
+  }
+
+  return {
+    id: value.id,
+    type: value.type,
+    status: value.status,
+    to: value.to,
+    subject: value.subject,
+    attempts: value.attempts,
+    maxAttempts: value.maxAttempts,
+    scheduledAt:
+      typeof value.scheduledAt === "string" ? value.scheduledAt : null,
+    sentAt: typeof value.sentAt === "string" ? value.sentAt : null,
+    lastError: typeof value.lastError === "string" ? value.lastError : null,
+    createdAt: value.createdAt,
+    updatedAt: value.updatedAt,
+  };
+};
+
+const normalizeEmailQueueJobsList = (
+  value: unknown,
+): PaginatedEmailQueueJobsResponse => {
+  const payload = unwrapPayload(value);
+
+  if (!isObject(payload) || !Array.isArray(payload.data)) {
+    return {
+      data: [],
+      page: 1,
+      limit: 20,
+      total: 0,
+      totalPages: 1,
+    };
+  }
+
+  return {
+    data: payload.data
+      .map(normalizeEmailQueueJob)
+      .filter((job): job is EmailQueueJob => Boolean(job)),
+    page: typeof payload.page === "number" ? payload.page : 1,
+    limit: typeof payload.limit === "number" ? payload.limit : 20,
+    total: typeof payload.total === "number" ? payload.total : 0,
+    totalPages:
+      typeof payload.totalPages === "number" ? payload.totalPages : 1,
+  };
+};
+
 export const getApiHealthReady = async () => {
   try {
     const response = await httpClient.get("/health/ready");
@@ -287,6 +442,89 @@ export const getApiHealthReady = async () => {
       statusMessages: {
         404: "The API health endpoint is not available.",
         500: "We couldn't check the API status right now.",
+      },
+    });
+  }
+};
+
+export const getEmailQueueStatus = async () => {
+  try {
+    const response = await httpClient.get("/email-queue/status");
+    return normalizeEmailQueueStatus(response.data);
+  } catch (error) {
+    throw normalizeApiError(error, {
+      fallbackMessage: "We couldn't load the email queue status right now.",
+      statusMessages: {
+        401: "Authentication required.",
+        403: "You do not have permission to access the email queue.",
+        500: "We couldn't load the email queue status right now.",
+      },
+    });
+  }
+};
+
+export const listEmailQueueJobs = async (
+  params: ListEmailQueueJobsParams,
+) => {
+  try {
+    const response = await httpClient.get("/email-queue/jobs", {
+      params,
+    });
+
+    return normalizeEmailQueueJobsList(response.data);
+  } catch (error) {
+    throw normalizeApiError(error, {
+      fallbackMessage: "We couldn't load email queue jobs right now.",
+      statusMessages: {
+        401: "Authentication required.",
+        403: "You do not have permission to access the email queue.",
+        500: "We couldn't load email queue jobs right now.",
+      },
+    });
+  }
+};
+
+export const retryEmailQueueJob = async (jobId: number) => {
+  try {
+    const response = await httpClient.post(
+      `/email-queue/jobs/${jobId}/retry`,
+    );
+
+    return normalizePublicMessage(
+      response.data,
+      "Email queue job scheduled for retry.",
+    );
+  } catch (error) {
+    throw normalizeApiError(error, {
+      fallbackMessage: "We couldn't retry this email job right now.",
+      statusMessages: {
+        401: "Authentication required.",
+        403: "You do not have permission to manage the email queue.",
+        404: "Email queue job not found.",
+        500: "We couldn't retry this email job right now.",
+      },
+    });
+  }
+};
+
+export const cancelEmailQueueJob = async (jobId: number) => {
+  try {
+    const response = await httpClient.post(
+      `/email-queue/jobs/${jobId}/cancel`,
+    );
+
+    return normalizePublicMessage(
+      response.data,
+      "Email queue job cancelled successfully.",
+    );
+  } catch (error) {
+    throw normalizeApiError(error, {
+      fallbackMessage: "We couldn't cancel this email job right now.",
+      statusMessages: {
+        401: "Authentication required.",
+        403: "You do not have permission to manage the email queue.",
+        404: "Email queue job not found.",
+        500: "We couldn't cancel this email job right now.",
       },
     });
   }

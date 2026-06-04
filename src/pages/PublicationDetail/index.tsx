@@ -122,6 +122,7 @@ const PublicationDetail: React.FC = () => {
               <S.FeaturedImage
                 src={resolveApiUrl(publication.images[0].fileUrl)}
                 alt={publication.title}
+                decoding="async"
               />
             )}
 
@@ -140,6 +141,8 @@ const PublicationDetail: React.FC = () => {
                       key={image.id}
                       src={resolveApiUrl(image.fileUrl)}
                       alt={image.fileName}
+                      loading="lazy"
+                      decoding="async"
                     />
                   ))}
                 </S.GalleryGrid>

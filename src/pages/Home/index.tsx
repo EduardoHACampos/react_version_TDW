@@ -6,15 +6,42 @@ import {
   submitJoinTheHuntForm,
   unsubscribeFromNewsletter,
 } from "../../services/api";
+import { resolveApiUrl } from "../../services/httpClient";
 
-import mainLogo from "../../assets/TheDarkWest_Logo.png";
+import mainLogo from "../../assets/TheDarkWest_Logo-ui.webp";
 import steamLogo from "../../assets/steam_logo.png";
 import discordIcon from "../../assets/Discord.png";
 
 import { joinHuntSchema, newsletterUnsubscribeSchema } from "../../utils/schemas";
 
-const liveStreamers = ["playdarkwest"];
-const demoLaunchDate = new Date("2026-06-03T00:00:00-07:00");
+const twitchChannel = "playdarkwest";
+const trailerEmbedUrl =
+  "https://www.youtube.com/embed/9ZcosfeFLZE?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&playsinline=1&rel=0";
+const demoLaunchDate = new Date("2026-06-10T00:00:00-07:00");
+const twitchLiveStatusUrl = `/twitch/live?channel=${encodeURIComponent(twitchChannel)}`;
+
+const isObject = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
+
+const readTwitchLiveStatus = (value: unknown): boolean => {
+  if (!isObject(value)) {
+    return false;
+  }
+
+  if (typeof value.isLive === "boolean") {
+    return value.isLive;
+  }
+
+  if (typeof value.live === "boolean") {
+    return value.live;
+  }
+
+  if (isObject(value.data)) {
+    return readTwitchLiveStatus(value.data);
+  }
+
+  return false;
+};
 
 const getCountdownUnits = () => {
   const remainingTime = Math.max(0, demoLaunchDate.getTime() - Date.now());
@@ -34,6 +61,8 @@ const Home = () => {
     "subscribe",
   );
   const [isTwitchVisible, setIsTwitchVisible] = useState(true);
+  const [isTwitchLoaded, setIsTwitchLoaded] = useState(false);
+  const [isTwitchLive, setIsTwitchLive] = useState(false);
   const [countdownUnits, setCountdownUnits] = useState(getCountdownUnits);
   const currentDomain = window.location.hostname;
 
@@ -43,6 +72,36 @@ const Home = () => {
     }, 1000);
 
     return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const checkTwitchStatus = async () => {
+      try {
+        const response = await fetch(resolveApiUrl(twitchLiveStatusUrl), {
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          setIsTwitchLive(false);
+          return;
+        }
+
+        const payload = (await response.json()) as unknown;
+        setIsTwitchLive(readTwitchLiveStatus(payload));
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          return;
+        }
+
+        setIsTwitchLive(false);
+      }
+    };
+
+    void checkTwitchStatus();
+
+    return () => controller.abort();
   }, []);
 
   const joinHuntFields: FormField[] = [
@@ -105,15 +164,18 @@ const Home = () => {
   return (
     <S.HomeContainer>
       <S.HeroSection>
-        <S.MainTitle src={mainLogo} alt="The Dark West Logo" />
+        <S.MainTitle
+          src={mainLogo}
+          alt="The Dark West Logo"
+          decoding="async"
+        />
 
         <S.VideoWrapper>
           <iframe
-            src="https://www.youtube.com/embed/JPFiWf1VkTg?autoplay=1&mute=1"
+            src={trailerEmbedUrl}
             title="The Dark West - Official Reveal Trailer"
             frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
+            allow="autoplay; encrypted-media; picture-in-picture; web-share"
           />
         </S.VideoWrapper>
 
@@ -123,7 +185,12 @@ const Home = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <S.ActionIcon src={steamLogo} alt="Steam" className="steam-icon" />
+            <S.ActionIcon
+              src={steamLogo}
+              alt="Steam"
+              className="steam-icon"
+              decoding="async"
+            />
           </S.ActionLink>
 
           <S.ActionLink
@@ -135,6 +202,7 @@ const Home = () => {
               src={discordIcon}
               alt="Discord"
               className="discord-icon"
+              decoding="async"
             />
           </S.ActionLink>
 
@@ -172,7 +240,7 @@ const Home = () => {
           </S.CountdownFrame>
 
           <S.CountdownContent>
-            <S.CountdownEyebrow>Demo releases June 3 PDT</S.CountdownEyebrow>
+            <S.CountdownEyebrow>Demo releases June 10 PDT</S.CountdownEyebrow>
 
             <S.CountdownGrid>
               {countdownUnits.map((unit) => (
@@ -194,7 +262,7 @@ const Home = () => {
           </S.CountdownContent>
         </S.CountdownPanel>
 
-        {liveStreamers.length > 0 && isTwitchVisible && (
+        {isTwitchLive && isTwitchVisible && (
           <S.FloatingTwitchContainer>
             <S.TwitchHeader>
               <S.FloatingStreamTitle>Live Now</S.FloatingStreamTitle>
@@ -206,16 +274,23 @@ const Home = () => {
               </S.CloseTwitchButton>
             </S.TwitchHeader>
 
-            {liveStreamers.map((streamer) => (
-              <S.FloatingStreamWrapper key={streamer}>
-                <S.IframeWrapper>
+            <S.FloatingStreamWrapper>
+              <S.IframeWrapper>
+                {isTwitchLoaded ? (
                   <iframe
-                    src={`https://player.twitch.tv/?channel=${streamer}&parent=${currentDomain}&muted=true`}
+                    src={`https://player.twitch.tv/?channel=${twitchChannel}&parent=${currentDomain}&muted=true`}
                     allowFullScreen
                   />
-                </S.IframeWrapper>
-              </S.FloatingStreamWrapper>
-            ))}
+                ) : (
+                  <S.LoadStreamButton
+                    type="button"
+                    onClick={() => setIsTwitchLoaded(true)}
+                  >
+                    Load stream
+                  </S.LoadStreamButton>
+                )}
+              </S.IframeWrapper>
+            </S.FloatingStreamWrapper>
           </S.FloatingTwitchContainer>
         )}
       </S.HeroSection>

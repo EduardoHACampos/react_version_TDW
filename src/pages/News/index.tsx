@@ -467,6 +467,8 @@ const News: React.FC = () => {
                         <S.CardImage
                           src={resolveApiUrl(coverImage.fileUrl)}
                           alt={publication.title}
+                          loading="lazy"
+                          decoding="async"
                         />
                       ) : (
                         <S.ImagePlaceholder>

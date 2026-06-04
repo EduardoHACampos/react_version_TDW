@@ -1,10 +1,66 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as S from "./styles";
 
 import combat1Gif from "../../assets/TheDarkWest_Combat1.webm";
 import combat2Gif from "../../assets/TheDarkWest_Combat2.webm";
 import townGif from "../../assets/TheDarkWest_Town.webm";
 import witchGif from "../../assets/TheDarkWest_Witch1.webm";
+
+interface LazyGameplayVideoProps {
+  src: string;
+  ariaLabel: string;
+}
+
+const LazyGameplayVideo = ({ src, ariaLabel }: LazyGameplayVideoProps) => {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    const videoElement = videoRef.current;
+
+    if (!videoElement || shouldLoad) {
+      return;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      setShouldLoad(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "240px" },
+    );
+
+    observer.observe(videoElement);
+
+    return () => observer.disconnect();
+  }, [shouldLoad]);
+
+  useEffect(() => {
+    if (shouldLoad) {
+      void videoRef.current?.play().catch(() => undefined);
+    }
+  }, [shouldLoad]);
+
+  return (
+    <S.GifImage
+      ref={videoRef}
+      src={shouldLoad ? src : undefined}
+      aria-label={ariaLabel}
+      autoPlay={shouldLoad}
+      loop
+      muted
+      playsInline
+      preload={shouldLoad ? "metadata" : "none"}
+    />
+  );
+};
 
 const About: React.FC = () => {
   return (
@@ -19,47 +75,31 @@ const About: React.FC = () => {
             <strong>The Dark West</strong> is an Action RPG that challenges both your skill and sanity.
           </S.Paragraph>
           
-          <S.GifImage 
-            src={combat1Gif} 
-            aria-label="Fast paced action combat in The Dark West" 
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
+          <LazyGameplayVideo
+            src={combat1Gif}
+            ariaLabel="Fast paced action combat in The Dark West"
           />
           
           <S.Paragraph>
             Face a cursed western frontier, where faith and damnation war beneath an eternal dusk.
           </S.Paragraph>
 
-          <S.GifImage 
-            src={townGif} 
-            aria-label="A gloomy, cursed western town" 
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
+          <LazyGameplayVideo
+            src={townGif}
+            ariaLabel="A gloomy, cursed western town"
           />
 
           <S.Paragraph>
             Your choices will carve a path through a world where greed unearthed something fouler than death.
           </S.Paragraph>
 
-          <S.GifImage 
-            src={witchGif} 
-            aria-label="Occult rituals and witchcraft" 
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
+          <LazyGameplayVideo
+            src={witchGif}
+            ariaLabel="Occult rituals and witchcraft"
           />
-          <S.GifImage 
-            src={combat2Gif} 
-            aria-label="Intense gunfight and magic combat" 
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
+          <LazyGameplayVideo
+            src={combat2Gif}
+            ariaLabel="Intense gunfight and magic combat"
           />
           
         </S.SectionBlock>

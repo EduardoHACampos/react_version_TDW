@@ -15,6 +15,7 @@ import { ApiClientError, formatApiErrorForDisplay } from "../../services/httpCli
 import { stripHtml } from "../../utils/html";
 import {
   canCreateUsers,
+  canManageEmailQueue,
   canManageJobs,
   canManagePublications,
   canManageUsers,
@@ -272,7 +273,10 @@ const InternalDashboard: React.FC = () => {
   const activeJobsCount = jobs.filter((job) => job.isActive).length;
   const inactiveJobsCount = jobs.length - activeJobsCount;
   const availableInternalAreas =
-    1 + Number(canManageJobs(user?.role)) + Number(canManageUsers(user?.role));
+    1 +
+    Number(canManageJobs(user?.role)) +
+    Number(canManageEmailQueue(user?.role)) +
+    Number(canManageUsers(user?.role));
 
   const handleProfileFieldChange = <K extends keyof ProfileFormValues>(
     field: K,
@@ -627,7 +631,21 @@ const InternalDashboard: React.FC = () => {
             </S.ActionCard>
           )}
 
-          {!canManageJobs(user?.role) && !canManageUsers(user?.role) && (
+          {canManageEmailQueue(user?.role) && (
+            <S.ActionCard to="/internal/email-queue">
+              <S.ActionEyebrow>Monitor</S.ActionEyebrow>
+              <S.ActionTitle>Email Queue</S.ActionTitle>
+              <S.ActionDescription>
+                Review queued public email deliveries, retry failed jobs, and
+                cancel pending sends without touching public form payloads.
+              </S.ActionDescription>
+              <S.ActionCta>Open email queue</S.ActionCta>
+            </S.ActionCard>
+          )}
+
+          {!canManageJobs(user?.role) &&
+            !canManageEmailQueue(user?.role) &&
+            !canManageUsers(user?.role) && (
             <S.RestrictionCard>
               <S.ActionEyebrow>Restricted</S.ActionEyebrow>
               <S.ActionTitle>Administrative modules</S.ActionTitle>

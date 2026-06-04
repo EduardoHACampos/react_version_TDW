@@ -21,6 +21,7 @@ const InternalLogin = lazy(() => import("../pages/InternalLogin"));
 const InternalNews = lazy(() => import("../pages/InternalNews"));
 const InternalJobs = lazy(() => import("../pages/InternalJobs"));
 const InternalTeam = lazy(() => import("../pages/InternalTeam"));
+const InternalEmailQueue = lazy(() => import("../pages/InternalEmailQueue"));
 
 const AppRoutes: React.FC = () => {
   return (
@@ -57,6 +58,7 @@ const AppRoutes: React.FC = () => {
             <Route element={<RoleRoute allowedRoles={["ADMIN", "LEADER"]} />}>
               <Route path="/internal/jobs" element={<InternalJobs />} />
               <Route path="/internal/team" element={<InternalTeam />} />
+              <Route path="/internal/email-queue" element={<InternalEmailQueue />} />
             </Route>
           </Route>
         </Route>

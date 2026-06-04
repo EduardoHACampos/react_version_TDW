@@ -1,7 +1,11 @@
 import React, { useContext } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { canManageJobs, canManageUsers } from "../../../utils/roles";
+import {
+  canManageEmailQueue,
+  canManageJobs,
+  canManageUsers,
+} from "../../../utils/roles";
 import * as S from "./styles";
 
 const DashboardLayout: React.FC = () => {
@@ -28,6 +32,10 @@ const DashboardLayout: React.FC = () => {
 
             {canManageJobs(user?.role) && (
               <S.NavItem to="/internal/jobs">Job Board</S.NavItem>
+            )}
+
+            {canManageEmailQueue(user?.role) && (
+              <S.NavItem to="/internal/email-queue">Email Queue</S.NavItem>
             )}
 
             {canManageUsers(user?.role) && (

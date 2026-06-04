@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import heroBackground from "../../assets/KeyartTheDarkWestFinalFasepaintover.png";
+import heroBackground from "../../assets/KeyartTheDarkWestFinalFasepaintover-desktop.webp";
 
 export const HomeContainer = styled.div`
   width: 100%;
@@ -41,173 +41,6 @@ export const MainTitle = styled.img`
   @media (min-width: 768px) {
     max-width: 350px;
     margin-bottom: 3.5rem;
-  }
-`;
-
-export const CountdownPanel = styled.section`
-  position: relative;
-  width: min(100%, 760px);
-  min-height: 94px;
-  margin-top: 0.15rem;
-  display: grid;
-  place-items: center;
-  isolation: isolate;
-  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.72));
-
-  @media (max-width: 640px) {
-    width: min(100%, 440px);
-    min-height: 88px;
-    margin-top: -0.1rem;
-  }
-
-  @media (max-width: 430px) {
-    width: 100%;
-    min-height: 84px;
-    margin-top: -0.05rem;
-  }
-`;
-
-export const CountdownFrame = styled.svg`
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-`;
-
-export const CountdownContent = styled.div`
-  position: relative;
-  z-index: 1;
-  width: min(100% - 2.2rem, 600px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  text-align: center;
-  padding: 0 1rem 0.52rem;
-
-  @media (max-width: 640px) {
-    width: min(100% - 1.2rem, 372px);
-    gap: 12px;
-    padding: 0 0.55rem 0.48rem;
-  }
-
-  @media (max-width: 430px) {
-    width: calc(100% - 0.95rem);
-    gap: 10px;
-    padding: 0 0.4rem 0.44rem;
-  }
-`;
-
-export const CountdownEyebrow = styled.span`
-  color: rgba(240, 199, 118, 0.86);
-  font-family: var(--font-primary);
-  font-size: clamp(0.76rem, 1.25vw, 0.92rem);
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  line-height: 1.3;
-  text-transform: uppercase;
-  text-shadow: 0 0 8px rgba(208, 142, 38, 0.32);
-
-  @media (max-width: 640px) {
-    font-size: 0.66rem;
-    letter-spacing: 0.09em;
-  }
-
-  @media (max-width: 430px) {
-    font-size: 0.58rem;
-    letter-spacing: 0.06em;
-  }
-`;
-
-export const CountdownGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0;
-  width: 100%;
-  margin-top: 0.08rem;
-
-  @media (max-width: 640px) {
-    margin-top: 0.04rem;
-  }
-`;
-
-export const CountdownLabelGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0;
-  width: 100%;
-  margin-top: 0.18rem;
-
-  @media (max-width: 640px) {
-    margin-top: 0.14rem;
-  }
-
-  @media (max-width: 430px) {
-    margin-top: 0.1rem;
-  }
-`;
-
-export const CountdownUnit = styled.div`
-  position: relative;
-  min-width: 0;
-  min-height: 31px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0.28rem 0.2rem 0;
-
-  @media (max-width: 640px) {
-    min-height: 29px;
-    padding-top: 0.24rem;
-  }
-
-  @media (max-width: 430px) {
-    min-height: 26px;
-    padding-inline: 0.05rem;
-    padding-top: 0.2rem;
-  }
-`;
-
-export const CountdownValue = styled.span`
-  color: #e8bf65;
-  font-family: var(--font-heading);
-  font-size: clamp(1.48rem, 2.92vw, 2.12rem);
-  font-weight: 400;
-  line-height: 0.9;
-  letter-spacing: 0;
-  text-shadow:
-    0 0 8px rgba(208, 142, 38, 0.26),
-    0 2px 0 rgba(0, 0, 0, 0.9);
-  font-variant-numeric: tabular-nums;
-
-  @media (max-width: 640px) {
-    font-size: clamp(1.28rem, 6.1vw, 1.72rem);
-  }
-
-  @media (max-width: 430px) {
-    font-size: clamp(1.04rem, 6.7vw, 1.36rem);
-  }
-`;
-
-export const CountdownLabel = styled.span`
-  color: rgba(255, 236, 190, 0.92);
-  font-family: var(--font-heading);
-  font-size: 0.72rem;
-  font-weight: 400;
-  letter-spacing: 0;
-  line-height: 1;
-  text-transform: uppercase;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.9);
-
-  @media (max-width: 640px) {
-    font-size: 0.62rem;
-  }
-
-  @media (max-width: 430px) {
-    font-size: 0.46rem;
   }
 `;
 
@@ -469,6 +302,173 @@ export const ModalModeButton = styled.button`
   }
 `;
 
+export const CountdownPanel = styled.section`
+  position: relative;
+  width: min(100%, 760px);
+  min-height: 94px;
+  margin-top: 0.15rem;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.72));
+
+  @media (max-width: 640px) {
+    width: min(100%, 440px);
+    min-height: 88px;
+    margin-top: -0.1rem;
+  }
+
+  @media (max-width: 430px) {
+    width: 100%;
+    min-height: 84px;
+    margin-top: -0.05rem;
+  }
+`;
+
+export const CountdownFrame = styled.svg`
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+`;
+
+export const CountdownContent = styled.div`
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2.2rem, 600px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  padding: 0 1rem 0.52rem;
+
+  @media (max-width: 640px) {
+    width: min(100% - 1.2rem, 372px);
+    gap: 12px;
+    padding: 0 0.55rem 0.48rem;
+  }
+
+  @media (max-width: 430px) {
+    width: calc(100% - 0.95rem);
+    gap: 10px;
+    padding: 0 0.4rem 0.44rem;
+  }
+`;
+
+export const CountdownEyebrow = styled.span`
+  color: rgba(240, 199, 118, 0.86);
+  font-family: var(--font-primary);
+  font-size: clamp(0.76rem, 1.25vw, 0.92rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(208, 142, 38, 0.32);
+
+  @media (max-width: 640px) {
+    font-size: 0.66rem;
+    letter-spacing: 0.09em;
+  }
+
+  @media (max-width: 430px) {
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+  }
+`;
+
+export const CountdownGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  width: 100%;
+  margin-top: 0.08rem;
+
+  @media (max-width: 640px) {
+    margin-top: 0.04rem;
+  }
+`;
+
+export const CountdownLabelGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  width: 100%;
+  margin-top: 0.18rem;
+
+  @media (max-width: 640px) {
+    margin-top: 0.14rem;
+  }
+
+  @media (max-width: 430px) {
+    margin-top: 0.1rem;
+  }
+`;
+
+export const CountdownUnit = styled.div`
+  position: relative;
+  min-width: 0;
+  min-height: 31px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.28rem 0.2rem 0;
+
+  @media (max-width: 640px) {
+    min-height: 29px;
+    padding-top: 0.24rem;
+  }
+
+  @media (max-width: 430px) {
+    min-height: 26px;
+    padding-inline: 0.05rem;
+    padding-top: 0.2rem;
+  }
+`;
+
+export const CountdownValue = styled.span`
+  color: #e8bf65;
+  font-family: var(--font-heading);
+  font-size: clamp(1.48rem, 2.92vw, 2.12rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: 0;
+  text-shadow:
+    0 0 8px rgba(208, 142, 38, 0.26),
+    0 2px 0 rgba(0, 0, 0, 0.9);
+  font-variant-numeric: tabular-nums;
+
+  @media (max-width: 640px) {
+    font-size: clamp(1.28rem, 6.1vw, 1.72rem);
+  }
+
+  @media (max-width: 430px) {
+    font-size: clamp(1.04rem, 6.7vw, 1.36rem);
+  }
+`;
+
+export const CountdownLabel = styled.span`
+  color: rgba(255, 236, 190, 0.92);
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.9);
+
+  @media (max-width: 640px) {
+    font-size: 0.62rem;
+  }
+
+  @media (max-width: 430px) {
+    font-size: 0.46rem;
+  }
+`;
+
 export const FloatingTwitchContainer = styled.aside`
   display: none; 
 
@@ -550,11 +550,33 @@ export const FloatingStreamWrapper = styled.div`
 export const IframeWrapper = styled.div`
   width: 100%;
   height: 220px; 
+  display: grid;
+  place-items: center;
   
   iframe {
     width: 100%;
     height: 100%;
     border: none;
     display: block;
+  }
+`;
+
+export const LoadStreamButton = styled.button`
+  padding: 0.85rem 1.1rem;
+  border: 1px solid rgba(255, 221, 150, 0.5);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.48);
+  color: var(--color-primary-text);
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    border-color: var(--color-hover-purple);
+    color: var(--color-hover-purple);
+    transform: translateY(-1px);
   }
 `;

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import introBackground from "../../assets/image485.png"; // Imagem de fundo da introdução
+import introBackground from "../../assets/image485-bg.avif"; // Imagem de fundo da introdução
 
 // Seção 1: Introdução
 export const IntroSection = styled.section`

@@ -5,13 +5,10 @@ import Header from "../Header"; // <-- Importar o Header
 import Footer from "../Footer"; // <-- Importar o Footer
 import * as S from "./styles";
 
-// Assets
-import homeBg from "../../../assets/KeyartTheDarkWestFinalFasepaintover.png";
-import goalBg from "../../../assets/Group322.png";
-import contactBg from "../../../assets/image491.png";
+import goalBg from "../../../assets/Group322-bg.webp";
+import contactBg from "../../../assets/image491-bg.webp";
 
 const backgroundMap: { [key: string]: string } = {
-  "/": homeBg,
   "/the-goal": goalBg,
   "/contact": contactBg,
   "/opportunities": "",
@@ -21,7 +18,7 @@ const PageLayout = () => {
   const location = useLocation();
   const { startLoading } = usePreloader();
 
-  const currentBg = backgroundMap[location.pathname] ?? homeBg;
+  const currentBg = backgroundMap[location.pathname] ?? "";
 
   useEffect(() => {
     const assetsForCurrentPage = currentBg ? [currentBg] : [];
